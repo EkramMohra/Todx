@@ -3,46 +3,58 @@ import { observer, inject } from "mobx-react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
+import Switch from "react-switch";
 import "./popup.css";
 
 const MyModal = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [favourite, setFavourite] = useState("");
+  const [favourite, setFavourite] = useState(false);
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
-  const [notification, setNotification] = useState("");
-  const [status, setStatus] = useState("");
+  const [notification, setNotification] = useState({ checked: false });
 
-  function addTask() {
+  const addTask = () => {
+    console.log(notification.checked);
     props.list.addTask(
       title,
       content,
       favourite,
       time,
       date,
-      notification,
-      status
+      notification.checked
     );
     props.onHide();
+    emptyInputs();
+  };
+
+  const emptyInputs = () => {
+    setTitle("");
+    setContent("");
+    setFavourite("");
+    setTime("");
+    setDate("");
+    setNotification("");
+  };
+
+  function handleChangeNotification(checked) {
+    console.log(checked);
+    setNotification({ checked });
   }
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     let name = e.target.name;
+    console.log(name);
     name === "title"
       ? setTitle(e.target.value)
       : name === "content"
       ? setContent(e.target.value)
       : name === "favourite"
-      ? setFavourite(e.target.value)
+      ? setFavourite(!favourite)
       : name === "time"
       ? setTime(e.target.value)
-      : name === "date"
-      ? setDate(e.target.value)
-      : name === "notification"
-      ? setNotification(e.target.value)
-      : setStatus(e.target.value);
-  }
+      : setDate(e.target.value);
+  };
 
   return (
     <Modal {...props} centered aria-labelledby="contained-modal-title-vcenter">
@@ -56,6 +68,7 @@ const MyModal = (props) => {
           title:
           <input
             className="input-class"
+            required
             name="title"
             defaultValue={title}
             onChange={handleChange}
@@ -64,7 +77,7 @@ const MyModal = (props) => {
         <div>
           {" "}
           content:
-          <input
+          <textarea
             className="input-class"
             name="content"
             defaultValue={content}
@@ -73,18 +86,9 @@ const MyModal = (props) => {
         </div>
         <div>
           {" "}
-          favourite:
-          <input
-            className="input-class"
-            name="favourite"
-            defaultValue={favourite}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          {" "}
           time:
           <input
+            type="time"
             className="input-class"
             name="time"
             defaultValue={time}
@@ -95,34 +99,32 @@ const MyModal = (props) => {
           {" "}
           date:
           <input
+            type="date"
+            pattern="\d{1,2}/\d{1,2}/\d{4}"
             className="input-class"
             name="date"
             defaultValue={date}
             onChange={handleChange}
           />
         </div>
+        <label>
+          <span> notification:</span>
+          <Switch
+            onChange={handleChangeNotification}
+            checked={notification.checked}
+          />
+        </label>
         <div>
           {" "}
-          notification:
+          <label for="html">favourite</label>
           <input
+            type="checkbox"
             className="input-class"
-            name="notification"
-            defaultValue={notification}
+            name="favourite"
+            defaultValue={favourite}
             onChange={handleChange}
           />
         </div>
-        <div>
-          {" "}
-          status:
-          <input
-            className="input-class"
-            name="status"
-            defaultValue={status}
-            onChange={handleChange}
-          />
-        </div>
-        <input type="time" />
-        <input type="date" />
       </Modal.Body>
 
       <Modal.Footer>

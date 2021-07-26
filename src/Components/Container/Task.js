@@ -2,36 +2,35 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import MyModal from './popup';
 import { useState } from 'react';
+import Card from 'react-bootstrap/Card'
 
 const Task = (props) => {
 
 
     const [modalShow, setModalShow] = useState(false);
 
-    function deleteTask() {
-        
-        props.list.deleteTask(props.task.id)
+    const deleteTask = () => props.list.deleteTask(props.task.id)
 
-    }
+    console.log(props.task)
+
 
     return (
         <>
             <MyModal show={modalShow}
-                task={props.task}
-                onHide={() => setModalShow(false)}
-            />
+                task={props.task} onHide={() => setModalShow(false)} />
 
-            <div>
-                <span>{props.task.id}</span>
-                <span>{props.task.title}</span>
-                <span>{props.task.content}</span>
-                <span>{props.task.time}</span>
-                <span>{props.task.date}</span>
-                <span>{props.task.notification}</span>
-                <span>{props.task.status}</span>
-                <span>{props.task.favourite}</span>
-                <button onClick={() => setModalShow(true)}>edit</button>
-                <button onClick={deleteTask}>remove</button>
+            <div class='card'>
+                <Card bg={'primary'}  style={{ width: '18rem' }} className="mb-2" >
+                    <Card.Header>{props.task.date} - {props.task.time} </Card.Header>
+                    <Card.Body>
+                        <Card.Title> {props.task.title} </Card.Title>
+                        <Card.Text> {props.task.content} </Card.Text>
+                        <Card.Text> {props.task.favourite} </Card.Text>
+                        <Card.Text> {props.task.notification} </Card.Text>
+                        <button onClick={() => setModalShow(true)}>edit</button>
+                        <button onClick={deleteTask}>remove</button>
+                    </Card.Body>
+                </Card>
             </div>
         </>
     )

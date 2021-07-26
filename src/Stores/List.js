@@ -26,6 +26,7 @@ export class List {
         res.data.forEach(task => {
             runInAction(() => {
                 this.list.push(new Task(task))
+
             })
         })
     }
@@ -35,8 +36,10 @@ export class List {
     }
 
 
-    addTask = async (title, content, favourite, time, date, notification, status) => {
+    addTask = async (title, content, favourite, time, date, notification) => {
 
+        console.log(time) 
+        
         let obj = {
             title: title,
             content: content,
@@ -44,7 +47,7 @@ export class List {
             time: time,
             date: date,
             notification: notification,
-            status: status
+            status: 'pending'
         }
 
         let res = await axios.post(`http://localhost:3005/tasks`, obj)
@@ -53,16 +56,13 @@ export class List {
             }, (error) => {
                 console.log(error);
             })
-
         this.getList()
-
     }
 
 
     deleteTask = async (id) => {
-
-        console.log("del")
-        let res = await axios.delete(`http://localhost:3005/tasks/${id}`)
+        console.log(id)
+        let res = await axios.delete(`http://localhost:3005/tasks`,{ data: { id } })
             .then((response) => {
                 console.log(response.data);
             }, (error) => {
@@ -71,7 +71,8 @@ export class List {
         this.getList()
     }
 
-    updateTask = async (id,title, content, favourite, time, date, notification, status) => {
+    updateTask = async (id,title, content, favourite, time, date, notification) => {
+
         let obj = {
             id:id,
             title: title,
@@ -80,7 +81,7 @@ export class List {
             time: time,
             date: date,
             notification: notification,
-            status: status
+            status: 'pending'
         }
         
         await axios.put('http://localhost:3005/tasks', obj)

@@ -8,6 +8,7 @@ const Container = (props) => {
 
     const [modalShow, setModalShow] = useState(false)
 
+    console.log(props.list.list)
 
     return (
         <>

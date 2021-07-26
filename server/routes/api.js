@@ -29,15 +29,17 @@ router.post("/users", async (req, res) => {
 });
 
 router.get("/tasks", function (req, res) {
-  let todayDate = moment().format("DD.MM.YYYY", true);
+  let todayDate = moment().format("YYYY-MM-DD", true);
+  console.log(todayDate);
 
   sequelize
     .query(
       `SELECT task.* 
                 FROM task JOIN list 
-                WHERE list.user_id = ${session.id}
+                WHERE list.user_id = '1'
                 AND list.task_id = task.id
-                AND task.date = todayDate
+                AND task.date = '${todayDate}'
+                AND task.status = 'pending';
             `
     )
     .then(function ([result]) {
@@ -48,33 +50,48 @@ router.get("/tasks", function (req, res) {
 router.post("/tasks", function (req, res) {
   let newTask = req.body;
 
+  console.log(newTask.favourite);
+
   sequelize
     .query(
       `INSERT INTO 
         task(title,content,date,time,status,favourite,notification)
         VALUES('${newTask.title}','${newTask.content}','${newTask.date}','${newTask.time}',
-        '${newTask.status}',${newTask.favourite},'${newTask.notification}'`
+        '${newTask.status}','${newTask.favourite}','${newTask.notification}')`
     )
     .then(function ([result]) {
-      res.send(result);
+      sequelize
+        .query(
+          `INSERT INTO 
+          list(date,user_id,task_id)
+            VALUES('${newTask.date}','1','${result}')`
+        )
+        .then(function ([result]) {});
     });
+
+  res.send();
 });
 
-router.delete("/tasks", function (req, res) {
-  let todayDate = new Date();
+router.put("/tasks", function (req, res) {
+  let updateTask = req.body;
 
   sequelize
     .query(
-      `SELECT task.* 
-                    FROM task JOIN list 
-                    WHERE list.user_id = ${session.id}
-                    AND list.task_id = task.id
-                    AND task.date = todayDate
-                `
+      `UPDATE task 
+        SET title = '${updateTask.title}',
+            content = '${updateTask.content}',
+            date = '${updateTask.date}',
+            time = '${updateTask.time}',
+            status = '${updateTask.status}',
+            favourite = ${updateTask.favourite},
+            notification = '${updateTask.notification}'
+        WHERE id = ${updateTask.id}`
     )
     .then(function ([result]) {
-      res.send(result);
+      console.log("mbrok");
     });
+
+  res.send();
 });
 
 router.post("/newmeeting", (req, res) => {
@@ -108,6 +125,23 @@ router.post("/newmeeting", (req, res) => {
       // API call failed...
       console.log("API call failed, reason ", err);
     });
+});
+router.delete("/tasks", function (req, res) {
+  let taskId = req.body.id;
+
+  sequelize
+    .query(
+      ` DELETE FROM list 
+        WHERE list.task_id = ${taskId}
+        AND list.user_id = '1' ; `
+    )
+    .then(function ([result]) {});
+  sequelize.query(
+    ` DELETE FROM task 
+        WHERE id = ${taskId}; `
+  );
+
+  res.send("oki");
 });
 
 module.exports = router;
