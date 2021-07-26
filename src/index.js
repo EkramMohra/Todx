@@ -8,37 +8,35 @@ import reportWebVitals from './reportWebVitals';
 import Task from './Stores/Task'
 import { List } from './Stores/List'
 
-let info1 = {
-  id : 1,
-  title :'buy food',
-  content : 'buy some veggies and milk',
-  time : '11/08/2021',
-  date : null,
-  notification : 'pending',
-  status : 1,
-  favourite : 0
-}
-let info2 = {
-  id : 2,
-  title :'write code',
-  content : 'do some routes',
-  time : '02/08/2021',
-  date : null,
-  notification : 'pending',
-  status : 1,
-  favourite : 0
-}
+// let info1 = {
+//   id : 1,
+//   title :'buy food',
+//   content : 'buy some veggies and milk',
+//   time : '11/08/2021',
+//   date : null,
+//   notification : 'pending',
+//   status : 1,
+//   favourite : 0
+// }
+// let info2 = {
+//   id : 2,
+//   title :'write code',
+//   content : 'do some routes',
+//   time : '02/08/2021',
+//   date : null,
+//   notification : 'pending',
+//   status : 1,
+//   favourite : 0
+// }
 
-let task1 = new Task(info1)
-let task2 = new Task(info2)
+// let task1 = new Task(info1)
+// let task2 = new Task(info2)
 
 let list = new List()
-list.list.push(task1)
-list.list.push(task2)
+list.getList()
 
 const stores = {
   list: list,
-
 }
 
 ReactDOM.render(

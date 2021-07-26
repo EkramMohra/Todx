@@ -14,11 +14,10 @@ const MyModal = props => {
     const [time, setTime] = useState(props.task.time)
     const [date, setDate] = useState(props.task.date)
     const [notification, setNotification] = useState(props.task.notification)
-    const [status, setStatus] = useState(props.task.status)
 
     function updateTask() {
         let id = props.task.id
-        props.list.updateTask(id, title, content, favourite, time, date, notification, status)
+        props.list.updateTask(id, title, content, favourite, time, date, notification)
         console.log(props.task);
         props.onHide()
 
@@ -31,8 +30,7 @@ const MyModal = props => {
                 : name === "favourite" ? setFavourite(e.target.value)
                     : name === "time" ? setTime(e.target.value)
                         : name === "date" ? setDate(e.target.value)
-                            : name === "notification" ? setNotification(e.target.value)
-                                : setStatus(e.target.value)
+                            : setNotification(e.target.value)
     }
 
     return (
@@ -51,7 +49,6 @@ const MyModal = props => {
                 <div> time:<input className="input-class" name="time" defaultValue={time} onChange={handleChange} /></div>
                 <div> date:<input className="input-class" name="date" defaultValue={date} onChange={handleChange} /></div>
                 <div> notification:<input className="input-class" name="notification" defaultValue={notification} onChange={handleChange} /></div>
-                <div> status:<input className="input-class" name="status" defaultValue={status} onChange={handleChange} /></div>
 
             </Modal.Body>
 

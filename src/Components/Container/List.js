@@ -1,10 +1,20 @@
 import React from 'react';
 import Task from './Task';
+import { useState,useEffect } from 'react';
 
 const List = (props) => {
+
+    const [listOfTasks, setListOfTasks] = useState([]);
+
+    useEffect(() => {
+        setListOfTasks(props.tasks)
+    }, [props.tasks]);
+
+    console.log(listOfTasks)
+
     return (
         <div>
-            {props.tasks.map((task,index) => <Task key={index} task={task}/>)}
+            {listOfTasks.map((task,index) => <Task key={index} task={task}/>)}
         </div>
     );
 };
