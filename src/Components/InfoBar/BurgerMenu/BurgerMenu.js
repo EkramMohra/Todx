@@ -7,10 +7,14 @@ import { RiPencilLine } from "react-icons/ri"
 import { BiCog } from "react-icons/bi"
 import User from '../User'
 import Search from '../Search'
+import "../styles/signUp-login.css";
+import $ from "jquery";
 //import sidebar css from react-pro-sidebar module and our custom css 
 import "react-pro-sidebar/dist/css/styles.css";
 import "../styles/infobar.css";
 import logo from '../../../images/logo.png';
+import SignUp from "../SignUp";
+import Login from "../Login";
 
 import {
     ProSidebar,
@@ -29,11 +33,32 @@ const BurgerMenu = () => {
         menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
     }
 
+    const handleSignUpClick = () => {
+        $("#overlay").fadeIn(200, function () {
+          $("#box").animate({ top: "200px" }, 200);
+        });
+    };
+
+    const handleLoginClick = () => {
+        $("#overlay_1").fadeIn(200, function () {
+            $("#box_1").animate({ top: "200px" }, 200);
+        });
+    };
+
     return (
         <>
         <div className="logotext header">
             <FiMenu onClick={menuIconClick} className="burger-menu-icon"/>
             <img src={logo} alt="logo" className="logo-style"/>
+            
+            <button onClick={handleSignUpClick} className="singup-icon">
+                Signup
+            </button>
+            <button onClick={handleLoginClick} className="login-icon">
+                LogIn
+            </button>
+            <SignUp />
+            <Login />
             <Search />
             <User />
         </div>
