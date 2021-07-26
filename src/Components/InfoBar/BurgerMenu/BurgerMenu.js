@@ -20,6 +20,7 @@ import "../styles/infobar.css";
 import logo from "../../../images/logo.png";
 import SignUp from "../SignUp";
 import Login from "../Login";
+
 import {
   ProSidebar,
   Menu,
@@ -30,24 +31,29 @@ import {
 } from "react-pro-sidebar";
 const BurgerMenu = () => {
   const [menuCollapse, setMenuCollapse] = useState(true);
+
   const menuIconClick = () => {
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
   };
+
   const handleSignUpClick = () => {
     $("#overlay").fadeIn(200, function () {
       $("#box").animate({ top: "200px" }, 200);
     });
   };
+
   const handleLoginClick = () => {
     $("#overlay_1").fadeIn(200, function () {
       $("#box_1").animate({ top: "200px" }, 200);
     });
   };
+
   return (
     <>
       <div className="logotext header">
         <FiMenu onClick={menuIconClick} className="burger-menu-icon" />
         <img src={logo} alt="logo" className="logo-style" />
+
         <button onClick={handleSignUpClick} className="singup-icon">
           Signup
         </button>
