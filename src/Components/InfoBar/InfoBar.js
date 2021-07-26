@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import User from "./User";
 import Search from "./Search";
 import BurgerMenu from "./BurgerMenu/BurgerMenu";
@@ -38,7 +37,6 @@ const InfoBar = () => {
 };
 
 export default InfoBar;
-=======
 import React, {useState} from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -91,4 +89,3 @@ export default InfoBar;
     <button class="btn btn-link btn-block m-0">Link 3</button>
   </div>
 </div> */}
->>>>>>> master
