@@ -1,0 +1,105 @@
+.input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid gray;
+  color: white;
+}
+
+.overlay {
+  background: black;
+  opacity: 0.5;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 100;
+  display: none;
+}
+.box {
+  opacity: 80%;
+  background: black;
+  padding-right: 80px;
+  padding-left: 80px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px 1px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: -400px;
+  left: 35%;
+  right: 30%;
+  color: #fff;
+  border: 2px solid #ccc;
+  z-index: 101;
+}
+a.boxclose {
+  position: absolute;
+  right: 1%;
+  cursor: pointer;
+  color: #fff;
+  font-size: 31px;
+  font-weight: bold;
+  line-height: 0px;
+  padding: 11px 3px;
+}
+
+.boxclose:before {
+  content: "×";
+}
+
+.singup-icon {
+  position: absolute;
+  width: 80px;
+  text-decoration: none;
+  font-weight: bolder;
+  color: black;
+  height: 40px;
+  right: 1%;
+  top: 10px;
+  background: #2bc6ff;
+  border-radius: 24px;
+  cursor: pointer;
+}
+.singup-icon:hover {
+  color: white;
+}
+
+.login-icon {
+  position: absolute;
+  width: 80px;
+  text-decoration: none;
+  font-weight: bolder;
+  color: black;
+  height: 40px;
+  right: 7.5%;
+  top: 10px;
+  background: #2bc6ff;
+  border-radius: 24px;
+  cursor: pointer;
+}
+.login-icon:hover {
+  color: white;
+}
+
+.signUp-btn {
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(48, 172, 251);
+  color: white;
+  margin-top: 5px;
+  border-radius: 20px;
+  border: none;
+  font-size: 15pt;
+  font-weight: 700;
+  transition: 1s;
+  outline: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.signUp-btn:hover {
+  transform: scale(1.03);
+  letter-spacing: 4px;
+  background-color: #7fffd4;
+  color: #1e90ff;
+}
