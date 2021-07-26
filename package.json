@@ -12,6 +12,7 @@
     "mdbreact": "^5.1.0",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
+    "moment": "^2.29.1",
     "mysql2": "^2.2.5",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
