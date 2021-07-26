@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import User from "./User";
 import Search from "./Search";
 import BurgerMenu from "./BurgerMenu/BurgerMenu";
@@ -5,38 +6,60 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import "../../styles/signUp-login.css";
 import $ from "jquery";
+=======
+// import User from "./User";
+// import Search from "./Search";
+// import BurgerMenu from "./BurgerMenu/BurgerMenu";
+// import SignUp from "./SignUp";
+// import Login from "./Login";
+// import "../../styles/signUp-login.css";
+// import $ from "jquery";
+
+// const InfoBar = () => {
+//   const handleSignUpClick = () => {
+//     $("#overlay").fadeIn(200, function () {
+//       $("#box").animate({ top: "200px" }, 200);
+//     });
+//   };
+
+//   const handleLoginClick = () => {
+//     $("#overlay_1").fadeIn(200, function () {
+//       $("#box_1").animate({ top: "200px" }, 200);
+//     });
+//   };
+
+//   return (
+//     <div>
+//       <button onClick={handleSignUpClick} className="singup-icon">
+//         Signup
+//       </button>
+//       <button onClick={handleLoginClick} className="login-icon">
+//         LogIn
+//       </button>
+//       <SignUp />
+//       <Login />
+//       <Search />
+//       <User />
+//       <BurgerMenu />
+//     </div>
+//   );
+// };
+
+// export default InfoBar;
+
+import "./styles/infobar.css";
+>>>>>>> khaleel-signup
 
 const InfoBar = () => {
-  const handleSignUpClick = () => {
-    $("#overlay").fadeIn(200, function () {
-      $("#box").animate({ top: "200px" }, 200);
-    });
-  };
-
-  const handleLoginClick = () => {
-    $("#overlay_1").fadeIn(200, function () {
-      $("#box_1").animate({ top: "200px" }, 200);
-    });
-  };
-
   return (
-    <div>
-      <button onClick={handleSignUpClick} className="singup-icon">
-        Signup
-      </button>
-      <button onClick={handleLoginClick} className="login-icon">
-        LogIn
-      </button>
-      <SignUp />
-      <Login />
-      <Search />
-      <User />
+    <div id="navbar-sidebar">
       <BurgerMenu />
     </div>
   );
 };
 
 export default InfoBar;
+<<<<<<< HEAD
 import React, {useState} from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -89,3 +112,5 @@ export default InfoBar;
     <button class="btn btn-link btn-block m-0">Link 3</button>
   </div>
 </div> */}
+=======
+>>>>>>> khaleel-signup
