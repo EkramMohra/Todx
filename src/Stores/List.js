@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { observable, action, makeObservable, runInAction } from 'mobx'
 import axios from "axios"
 import Task from './Task'
@@ -9,22 +8,89 @@ export class List {
         this.list = []
         this.length = 0
         this.index = 0
-       
+
         makeObservable(this, {
-            index : observable,
+            index: observable,
             list: observable,
-            length: observable
-          })
+            length: observable,
+            addTask: action,
+            updateTask: action,
+            emptyTheList: action,
+            deleteTask: action
+        })
     }
 
-    updateListOfClients = async () => {
+    getList = async () => {
         let res = await axios.get(`http://localhost:3005/tasks`)
         this.emptyTheList()
         res.data.forEach(task => {
-            runInAction(()=>{
+            runInAction(() => {
                 this.list.push(new Task(task))
             })
-        });
+        })
+    }
+
+    emptyTheList = () => {
+        this.list = []
+    }
+
+
+    addTask = async (title, content, favourite, time, date, notification, status) => {
+
+        let obj = {
+            title: title,
+            content: content,
+            favourite: favourite,
+            time: time,
+            date: date,
+            notification: notification,
+            status: status
+        }
+
+        let res = await axios.post(`http://localhost:3005/tasks`, obj)
+            .then((response) => {
+                console.log(response.data.message);
+            }, (error) => {
+                console.log(error);
+            })
+
+        this.getList()
+
+    }
+
+
+    deleteTask = async (id) => {
+
+        console.log("del")
+        let res = await axios.delete(`http://localhost:3005/tasks/${id}`)
+            .then((response) => {
+                console.log(response.data);
+            }, (error) => {
+                console.log(error);
+            })
+        this.getList()
+    }
+
+    updateTask = async (id,title, content, favourite, time, date, notification, status) => {
+        let obj = {
+            id:id,
+            title: title,
+            content: content,
+            favourite: favourite,
+            time: time,
+            date: date,
+            notification: notification,
+            status: status
+        }
+        
+        await axios.put('http://localhost:3005/tasks', obj)
+            .then(response => {
+                console.log(response.data);
+            }, (error) => {
+                console.log(error);
+            })
+
+        this.getList()
     }
 }
 
