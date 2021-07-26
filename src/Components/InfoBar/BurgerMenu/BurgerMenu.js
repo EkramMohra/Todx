@@ -1,4 +1,17 @@
 import React, { useState } from "react";
+
+//import icons from react icons
+import { FaList, FaRegHeart } from "react-icons/fa";
+import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle , FiMenu} from "react-icons/fi"
+import { RiPencilLine } from "react-icons/ri"
+import { BiCog } from "react-icons/bi"
+import User from '../User'
+import Search from '../Search'
+//import sidebar css from react-pro-sidebar module and our custom css 
+import "react-pro-sidebar/dist/css/styles.css";
+import "../styles/infobar.css";
+import logo from '../../../images/logo.png';
+
 import {
     ProSidebar,
     Menu,
@@ -8,17 +21,6 @@ import {
     SidebarContent,
 } from "react-pro-sidebar";
 
-//import icons from react icons
-import { FaList, FaRegHeart } from "react-icons/fa";
-import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
-import { RiPencilLine } from "react-icons/ri";
-import { BiCog } from "react-icons/bi";
-
-
-//import sidebar css from react-pro-sidebar module and our custom css 
-import "react-pro-sidebar/dist/css/styles.css";
-import "../styles/infobar.css";
-import logo from '../../../images/logo.png';
 
 const BurgerMenu = () => {
     const [menuCollapse, setMenuCollapse] = useState(true)
@@ -28,32 +30,33 @@ const BurgerMenu = () => {
     }
 
     return (
-        <div id="header">
-          {/* collapsed props to change menu size using menucollapse state */}
+        <>
+        <div className="logotext header">
+            <FiMenu onClick={menuIconClick} className="burger-menu-icon"/>
+            <img src={logo} alt="logo" className="logo-style"/>
+            <Search />
+            <User />
+        </div>
+        <div id="sidebar-style">
             <ProSidebar collapsed={menuCollapse}>
                 <SidebarHeader>
-                <div className="logotext">
-                    {/* small and big change using menucollapse state */}
-                    <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
-                    </div>
-                    <div className="closemenu" onClick={menuIconClick}>
-                        {/* changing menu collapse icon on click */}
-                    {menuCollapse ? (
-                        <FiArrowRightCircle/>
-                    ) : (
-                        <FiArrowLeftCircle/>
-                    )}
-                    </div>
+
+                <div className="closemenu" onClick={menuIconClick}>
+                    {/* changing menu collapse icon on click */}
+                {/* {menuCollapse ? (
+                    <FiArrowRightCircle/>
+                ) : (
+                    <FiArrowLeftCircle/>
+                )} */}
+                </div>
                 </SidebarHeader>
                 <SidebarContent>
                     <Menu iconShape="square">
-                    <MenuItem active={true} icon={<FiHome />}>
-                        Home
-                    </MenuItem>
-                    <MenuItem icon={<FaList />}>Category</MenuItem>
-                    <MenuItem icon={<FaRegHeart />}>Favourite</MenuItem>
-                    <MenuItem icon={<RiPencilLine />}>Author</MenuItem>
-                    <MenuItem icon={<BiCog />}>Settings</MenuItem>
+                    <MenuItem active={true} icon={<FiHome />}>{menuCollapse ? null : "Home" } </MenuItem>
+                    <MenuItem icon={<FaList />}>{menuCollapse ? null : "Active" }</MenuItem>
+                    <MenuItem icon={<FaRegHeart />}>{menuCollapse ? null : "Link12" }</MenuItem>
+                    <MenuItem icon={<RiPencilLine />}> {menuCollapse ? null : "Link12" }</MenuItem>
+                    <MenuItem icon={<BiCog />}> {menuCollapse ? null : "Settings" } </MenuItem>
                     </Menu>
                 </SidebarContent>
                 <SidebarFooter>
@@ -63,8 +66,22 @@ const BurgerMenu = () => {
                 </SidebarFooter>
             </ProSidebar>
         </div>
+        </>
     );
 };
 
 
 export default BurgerMenu;
+
+
+// <Nav defaultActiveKey="/home" as="ul">
+//                 <Nav.Item as="li">
+//                     <Nav.Link href="/home">Active</Nav.Link>
+//                 </Nav.Item>
+//                 <Nav.Item as="li">
+//                     <Nav.Link eventKey="link-1">Link12</Nav.Link>
+//                 </Nav.Item>
+//                 <Nav.Item as="li">
+//                     <Nav.Link eventKey="link-2">Link12</Nav.Link>
+//                 </Nav.Item>
+//             </Nav>

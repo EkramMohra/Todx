@@ -26,8 +26,7 @@ const InfoBar = () => {
         <div id="navbar-sidebar">
             
             <BurgerMenu />
-            <Search />
-            <User />
+           
         </div>
     );
 };
