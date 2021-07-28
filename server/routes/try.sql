@@ -110,10 +110,10 @@ USE sql_todx;
 --                 AND todolist.todotask_id = todotask.id
 --                 AND todotask.date = '2021/07/27'
 --                 AND todotask.status = 'pending';
-      UPDATE todotask 
-        SET title = 'clean house',
-            content = 'fold clothes',
-            date = '2021-07-27',
-            status = 'pending',
-            priority = 1
-        WHERE id = 4;
+    --   UPDATE todotask 
+    --     SET title = 'clean house',
+    --         content = 'fold clothes',
+    --         date = '2021-07-27',
+    --         status = 'pending',
+    --         priority = 1
+    --     WHERE id = 4;
