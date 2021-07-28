@@ -5,10 +5,11 @@ import List from './List'
 
 const Container = () => {
 
+    console.log('Container')
     return (
         [ 
             <NavBar />,
-            <Route key="lists" exact path="/lists" render={() => <List/>}  />
+            <List />
         ] 
     )
 }

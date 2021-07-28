@@ -7,23 +7,26 @@ import Switch from "react-switch";
 import "./popup.css";
 
 const MyModal = (props) => {
+  console.log(props.task);
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [favourite, setFavourite] = useState(false);
-  const [time, setTime] = useState("");
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [priority, setPriority] = useState({ checked: false });
   const [notification, setNotification] = useState({ checked: false });
 
   const addTask = () => {
-    console.log(notification.checked);
-    props.list.addTask(
-      title,
-      content,
-      favourite,
-      time,
-      date,
-      notification.checked
-    );
+    let data = {
+      title: title,
+      content: content,
+      priority: priority.checked,
+      date: date,
+      notification: notification.checked,
+      time: time,
+    };
+
+    props.addTask(data);
     props.onHide();
     emptyInputs();
   };
@@ -31,37 +34,35 @@ const MyModal = (props) => {
   const emptyInputs = () => {
     setTitle("");
     setContent("");
-    setFavourite("");
-    setTime("");
     setDate("");
+    setPriority("");
     setNotification("");
   };
 
+  function handleChangePriority(checked) {
+    setPriority({ checked });
+  }
+
   function handleChangeNotification(checked) {
-    console.log(checked);
     setNotification({ checked });
   }
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     let name = e.target.name;
-    console.log(name);
     name === "title"
       ? setTitle(e.target.value)
       : name === "content"
       ? setContent(e.target.value)
-      : name === "favourite"
-      ? setFavourite(!favourite)
       : name === "time"
       ? setTime(e.target.value)
       : setDate(e.target.value);
-  };
+  }
 
   return (
     <Modal {...props} centered aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header>
-        <Modal.Title>Add client</Modal.Title>
+        <Modal.Title>Add Task</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <div>
           title:
@@ -82,46 +83,54 @@ const MyModal = (props) => {
             onChange={handleChange}
           />
         </div>
-        <div>
-          time:
-          <input
-            type="time"
-            className="input-class"
-            name="time"
-            defaultValue={time}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          {" "}
-          date:
-          <input
-            type="date"
-            pattern="\d{1,2}/\d{1,2}/\d{4}"
-            className="input-class"
-            name="date"
-            defaultValue={date}
-            onChange={handleChange}
-          />
-        </div>
-        <label>
-          <span> notification:</span>
-          <Switch
-            onChange={handleChangeNotification}
-            checked={notification.checked}
-          />
-        </label>
-        <div>
-          {" "}
-          <label for="html">favourite</label>
-          <input
-            type="checkbox"
-            className="input-class"
-            name="favourite"
-            defaultValue={favourite}
-            onChange={handleChange}
-          />
-        </div>
+        {props.time ? (
+          <div>
+            {" "}
+            time:
+            <input
+              type="time"
+              className="input-class"
+              name="time"
+              defaultValue={time}
+              onChange={handleChange}
+            />{" "}
+          </div>
+        ) : null}
+        {props.date ? (
+          <div>
+            {" "}
+            date:
+            <input
+              type="date"
+              pattern="\d{1,2}/\d{1,2}/\d{4}"
+              className="input-class"
+              name="date"
+              defaultValue={date}
+              onChange={handleChange}
+            />{" "}
+          </div>
+        ) : null}
+        {props.priority ? (
+          <label>
+            {" "}
+            <span> priority:</span>
+            <Switch
+              onChange={handleChangePriority}
+              checked={priority.checked}
+            />
+          </label>
+        ) : null}
+
+        {props.notification ? (
+          <label>
+            {" "}
+            <span> notification:</span>
+            <Switch
+              onChange={handleChangeNotification}
+              checked={notification.checked}
+            />
+          </label>
+        ) : null}
       </Modal.Body>
 
       <Modal.Footer>
@@ -136,4 +145,4 @@ const MyModal = (props) => {
   );
 };
 
-export default inject("list")(observer(MyModal));
+export default inject("todolist")(observer(MyModal));

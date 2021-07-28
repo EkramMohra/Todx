@@ -49,11 +49,11 @@ router.get("/todotasks", function (request, response) {
                 FROM todotask JOIN todolist 
                 WHERE todolist.user_id = '1'
                 AND todolist.todotask_id = todotask.id
-                AND todotask.date = '2021/07/29'
+                AND todotask.date = '${todayDate}'
                 AND todotask.status = 'pending';`
     )
     .then(function ([result]) {
-      response.send(result);
+      res.send(result);
     });
 });
 
@@ -235,7 +235,7 @@ router.post("/timedtasks", function (req, res) {
         .then(function ([result]) {});
     });
 
-  response.send();
+  res.send();
 });
 
 router.put("/timedtasks", function (req, res) {
@@ -256,7 +256,7 @@ router.put("/timedtasks", function (req, res) {
       console.log("updated");
     });
 
-  response.send();
+  res.send();
 });
 
 router.delete("/timedtasks", function (req, res) {
