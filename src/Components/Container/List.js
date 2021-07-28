@@ -1,24 +1,24 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import Task from './Task';
 import MyModal from './MyModal';
 import './List.css'
 import { inject, observer } from 'mobx-react';
-import { useState, useEffect } from 'react';
 
 const List = (props) => {
+    
+        console.log("list")
 
     const [modalShowToDo, setModalShowToDo] = useState(false)
     const [modalShowDaylies, setModalShowDaylies] = useState(false)
     const [modalShowTimed, setModalShowTimed] = useState(false)
 
-    const [listOfTasks, setListOfTasks] = useState([]);
+    // const [listOfTasks, setListOfTasks] = useState([]);
 
-    useEffect(() => {
-        setListOfTasks(props.tasks)
-    }, [props.tasks]);
-
-
+    // useEffect(() => {
+    //     setListOfTasks(props.tasks)
+    // }, [props.tasks]);
     return (
+
         <>
             <MyModal show={modalShowToDo}
                 addTask={props.todolist.addTask} time={false} priority={true} notification={false} date={true} onHide={() => setModalShowToDo(false)} />

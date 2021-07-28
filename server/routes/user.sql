@@ -22,3 +22,7 @@ USE sql_todx;
 --     FOREIGN KEY(photo_id) REFERENCES photo(id),
 --     FOREIGN KEY(role_id) REFERENCES role(id)
 -- );
+
+ALTER TABLE user
+ADD role_id INT,
+ADD FOREIGN KEY(role_id) REFERENCES role(id) ON DELETE CASCADE;
