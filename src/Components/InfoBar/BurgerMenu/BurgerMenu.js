@@ -29,6 +29,9 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
+import Row from'react-bootstrap/Row'
+import Col from'react-bootstrap/Col'
+
 const BurgerMenu = () => {
   const [menuCollapse, setMenuCollapse] = useState(true);
 
@@ -51,19 +54,28 @@ const BurgerMenu = () => {
   return (
     <>
       <div className="logotext header">
-        <FiMenu onClick={menuIconClick} className="burger-menu-icon" />
-        <img src={logo} alt="logo" className="logo-style" />
-
-        <button onClick={handleSignUpClick} className="singup-icon">
-          Signup
-        </button>
-        <button onClick={handleLoginClick} className="login-icon">
-          LogIn
-        </button>
+        <Row >
+          <Col>
+            <FiMenu onClick={menuIconClick} className="burger-menu-icon" />
+            <img src={logo} alt="logo" className="logo-style" />
+          </Col>
+          <Col>
+            <Search />
+          </Col>
+          <Col>
+            <button onClick={handleSignUpClick} className="singup-icon">
+              Signup
+            </button>
+            <button onClick={handleLoginClick} className="login-icon">
+              LogIn
+            </button>
+          </Col>
+        </Row>
+       
         <SignUp />
         <Login />
-        <Search />
-        <User />
+        
+        {/*<User />*/}
       </div>
       <div id="sidebar-style">
         <ProSidebar collapsed={menuCollapse}>

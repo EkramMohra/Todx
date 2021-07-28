@@ -1,0 +1,12 @@
+.container{
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+}
+.list{
+    position: relative;
+    margin:15px;
+    border-radius: 3px;
+    box-shadow: #040404 2px 2px 4px;
+    font-family: "Comic Sans MS";
+    text-align: center;
+}
