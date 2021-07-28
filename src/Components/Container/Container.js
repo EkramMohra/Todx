@@ -1,14 +1,12 @@
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import List from './List'
-import MyModal from './addpopup';
+import MyModal from './MyModal';
 import { useState } from 'react';
 
 const Container = (props) => {
 
     const [modalShow, setModalShow] = useState(false)
-
-    console.log(props.list.list)
 
     return (
         <>
@@ -17,12 +15,11 @@ const Container = (props) => {
         />
 
         <div>
-
-           <List tasks={props.list.list}/>
-           <button onClick={() => setModalShow(true)}>Add</button>
+           <List/>
+           {/* <button onClick={() => setModalShow(true)}>Add</button> */}
         </div>
         </>
     );
 };
 
-export default inject("list")(observer(Container));
+export default inject("todolist")(observer(Container));
