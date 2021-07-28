@@ -1,8 +1,8 @@
 import { observable, action, makeObservable, runInAction } from 'mobx'
 import axios from "axios"
-import Task from './Task'
+import Task from './DailyTask'
 
-export class List {
+export class DailyList {
 
     constructor() {
         this.list = []
@@ -21,7 +21,7 @@ export class List {
     }
 
     getList = async () => {
-        let res = await axios.get(`http://localhost:3005/tasks`)
+        let res = await axios.get(`http://localhost:3005/dailytasks`)
         this.emptyTheList()
         res.data.forEach(task => {
             runInAction(() => {
@@ -35,34 +35,26 @@ export class List {
         this.list = []
     }
 
-
-    addTask = async (title, content, favourite, time, date, notification) => {
-
-        console.log(time) 
-        
+    addTask = async (data) => {
         let obj = {
-            title: title,
-            content: content,
-            favourite: favourite,
-            time: time,
-            date: date,
-            notification: notification,
+            title: data.title,
+            content: data.content,
             status: 'pending'
         }
-
-        let res = await axios.post(`http://localhost:3005/tasks`, obj)
+        
+        console.log(obj)
+        let res = await axios.post(`http://localhost:3005/dailytasks`, obj)
             .then((response) => {
-                console.log(response.data.message);
+                console.log(response);
             }, (error) => {
                 console.log(error);
             })
         this.getList()
     }
 
-
     deleteTask = async (id) => {
-        console.log(id)
-        let res = await axios.delete(`http://localhost:3005/tasks`,{ data: { id } })
+
+        let res = await axios.delete(`http://localhost:3005/dailytasks`,{ data: { id } })
             .then((response) => {
                 console.log(response.data);
             }, (error) => {
@@ -71,20 +63,16 @@ export class List {
         this.getList()
     }
 
-    updateTask = async (id,title, content, favourite, time, date, notification) => {
+    updateTask = async (data) => {
 
         let obj = {
-            id:id,
-            title: title,
-            content: content,
-            favourite: favourite,
-            time: time,
-            date: date,
-            notification: notification,
+            id: data.id,
+            title: data.title,
+            content: data.content,
             status: 'pending'
         }
         
-        await axios.put('http://localhost:3005/tasks', obj)
+        await axios.put('http://localhost:3005/dailytasks', obj)
             .then(response => {
                 console.log(response.data);
             }, (error) => {

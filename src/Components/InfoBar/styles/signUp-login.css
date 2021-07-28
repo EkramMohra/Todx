@@ -55,9 +55,10 @@ a.boxclose {
   height: 40px;
   right: 1%;
   top: 10px;
-  background: #2bc6ff;
+  background: #feda4b;
   border-radius: 24px;
   cursor: pointer;
+  margin-right: 15px;
 }
 .singup-icon:hover {
   color: white;
@@ -72,8 +73,9 @@ a.boxclose {
   height: 40px;
   right: 7.5%;
   top: 10px;
-  background: #2bc6ff;
+  background: #feda4b;
   border-radius: 24px;
+  margin-right: 40px;
   cursor: pointer;
 }
 .login-icon:hover {
@@ -84,7 +86,7 @@ a.boxclose {
   width: 50%;
   justify-content: center;
   align-items: center;
-  background-color: rgb(48, 172, 251);
+  background-color: #feda4b;
   color: white;
   margin-top: 5px;
   border-radius: 20px;
