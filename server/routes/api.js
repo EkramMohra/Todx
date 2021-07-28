@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
@@ -16,25 +16,30 @@ const token = jwt.sign(payload, config.APISecret);
 //===========================================
 //--------------user routes------------------
 //===========================================
-router.get("/users", async (req, res) => {
-  let email = req.query.email;
-  let password = req.query.password;
-  //check if email/password are in db ==> sends the name of the user
-  res.send("username");
+router.get("/users", async (request, response) => {
+  let {email, password} = request.query
+
+  let user = await sequelize.query(
+    `SELECT * FROM user WHERE email='${email}' AND password='${password}'`
+  );
+  response.send(user[0]);
 });
 
-router.post("/users", async (req, res) => {
-
-  const user = { ...req.body.user };
-  // insert user opject into db -- { username: 'khaleel', email: 'khaleel.ke@gmail.com', password: '123' }
+router.post("/users", async (request, response) => {
+  const user = { ...request.body.user };
+  sequelize.query(
+    `INSERT INTO 
+      user
+      VALUES( null,'${user.last}','${user.first}',
+            '${user.email}','${user.password}',null,null)`
+  );
   console.log(user);
-  res.end();
+  response.send(user);
 });
 
 //============================================
 //--------------todo routes-------------------
 //============================================
-
 router.get("/todotasks", function (req, res) {
 
   let todayDate = moment().format("YYYY-MM-DD", true);
@@ -49,7 +54,7 @@ router.get("/todotasks", function (req, res) {
                 AND todotask.status = 'pending';`
     )
     .then(function ([result]) {
-      res.send(result);
+      response.send(result);
     });
 });
 
@@ -240,7 +245,7 @@ router.post("/timedtasks", function (req, res) {
         .then(function ([result]) {});
     });
 
-  res.send();
+    response.send();
 });
 
 router.put("/timedtasks", function (req, res) {
@@ -262,7 +267,7 @@ router.put("/timedtasks", function (req, res) {
       console.log("updated");
     });
 
-  res.send();
+    response.send();
 });
 
 router.delete("/timedtasks", function (req, res) {

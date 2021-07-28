@@ -1,25 +1,16 @@
-import { inject, observer } from 'mobx-react';
-import React from 'react';
+import React from 'react'
+import {Route} from 'react-router-dom' 
+import NavBar from '../NavBar/NavBar'
 import List from './List'
-import MyModal from './MyModal';
-import { useState } from 'react';
 
-const Container = (props) => {
-
-    const [modalShow, setModalShow] = useState(false)
+const Container = () => {
 
     return (
-        <>
-        <MyModal show={modalShow}
-            onHide={() => setModalShow(false)}
-        />
+        [ 
+            <NavBar />,
+            <Route key="lists" exact path="/lists" render={() => <List/>}  />
+        ] 
+    )
+}
 
-        <div>
-           <List/>
-           {/* <button onClick={() => setModalShow(true)}>Add</button> */}
-        </div>
-        </>
-    );
-};
-
-export default inject("todolist")(observer(Container));
+export default Container

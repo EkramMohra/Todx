@@ -1,0 +1,86 @@
+.navbar-background {
+    background-color: #ECF8F8;
+}
+
+.logo-style{
+    width: 130px;
+    height: auto;
+}
+
+.header{
+    text-align: left;
+    border-bottom:1px #efefef solid;
+}
+
+.burger-menu-icon{
+    font-size: 30px;
+    margin: 20px;
+}
+
+#sidebar-style {
+    position: absolute;
+    width: 220px;
+}
+#sidebar-style .pro-sidebar {
+    height: 100vh;
+}
+#sidebar-style .closemenu {
+    color: #000;
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+    line-height: 20px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 22px;
+    top: 55px;
+cursor: pointer;
+}
+#sidebar-style .pro-sidebar {
+    width: 100%;
+    min-width: 100%;
+}
+#sidebar-style .pro-sidebar.collapsed {
+    width: 80px;
+    min-width: 80px;
+}
+
+#sidebar-style .pro-sidebar-inner {
+    background-color: white;
+    box-shadow: 0.5px 0.866px 2px 0px rgba(0, 0, 0, 0.15);
+}
+#sidebar-style .pro-sidebar-inner .pro-sidebar-layout {
+    overflow-y: hidden;
+}
+#sidebar-style .pro-sidebar-inner .pro-sidebar-layout .logotext p {
+    font-size: 20px;
+    padding: 0 20px;
+    color: #000;
+    font-weight: bold;
+}
+
+#sidebar-style .pro-sidebar-inner .pro-sidebar-layout ul .pro-inner-item {
+    color: #000;
+    margin: 10px 0px;
+    font-weight: bold;
+}
+#sidebar-style .pro-sidebar-inner .pro-sidebar-layout ul .pro-inner-item .pro-icon-wrapper {
+    background-color: transparent;
+    font-size: 18px;
+    text-align: center;
+}
+#sidebar-style .pro-sidebar-inner .pro-sidebar-layout ul .pro-inner-item .pro-icon-wrapper .pro-item-content {
+    color: #000;
+}
+#sidebar-style .pro-sidebar-inner .pro-sidebar-layout .active {
+    background-image: linear-gradient(0deg, #fece00 0%, #ffe172 100%);
+}
+#sidebar-style .logo {
+    padding: 20px;
+}
+
+@media only screen and (max-width: 720px) {
+    html {
+        overflow: hidden;
+    }
+}
