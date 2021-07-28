@@ -1,14 +1,23 @@
 import React, { useState } from "react"
-import $ from "jquery";
 import axios from 'axios'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Alert from 'react-bootstrap/Alert'
+import './styles/login.css'
+import background from './images/login-todx.jpeg'
+import logo from '../../images/logo.png'
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("")
   const [errorMsg, seterrorMsg] = useState("");
+  const [show, setShow] = useState(false)
 
   const handleInputChange = (event) => {
     const target = event.target
@@ -74,6 +83,7 @@ const SignUp = () => {
       })
   }
 
+  const login = () =>  props.history.push(`/`)
   return (
     <Row className="row-style" >
               
@@ -108,11 +118,11 @@ const SignUp = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  If you don't have an account yet,  <Button variant="outline-success" size="sm" onClick={signup}>Sign Up</Button>
+                  If you don't have an account yet,  <Button variant="outline-success" size="sm" onClick={login}>Sign Up</Button>
                 </Form.Group>
               </Form>
               </Card.Text>
-              <Button variant="outline-primary" onClick={login} className="button-login">Login</Button>
+              <Button variant="outline-primary" onClick={addNewUser} className="button-login">SignUp</Button>
             </Card.Body>
 
           </Card>
