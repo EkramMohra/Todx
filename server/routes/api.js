@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
@@ -40,7 +40,7 @@ router.post("/users", async (request, response) => {
 //============================================
 //--------------todo routes-------------------
 //============================================
-router.get("/todotasks", function (req, res) {
+router.get("/todotasks", function (request, response) {
   let todayDate = moment().format("YYYY-MM-DD", true);
 
   sequelize
