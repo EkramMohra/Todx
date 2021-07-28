@@ -64,7 +64,6 @@ const MyModal = (props) => {
 
       <Modal.Body>
         <div>
-          {" "}
           title:
           <input
             className="input-class"
@@ -75,7 +74,6 @@ const MyModal = (props) => {
           />
         </div>
         <div>
-          {" "}
           content:
           <textarea
             className="input-class"
@@ -85,7 +83,6 @@ const MyModal = (props) => {
           />
         </div>
         <div>
-          {" "}
           time:
           <input
             type="time"

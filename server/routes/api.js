@@ -17,13 +17,23 @@ const token = jwt.sign(payload, config.APISecret);
 router.get("/users", async (req, res) => {
   let email = req.query.email;
   let password = req.query.password;
-  //check if email/password are in db ==> sends the name of the user
-  res.send("username");
+
+  let userName = await sequelize.query(
+    `SELECT first FROM user WHERE email='${email}AND password=${password}'`
+  );
+
+  res.send(userName);
 });
 
 router.post("/users", async (req, res) => {
   const user = { ...req.body.user };
   // insert user opject into db -- { username: 'khaleel', email: 'khaleel.ke@gmail.com', password: '123' }
+  sequelize.query(
+    `INSERT INTO 
+      user(last,first,email,password,role,photo_id)
+      VALUES('null','${user.username}','${user.email}','${user.password}',
+      'null','null')`
+  );
   console.log(user);
   res.end();
 });
