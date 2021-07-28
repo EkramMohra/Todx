@@ -1,14 +1,25 @@
 import './App.css';
-import InfoBar from './Components/InfoBar/InfoBar'
 import Container from './Components/Container/Container'
+import { BrowserRouter as Router, Route} from 'react-router-dom' 
+// import {GiHamburgerMenu} from 'react-icons/gi'
+// import {IconButton} from '@material-ui/core'
+// import { Toolbar } from '@material-ui/core';
+// import SearchIcon from '@material-ui/icons/Search';
+import Authentication from './Components/Authentication/Authentication'
 
 function App() {
   return (
-    <div className="App">
-      <InfoBar/>
-      <Container />
-    </div>
-  );
+    <Router>
+      <div className="App" id="App">
+        <Authentication/>
+      </div>
+
+      <Route key="container" 
+                 exact 
+                 path="/container/:userId" 
+                 render={(match) => <Container match={match}/>}/>
+      </Router>
+  )
 }
 
-export default App;
+export default App

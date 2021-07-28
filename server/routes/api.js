@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
@@ -14,21 +14,29 @@ const payload = {
 };
 const token = jwt.sign(payload, config.APISecret);
 
-router.get("/users", async (req, res) => {
-  let email = req.query.email;
-  let password = req.query.password;
-  //check if email/password are in db ==> sends the name of the user
-  res.send("username");
+router.get("/users", async (request, response) => {
+  let {email, password} = request.query
+
+  let user = await sequelize.query(
+    `SELECT * FROM user WHERE email='${email}' AND password='${password}'`
+  );
+  response.send(user[0]);
 });
 
-router.post("/users", async (req, res) => {
-  const user = { ...req.body.user };
-  // insert user opject into db -- { username: 'khaleel', email: 'khaleel.ke@gmail.com', password: '123' }
+router.post("/users", async (request, response) => {
+  const user = { ...request.body.user };
+  sequelize.query(
+    `INSERT INTO 
+      user
+      VALUES( null,'${user.last}','${user.first}',
+            '${user.email}','${user.password}',null,null)`
+  );
   console.log(user);
-  res.end();
+  response.send(user);
 });
 
-router.get("/tasks", function (req, res) {
+
+router.get("/tasks", function (request, response) {
   let todayDate = moment().format("YYYY-MM-DD", true);
   console.log(todayDate);
 
@@ -43,12 +51,12 @@ router.get("/tasks", function (req, res) {
             `
     )
     .then(function ([result]) {
-      res.send(result);
+      response.send(result);
     });
 });
 
-router.post("/tasks", function (req, res) {
-  let newTask = req.body;
+router.post("/tasks", function (request, response) {
+  let newTask = request.body;
 
   console.log(newTask.favourite);
 
@@ -69,11 +77,11 @@ router.post("/tasks", function (req, res) {
         .then(function ([result]) {});
     });
 
-  res.send();
+    response.send();
 });
 
-router.put("/tasks", function (req, res) {
-  let updateTask = req.body;
+router.put("/tasks", function (request, response) {
+  let updateTask = request.body;
 
   sequelize
     .query(
@@ -91,10 +99,10 @@ router.put("/tasks", function (req, res) {
       console.log("mbrok");
     });
 
-  res.send();
+    response.send();
 });
 
-router.post("/newmeeting", (req, res) => {
+router.post("/newmeeting", (request, response) => {
   let options = {
     method: "POST",
     uri: "https://api.zoom.us/v2/users/me/meetings",
@@ -141,7 +149,7 @@ router.delete("/tasks", function (req, res) {
         WHERE id = ${taskId}; `
   );
 
-  res.send("oki");
+  response.send("oki");
 });
 
 module.exports = router;

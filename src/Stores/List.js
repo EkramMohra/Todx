@@ -21,7 +21,8 @@ export class List {
     }
 
     getList = async () => {
-        let res = await axios.get(`http://localhost:3005/tasks`)
+        let res = {data: []}
+        // await axios.get(`http://localhost:3005/tasks`)
         this.emptyTheList()
         res.data.forEach(task => {
             runInAction(() => {
