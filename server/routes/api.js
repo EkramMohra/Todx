@@ -40,7 +40,7 @@ router.post("/users", async (request, response) => {
 //============================================
 //--------------todo routes-------------------
 //============================================
-router.get("/todotasks", function (request, response) {
+router.get("/todotasks", function (req, res) {
   let todayDate = moment().format("YYYY-MM-DD", true);
 
   sequelize
