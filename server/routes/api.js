@@ -17,7 +17,7 @@ const token = jwt.sign(payload, config.APISecret);
 //--------------user routes------------------
 //===========================================
 router.get("/users", async (request, response) => {
-  let {email, password} = request.query
+  let { email, password } = request.query
 
   let user = await sequelize.query(
     `SELECT * FROM user WHERE email='${email}' AND password='${password}'`
@@ -41,17 +41,17 @@ router.post("/users", async (request, response) => {
 //--------------todo routes-------------------
 //============================================
 router.get("/todotasks", function (req, res) {
-
-  let todayDate = moment().format("YYYY-MM-DD", true);
-
+  let {today} = req.query
+  // let {date} = req.params.DateOfTheDay
+  // let todayDate = moment().format("YYYY-MM-DD", true);
+  console.log(today)
   sequelize
     .query(
       `SELECT todotask.* 
                 FROM todotask JOIN todolist 
                 WHERE todolist.user_id = '1'
                 AND todolist.todotask_id = todotask.id
-                AND todotask.date = '${todayDate}'
-                AND todotask.status = 'pending';`
+                AND todotask.date = '${today}';`
     )
     .then(function ([result]) {
       res.send(result);
@@ -76,7 +76,7 @@ router.post("/todotasks", function (req, res) {
           todolist(date,user_id,todotask_id)
             VALUES('${newTask.date}','1','${result}')`
         )
-        .then(function ([result]) {});
+        .then(function ([result]) { });
     });
 
   res.send();
@@ -104,9 +104,7 @@ router.put("/todotasks", function (req, res) {
 });
 
 router.delete("/todotasks", function (req, res) {
-  let taskId = req.body.id;
-
-  console.log(taskId)
+  let taskId = req.body.id
 
   sequelize
     .query(
@@ -114,7 +112,7 @@ router.delete("/todotasks", function (req, res) {
         WHERE todolist.todotask_id = ${taskId}
         AND todolist.user_id = '1' ; `
     )
-    .then(function ([result]) {});
+    .then(function ([result]) { });
   sequelize.query(
     ` DELETE FROM todotask 
         WHERE id = ${taskId}; `
@@ -123,19 +121,36 @@ router.delete("/todotasks", function (req, res) {
   res.send("oki");
 });
 
+router.put("/donetodotasks", function (req, res) {
+
+  let taskId = req.body.data.id
+
+  sequelize
+    .query(
+      `UPDATE todotask 
+        SET status = 'done'
+        WHERE id = ${taskId};`
+    )
+    .then(function ([result]) {
+      console.log("updated");
+    });
+
+  res.send();
+});
+
+
 //===========================================
 //--------------daily routes-----------------
 //===========================================
 
 router.get("/dailytasks", function (req, res) {
-
+  let {today} = req.query
   sequelize
     .query(
       `SELECT dailytask.* 
                 FROM dailytask JOIN dailylist 
                 WHERE dailylist.user_id = '1'
-                AND dailylist.dailytask_id = dailytask.id
-                AND dailytask.status = 'pending';`
+                AND dailylist.dailytask_id = dailytask.id;`
     )
     .then(function ([result]) {
       res.send(result);
@@ -159,7 +174,7 @@ router.post("/dailytasks", function (req, res) {
           dailylist(user_id,dailytask_id)
             VALUES('1','${result}')`
         )
-        .then(function ([result]) {});
+        .then(function ([result]) { });
     });
 
   res.send();
@@ -184,7 +199,7 @@ router.put("/dailytasks", function (req, res) {
 });
 
 router.delete("/dailytasks", function (req, res) {
-  
+
   let taskId = req.body.id;
 
   sequelize
@@ -193,7 +208,7 @@ router.delete("/dailytasks", function (req, res) {
         WHERE dailylist.dailytask_id = ${taskId}
         AND dailylist.user_id = '1' ; `
     )
-    .then(function ([result]) {});
+    .then(function ([result]) { });
   sequelize.query(
     ` DELETE FROM dailytask 
         WHERE id = ${taskId}; `
@@ -202,22 +217,39 @@ router.delete("/dailytasks", function (req, res) {
   res.send("oki");
 });
 
+router.put("/donedailytasks", function (req, res) {
+
+ 
+  let taskId = req.body.data.id
+
+
+  sequelize
+    .query(
+      `UPDATE dailytask 
+        SET status = 'done'
+        WHERE id = ${taskId};`
+    )
+    .then(function ([result]) {
+      console.log("updated");
+    });
+
+  res.send();
+});
+
+
 //===========================================
 //--------------daily routes-----------------
 //===========================================
 
 router.get("/timedtasks", function (req, res) {
-
-  let todayDate = moment().format("YYYY-MM-DD", true);
-  console.log(todayDate)
+  let {today} = req.query
   sequelize
     .query(
       `SELECT timedtask.* 
                 FROM timedtask JOIN timedlist 
                 WHERE timedlist.user_id = '1'
                 AND timedlist.timedtask_id = timedtask.id
-                AND timedtask.date = '${todayDate}'
-                AND timedtask.status = 'pending';`
+                AND timedtask.date = '${today}';`
     )
     .then(function ([result]) {
       res.send(result);
@@ -242,10 +274,10 @@ router.post("/timedtasks", function (req, res) {
           timedlist(date,user_id,timedtask_id)
             VALUES('${newTask.date}','1','${result}')`
         )
-        .then(function ([result]) {});
+        .then(function ([result]) { });
     });
 
-    res.send();
+  res.send();
 });
 
 router.put("/timedtasks", function (req, res) {
@@ -267,7 +299,7 @@ router.put("/timedtasks", function (req, res) {
       console.log("updated");
     });
 
-    res.send();
+  res.send();
 });
 
 router.delete("/timedtasks", function (req, res) {
@@ -281,7 +313,7 @@ router.delete("/timedtasks", function (req, res) {
         WHERE timedlist.timedtask_id = ${taskId}
         AND timedlist.user_id = '1' ; `
     )
-    .then(function ([result]) {});
+    .then(function ([result]) { });
   sequelize.query(
     ` DELETE FROM timedtask 
         WHERE id = ${taskId}; `
@@ -289,6 +321,24 @@ router.delete("/timedtasks", function (req, res) {
 
   res.send("oki");
 });
+
+router.put("/donetimedtasks", function (req, res) {
+
+ 
+  let taskId = req.body.data.id
+  sequelize
+    .query(
+      `UPDATE timedtask 
+        SET status = 'done'
+        WHERE id = ${taskId};`
+    )
+    .then(function ([result]) {
+      console.log("updated");
+    });
+
+  res.send();
+});
+
 
 //===========================================
 

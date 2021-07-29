@@ -23,6 +23,6 @@ USE sql_todx;
 --     FOREIGN KEY(role_id) REFERENCES role(id)
 -- );
 
-ALTER TABLE user
-ADD role_id INT,
-ADD FOREIGN KEY(role_id) REFERENCES role(id) ON DELETE CASCADE;
+-- ALTER TABLE user
+-- ADD role_id INT,
+-- ADD FOREIGN KEY(role_id) REFERENCES role(id) ON DELETE CASCADE;

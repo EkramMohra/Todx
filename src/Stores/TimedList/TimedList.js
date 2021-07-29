@@ -1,6 +1,8 @@
 import { observable, action, makeObservable, runInAction } from 'mobx'
 import axios from "axios"
 import Task from './TimedTask'
+const moment = require("moment");
+
 
 export class TimedList {
 
@@ -8,21 +10,26 @@ export class TimedList {
         this.list = []
         this.length = 0
         this.index = 0
+        this.DateOfTheDay = moment().format("YYYY-MM-DD", true)
+
 
         makeObservable(this, {
+            DateOfTheDay: observable,
             index: observable,
             list: observable,
             length: observable,
             addTask: action,
             updateTask: action,
             emptyTheList: action,
-            deleteTask: action
+            deleteTask: action,
+            getData: action,
+            doneTask: action
         })
     }
 
     getList = async () => {
-        let res = await axios.get(`http://localhost:3005/timedtasks`)
         this.emptyTheList()
+        let res = await axios.get(`http://localhost:3005/timedtasks?today=${this.DateOfTheDay}`)
         res.data.forEach(task => {
             runInAction(() => {
                 this.list.push(new Task(task))
@@ -35,29 +42,35 @@ export class TimedList {
         this.list = []
     }
 
-    addTask = async (data) => {
+    addTask = async (data, DateOfTheDay) => {
         let obj = {
             title: data.title,
             content: data.content,
             date: data.date,
-            time : data.time,
+            time: data.time,
             notification: data.notification,
             status: 'pending'
         }
-        
-        console.log(obj)
+
         await axios.post(`http://localhost:3005/timedtasks`, obj)
             .then((response) => {
                 console.log(response);
+                this.getList()
             }, (error) => {
                 console.log(error);
             })
+    }
+
+    getData = (NewDateOfTheDay) => {
+
+        this.DateOfTheDay = NewDateOfTheDay
         this.getList()
+
     }
 
     deleteTask = async (id) => {
 
-        await axios.delete(`http://localhost:3005/timedtasks`,{ data: { id } })
+        await axios.delete(`http://localhost:3005/timedtasks`, { data: { id } })
             .then((response) => {
                 console.log(response.data);
             }, (error) => {
@@ -77,7 +90,7 @@ export class TimedList {
             notification: data.notification,
             status: 'pending'
         }
-        
+
         await axios.put('http://localhost:3005/timedtasks', obj)
             .then(response => {
                 console.log(response.data);
@@ -86,6 +99,19 @@ export class TimedList {
             })
 
         this.getList()
+    }
+
+    doneTask = async (id) => {
+
+        await axios.put('http://localhost:3005/donetimedtasks', { data: { id } })
+            .then(response => {
+                console.log(response.data);
+            }, (error) => {
+                console.log(error);
+            })
+
+        this.getList()
+
     }
 }
 

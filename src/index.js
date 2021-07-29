@@ -7,16 +7,17 @@ import reportWebVitals from './reportWebVitals';
 import { ToDoList } from './Stores/Todo/ToDoList'
 import { DailyList } from './Stores/Daily/DailyList'
 import { TimedList } from './Stores/TimedList/TimedList'
+const moment = require("moment");
 
 
 let todolist = new ToDoList()
-todolist.getList()
+todolist.getList(moment().format("YYYY-MM-DD", true))
 
 let dailylist = new DailyList()
-dailylist.getList()
+dailylist.getList(moment().format("YYYY-MM-DD", true))
 
 let timedlist = new TimedList()
-timedlist.getList()
+timedlist.getList(moment().format("YYYY-MM-DD", true))
 
 const stores = {
   todolist: todolist,
