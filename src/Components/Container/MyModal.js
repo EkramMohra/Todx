@@ -111,4 +111,4 @@ const MyModal = (props) => {
     )
 }
 
-export default inject("todolist")(observer(MyModal))
+export default MyModal

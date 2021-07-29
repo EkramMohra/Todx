@@ -1,24 +1,19 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
 import Popup from './popup';
 import { useState } from 'react';
 import Card from 'react-bootstrap/Card'
 import './task.css'
 
 const Task = (props) => {
-
     const [modalShow, setModalShow] = useState(false);
-
     const deleteTask = () => props.deleteTask(props.task.id)
-
     return (
         <>
             <Popup show={modalShow}
-                task={props.task} add={props.addTask}
+                task={props.task} updateTask={props.updateTask}
                 onHide={() => setModalShow(false)} time={props.task.time} 
                 priority={props.task.priority} notification={props.task.notification} 
                 date={props.task.date}/>
-
             <Card style={{ width: '18rem' }} className="mb-2  task-background" >
                 <Card.Header> {props.task.title} </Card.Header>
                 <Card.Body>
@@ -28,10 +23,7 @@ const Task = (props) => {
                     <button onClick={deleteTask}>remove</button>
                 </Card.Body>
             </Card>
-
         </>
     )
 }
-
 export default Task;
-
