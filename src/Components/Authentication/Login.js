@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import {Link} from 'react-router-dom';
-import Container from '../Container/Container'
-import NavBarSide from '../NavBar/NavBarSide'
 import axios from 'axios'
 import { withRouter } from "react-router";
 
@@ -60,7 +57,7 @@ const Login = (props) => {
       setShow(true)
       return
     }else{
-      localStorage.setItem('user', user.data);
+      sessionStorage.setItem('user', JSON.stringify(user.data))
       props.history.push(`/container/${user.data[0].id}`)
     }
 

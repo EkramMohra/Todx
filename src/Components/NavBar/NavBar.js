@@ -3,7 +3,7 @@ import NavBarSide from "./NavBarSide";
 import NavBarHeader from "./NavBarHeader";
 import './styles/navbar.css';
 
-const NavBar = () => {
+const NavBar = (props) => {
   const [menuCollapse, setMenuCollapse] = useState(true)
   const menuIconClick = () => {
       menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
@@ -12,7 +12,7 @@ const NavBar = () => {
   return (
     <>
       <NavBarHeader menuIconClick={menuIconClick} />
-      <NavBarSide menuCollapse={menuCollapse}/>
+      <NavBarSide menuCollapse={menuCollapse} />
     </>
   );
 };

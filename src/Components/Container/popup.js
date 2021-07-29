@@ -10,7 +10,7 @@ const PopUp = props => {
     const [content, setContent] = useState(props.task.content)
     const [date, setDate] = useState(props.task.date)
     const [priority, setPriority] = useState({ checked: props.task.priority ? true : false })
-    const [notification, setNotification] = useState({ checked: props.task.notification == 1 ? true : false })
+    const [notification, setNotification] = useState({ checked: props.task.notification ==1?true : false  })
     const [time, setTime] = useState(props.task.time)
     function handleChangePriority(checked) {
         setPriority({ checked });
@@ -24,9 +24,9 @@ const PopUp = props => {
             id: id,
             title: title,
             content: content,
-            priority: priority.checked ? true : false,
+            priority: priority.checked?true:false,
             date: date,
-            notification: notification.checked == 1 ? true : false,
+            notification: notification.checked==1?true:false,
             time: time
         }
         props.updateTask(data)
@@ -80,4 +80,5 @@ const PopUp = props => {
         </Modal >
     );
 };
+
 export default PopUp

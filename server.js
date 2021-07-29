@@ -4,6 +4,8 @@ const path = require('path')
 const api = require('./server/routes/api')
 
 const app = express()
+// const http = require("http").createServer(app);
+// const io = require("socket.io")(http);
 
 app.use(express.static(path.join(__dirname, 'node_modules')))
 
@@ -17,7 +19,18 @@ app.use(function (req, res, next) {
 
     next()
 })
+
 app.use('/',api)
+
+// io.on("connection", socket => {
+//     socket.on("disconnect", () => {
+//       console.log("user disconnected");
+//     });
+  
+//     socket.on("message", message => {
+//       io.emit("message", message);
+//     });
+// });
 
 const port = 3005
 app.listen(port, function () {
