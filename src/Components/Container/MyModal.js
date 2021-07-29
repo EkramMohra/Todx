@@ -5,7 +5,6 @@ import Button from "react-bootstrap/Button"
 import { useState } from "react"
 import Switch from "react-switch"
 import "./popup.css"
-
 const MyModal = (props) => {
 
     const [title, setTitle] = useState("")
@@ -14,6 +13,7 @@ const MyModal = (props) => {
     const [time, setTime] = useState("--:--")
     const [priority, setPriority] = useState({ checked: false })
     const [notification, setNotification] = useState({ checked: false })
+    
     const addTask = () => {
         let data = {
             title: title,
@@ -23,6 +23,7 @@ const MyModal = (props) => {
             notification: notification.checked,
             time: time
         }
+        console.log("before add task")
         props.addTask(data)
         props.onHide()
         emptyInputs()
@@ -98,4 +99,5 @@ const MyModal = (props) => {
         </Modal>
     )
 }
+
 export default MyModal

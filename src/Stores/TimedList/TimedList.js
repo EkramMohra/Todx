@@ -5,13 +5,12 @@ const moment = require("moment");
 
 
 export class TimedList {
-
     constructor() {
         this.list = []
         this.length = 0
         this.index = 0
         this.DateOfTheDay = moment().format("YYYY-MM-DD", true)
-
+        this.userId =JSON.parse(sessionStorage.getItem('user'))[0].id
 
         makeObservable(this, {
             DateOfTheDay: observable,
@@ -26,14 +25,12 @@ export class TimedList {
             doneTask: action
         })
     }
-
     getList = async () => {
         this.emptyTheList()
-        let res = await axios.get(`http://localhost:3005/timedtasks?today=${this.DateOfTheDay}`)
+        let res = await axios.get(`http://localhost:3005/timedtasks?today=${this.DateOfTheDay}&userId=${this.userId}`)
         res.data.forEach(task => {
             runInAction(() => {
                 this.list.push(new Task(task))
-
             })
         })
     }
@@ -42,14 +39,15 @@ export class TimedList {
         this.list = []
     }
 
-    addTask = async (data, DateOfTheDay) => {
+    addTask = async (data) => {
         let obj = {
             title: data.title,
             content: data.content,
             date: data.date,
             time: data.time,
             notification: data.notification,
-            status: 'pending'
+            status: 'pending',
+            userId: this.userId
         }
 
         await axios.post(`http://localhost:3005/timedtasks`, obj)
@@ -62,15 +60,16 @@ export class TimedList {
     }
 
     getData = (NewDateOfTheDay) => {
-
+        console.log("befor");
         this.DateOfTheDay = NewDateOfTheDay
         this.getList()
-
+        console.log("after");
     }
 
     deleteTask = async (id) => {
+        let data = { taskId: id, userId: this.userId }
 
-        await axios.delete(`http://localhost:3005/timedtasks`, { data: { id } })
+        await axios.delete(`http://localhost:3005/timedtasks`, { data })
             .then((response) => {
                 console.log(response.data);
             }, (error) => {
@@ -80,7 +79,6 @@ export class TimedList {
     }
 
     updateTask = async (data) => {
-
         let obj = {
             id: data.id,
             title: data.title,
@@ -97,7 +95,6 @@ export class TimedList {
             }, (error) => {
                 console.log(error);
             })
-
         this.getList()
     }
 

@@ -3,14 +3,13 @@ import axios from "axios"
 import Task from './DailyTask'
 const moment = require("moment");
 
-
 export class DailyList {
-
     constructor() {
         this.list = []
         this.length = 0
         this.index = 0
         this.DateOfTheDay = moment().format("YYYY-MM-DD", true)
+        this.userId =JSON.parse(sessionStorage.getItem('user'))[0].id
 
         makeObservable(this, {
             DateOfTheDay: observable,
@@ -25,14 +24,13 @@ export class DailyList {
             doneTask: action
         })
     }
-
     getList = async () => {
         this.emptyTheList()
-        let res = await axios.get(`http://localhost:3005/dailytasks?today=${this.DateOfTheDay}`)
+        let res = await axios.get(`http://localhost:3005/dailytasks?today=${this.DateOfTheDay}&userId=${this.userId}`)
+ 
         res.data.forEach(task => {
             runInAction(() => {
                 this.list.push(new Task(task))
-
             })
         })
     }
@@ -45,7 +43,8 @@ export class DailyList {
         let obj = {
             title: data.title,
             content: data.content,
-            status: 'pending'
+            status: 'pending',
+            userId: this.userId
         }
 
         let res = await axios.post(`http://localhost:3005/dailytasks`, obj)
@@ -63,10 +62,10 @@ export class DailyList {
         this.getList()
 
     }
-
     deleteTask = async (id) => {
 
-        let res = await axios.delete(`http://localhost:3005/dailytasks`, { data: { id } })
+        let data = {taskId: id, userId: this.userId }
+        let res = await axios.delete(`http://localhost:3005/dailytasks`,{data})
             .then((response) => {
                 console.log(response.data);
             }, (error) => {
@@ -74,9 +73,8 @@ export class DailyList {
             })
         this.getList()
     }
-
+    
     updateTask = async (data) => {
-
         let obj = {
             id: data.id,
             title: data.title,
@@ -90,7 +88,6 @@ export class DailyList {
             }, (error) => {
                 console.log(error);
             })
-
         this.getList()
     }
 

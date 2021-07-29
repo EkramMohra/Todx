@@ -8,22 +8,32 @@ import { ToDoList } from './Stores/Todo/ToDoList'
 import { DailyList } from './Stores/Daily/DailyList'
 import { TimedList } from './Stores/TimedList/TimedList'
 const moment = require("moment");
-
-
-let todolist = new ToDoList()
-todolist.getList(moment().format("YYYY-MM-DD", true))
-
-let dailylist = new DailyList()
-dailylist.getList(moment().format("YYYY-MM-DD", true))
-
-let timedlist = new TimedList()
-timedlist.getList(moment().format("YYYY-MM-DD", true))
-
-const stores = {
-  todolist: todolist,
-  dailylist: dailylist,
-  timedlist: timedlist
+let list = []
+let stores = {
+  todolist: { list },
+  dailylist: { list },
+  timedlist: { list }
 }
+const init =  () => {
+  if (sessionStorage.getItem("user")) {
+    
+    let todolist = new ToDoList()
+    todolist.getList(moment().format("YYYY-MM-DD", true))
+
+    let dailylist = new DailyList()
+    dailylist.getList(moment().format("YYYY-MM-DD", true))
+
+    let timedlist = new TimedList()
+    timedlist.getList(moment().format("YYYY-MM-DD", true))
+
+    stores = {
+      todolist: todolist,
+      dailylist: dailylist,
+      timedlist: timedlist
+    }
+  }
+}
+init()
 
 ReactDOM.render(
   <Provider {...stores}>
@@ -31,5 +41,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-
 reportWebVitals();

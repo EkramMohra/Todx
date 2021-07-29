@@ -26,9 +26,14 @@ import {
 
 const NavBarSide = (props) => {
     const logout = () => {
-        localStorage.getItem('user')
+        sessionStorage.clear();
         props.history.push(`/`)
     }
+
+    let userId = JSON.parse(sessionStorage.getItem('user'))[0].id
+
+    let channel =`share_task_recevier_id_${userId}`
+
     return (
     
         <div id="sidebar-style">
@@ -38,6 +43,8 @@ const NavBarSide = (props) => {
                         <MenuItem active={true} icon={<FiHome />}>
                             {props.menuCollapse ? null : "Home"}
                         </MenuItem>
+                        {/* {console.log(props.flag)} */}
+                        <div className="circle-red"></div> 
                         <MenuItem icon={<FiArchive />}>
                             {props.menuCollapse ? null : "Archived"}
                         </MenuItem>

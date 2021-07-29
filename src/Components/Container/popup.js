@@ -80,4 +80,5 @@ const PopUp = props => {
         </Modal >
     );
 };
+
 export default PopUp
