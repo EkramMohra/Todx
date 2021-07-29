@@ -5,20 +5,14 @@ import Button from "react-bootstrap/Button"
 import { useState } from "react"
 import Switch from "react-switch"
 import "./popup.css"
-
 const MyModal = (props) => {
-
-    console.log(props.task)
-
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [date, setDate] = useState("")
     const [time, setTime] = useState("")
     const [priority, setPriority] = useState({ checked: false })
     const [notification, setNotification] = useState({ checked: false })
-
     const addTask = () => {
-
         let data = {
             title: title,
             content: content,
@@ -27,12 +21,10 @@ const MyModal = (props) => {
             notification: notification.checked,
             time: time
         }
-
         props.addTask(data)
         props.onHide()
         emptyInputs()
     }
-
     const emptyInputs = () => {
         setTitle("")
         setContent("")
@@ -40,15 +32,12 @@ const MyModal = (props) => {
         setPriority("")
         setNotification("")
     }
-
     function handleChangePriority(checked) {
         setPriority({ checked })
     }
-
     function handleChangeNotification(checked) {
         setNotification({ checked })
     }
-
     function handleChange(e) {
         let name = e.target.name
         name === "title" ? setTitle(e.target.value)
@@ -56,7 +45,6 @@ const MyModal = (props) => {
                 : name === "time" ? setTime(e.target.value)
                     : setDate(e.target.value)
     }
-
     return (
         <Modal {...props} centered aria-labelledby="contained-modal-title-vcenter">
             <Modal.Header>
@@ -80,7 +68,6 @@ const MyModal = (props) => {
                 {
                     props.time ? <div> time:<input type="time" className="input-class" name="time"
                         defaultValue={time} onChange={handleChange} /> </div> : null
-
                 }
                 {
                     props.date ? <div> date:
@@ -92,13 +79,11 @@ const MyModal = (props) => {
                     />
                 </label> : null
                 }
-
                 {props.notification ? <label> <span> notification:</span>
                     <Switch onChange={handleChangeNotification} checked={notification.checked}
                     />
                 </label> : null}
             </Modal.Body>
-
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.onHide}>
                     Close
@@ -110,5 +95,4 @@ const MyModal = (props) => {
         </Modal>
     )
 }
-
-export default inject("todolist")(observer(MyModal))
+export default MyModal

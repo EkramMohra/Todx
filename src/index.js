@@ -8,7 +8,6 @@ import { ToDoList } from './Stores/Todo/ToDoList'
 import { DailyList } from './Stores/Daily/DailyList'
 import { TimedList } from './Stores/TimedList/TimedList'
 
-
 let todolist = new ToDoList()
 todolist.getList()
 
@@ -30,5 +29,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-
 reportWebVitals();
