@@ -79,6 +79,15 @@ cursor: pointer;
     padding: 20px;
 }
 
+.circle-red{
+    width:10px;
+    height:10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 94px;
+    left: 45px;
+}
 @media only screen and (max-width: 720px) {
     html {
         overflow: hidden;

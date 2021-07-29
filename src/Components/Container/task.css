@@ -1,3 +1,6 @@
-.task-background{
+.pending{
     background-color: #e5b7b787;
+}
+.done{
+    background-color:rgb(153, 193, 185) ;
 }
