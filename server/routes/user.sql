@@ -37,3 +37,7 @@ USE sql_todx;
 --     FOREIGN KEY(sender_id) REFERENCES user(id),
 --     FOREIGN KEY(recevier_id) REFERENCES user(id)
 -- );
+
+--  SET FOREIGN_KEY_CHECKS=1;
+-- DROP TABLE user;
+
