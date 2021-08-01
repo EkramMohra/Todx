@@ -2,3 +2,55 @@
     display: flex;
     justify-content: center;
 }
+
+.calendar-icon-style{
+    font-size: 45px;
+}
+
+.modal-content{
+    background-color: #fefcff;
+    color: #d88c9a ;
+    border-radius: 5px;
+}
+
+.modal-header-calendar-style{
+    border-bottom: 1px solid #d88c9a5c
+}
+
+.react-calendar__tile--now{
+    background: #f7eefa;
+}
+
+.react-calendar__tile--active {
+    background: #d4b4df;
+    color: white;
+}
+
+.react-calendar{
+    border-radius: 20px;
+}
+
+.react-calendar__navigation button{
+    font-size: 18px;
+}
+
+.btn-outline-green {
+    color: #99c1b9;
+    border-color: #99c1b9;
+    background-color: white;
+}
+
+.btn-outline-green :hover {
+    color: white;
+    border-color: white;
+    background-color: #99c1b9;
+}
+
+.react-calendar__month-view__weekdays {
+    font-size: 16px;
+}
+
+.btn-calendar-style{
+    background-color: #f7cd34 !important;
+    color: white !important;
+}

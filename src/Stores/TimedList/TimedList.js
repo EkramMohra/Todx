@@ -5,7 +5,7 @@ const moment = require("moment");
 
 
 export class TimedList {
-    constructor() {
+    constructor () {
         this.list = []
         this.length = 0
         this.index = 0
@@ -13,22 +13,25 @@ export class TimedList {
         this.userId = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].id : '-1'
 
         makeObservable(this, {
+            userId: observable,
             DateOfTheDay: observable,
             index: observable,
             list: observable,
             length: observable,
-            userId:observable,
             addTask: action,
+            updateId: action,
             updateTask: action,
             emptyTheList: action,
             deleteTask: action,
             getData: action,
             doneTask: action,
-            updateId:action
+            updateId: action,
+
         })
     }
     getList = async () => {
         this.emptyTheList()
+        console.log(this.list)
         let res = await axios.get(`http://localhost:3005/timedtasks?today=${this.DateOfTheDay}&userId=${this.userId}`)
         res.data.forEach(task => {
             runInAction(() => {
@@ -36,11 +39,9 @@ export class TimedList {
             })
         })
     }
-
     emptyTheList = () => {
         this.list = []
     }
-
     addTask = async (data) => {
         let obj = {
             title: data.title,
@@ -51,7 +52,6 @@ export class TimedList {
             status: 'pending',
             userId: this.userId
         }
-
         await axios.post(`http://localhost:3005/timedtasks`, obj)
             .then((response) => {
                 console.log(response);
@@ -79,7 +79,6 @@ export class TimedList {
             })
         this.getList()
     }
-
     updateTask = async (data) => {
         let obj = {
             id: data.id,
@@ -90,7 +89,6 @@ export class TimedList {
             notification: data.notification,
             status: 'pending'
         }
-
         await axios.put('http://localhost:3005/timedtasks', obj)
             .then(response => {
                 console.log(response.data);
@@ -110,10 +108,9 @@ export class TimedList {
             })
 
         this.getList()
-
     }
 
-      updateId = (id) =>{
-        this.userId=id
-     }
+    updateId = (id) => {
+        this.userId = id
+    }
 }

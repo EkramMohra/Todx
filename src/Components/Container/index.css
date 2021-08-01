@@ -1,0 +1,32 @@
+body {
+    margin: 40px;
+  }
+  
+  .wrapper {
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: 200px 600px;
+      background-color: #fff;
+      color: #444;
+      }
+  
+      .mini-wrapper {
+          border:3px solid dodgerblue;
+          padding: 20px;
+          font-size: 150%;
+  
+      }
+  
+      .sidebar {
+          grid-column: 1;
+          grid-row: span 50;
+      }
+      .content-area{
+          grid-column: 2 ;
+          grid-row: span 49;
+      }
+     
+      .header-top {
+          grid-column: 2;
+          grid-row:1;
+      }

@@ -1,15 +1,31 @@
+.navbar-style {
+    color: #4b4e53 !important;
+    background-color: #f7cd34 !important;
+}
+
+.MuiBadge-colorSecondary {
+    background-color: #d76b7f !important;
+}
+
+.makeStyles-menuButton-2 {
+    margin-right: 0px !important;
+}
 .navbar-background {
     background-color: #ECF8F8;
 }
 
 .logo-style{
-    width: 130px;
+    width: 105px;
     height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .header{
     text-align: left;
     border-bottom:1px #efefef solid;
+    background-color: white;
+    box-shadow: 0.5px 0.866px 2px 0px rgb(0 0 0 / 15%);
 }
 
 .burger-menu-icon{
@@ -20,9 +36,10 @@
 #sidebar-style {
     position: absolute;
     width: 220px;
+    float:right;
 }
 #sidebar-style .pro-sidebar {
-    height: 100vh;
+    height: calc( 100vh - 97px);
 }
 #sidebar-style .closemenu {
     color: #000;

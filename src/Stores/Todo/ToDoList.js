@@ -5,7 +5,7 @@ const moment = require("moment");
 
 // let today = moment().format("YYYY-MM-DD", true)
 export class ToDoList {
-    constructor() {
+    constructor () {
         this.list = []
         this.length = 0
         this.index = 0
@@ -13,26 +13,24 @@ export class ToDoList {
         this.userId = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].id : '-1'
 
         makeObservable(this, {
+            userId: observable,
             DateOfTheDay: observable,
             index: observable,
             list: observable,
             length: observable,
-            userId:observable,
             addTask: action,
             updateTask: action,
             emptyTheList: action,
             deleteTask: action,
             getData: action,
             doneTask: action,
-            updateId:action
+            updateId: action
         })
     }
 
     getData = (NewDateOfTheDay) => {
-
         this.DateOfTheDay = NewDateOfTheDay
         this.getList()
-
     }
 
     getList = async () => {
@@ -46,13 +44,11 @@ export class ToDoList {
             })
         })
     }
-
     emptyTheList = () => {
         this.list = []
     }
 
     addTask = async (data) => {
-
 
         let obj = {
             title: data.title,
@@ -62,7 +58,7 @@ export class ToDoList {
             status: 'pending',
             userId: this.userId
         }
-
+        console.log(this.userId)
         let res = await axios.post(`http://localhost:3005/todotasks`, obj)
             .then((response) => {
                 console.log(response);
@@ -72,8 +68,6 @@ export class ToDoList {
             })
 
     }
-
-
 
     deleteTask = async (id) => {
         let data = { taskId: id, userId: this.userId }
@@ -96,19 +90,17 @@ export class ToDoList {
             priority: data.priority ? 1 : 0,
             status: 'pending'
         }
-
         await axios.put('http://localhost:3005/todotasks', obj)
             .then(response => {
                 console.log(response.data);
             }, (error) => {
                 console.log(error);
             })
-
         this.getList()
     }
 
     doneTask = async (id) => {
-        console.log(id);
+
         await axios.put('http://localhost:3005/donetodotasks', { data: { id } })
             .then(response => {
                 console.log(response.data);
@@ -120,7 +112,7 @@ export class ToDoList {
 
     }
 
-    updateId = (id) =>{
-        this.userId=id
-     }
+    updateId = (id) => {
+        this.userId = id
+    }
 }

@@ -21,15 +21,12 @@ const Zoom = props => {
         (async () => {
             let users = await axios.get(`http://localhost:3005/users`, { senderId })
             await setUsers(users.data)
-             let response = await axios.get(`http://localhost:3005/newmeeting?title=${title}`)
-             
+            let response = await axios.get(`http://localhost:3005/newmeeting?title=${title}`)
+
             await setZoomData(response.data)
             setSenderId(JSON.parse(sessionStorage.getItem('user'))[0].id)
-         
+
         })()
-
-
-
     }, [])
 
     function handleChange(event) {
@@ -55,8 +52,8 @@ const Zoom = props => {
         }
 
         await axios.post(`http://localhost:3005/shares`, data)
-       await props.onHide()
-       document.location.reload(true);
+        await props.onHide()
+        document.location.reload(true);
 
     }
     return (

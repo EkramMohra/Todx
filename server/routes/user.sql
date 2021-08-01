@@ -1,5 +1,7 @@
 -- CREATE DATABASE sql_todx;
 USE sql_todx;
+-- ALTER TABLE timedtask modify COLUMN content VARCHAR (500);
+
 -- CREATE TABLE photo(
 --     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 --     photo VARCHAR(40)

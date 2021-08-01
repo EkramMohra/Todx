@@ -5,13 +5,20 @@ import { inject, observer } from 'mobx-react';
 import Popup from 'reactjs-popup';
 import 'react-calendar/dist/Calendar.css';
 import './calendar.css'
-import Button from 'react-bootstrap/esm/Button';
+// import Button from 'react-bootstrap/esm/Button';
+import Button from '@material-ui/core/Button';
+import Modal from 'react-bootstrap/Modal'
+import {IoCalendarOutline} from 'react-icons/io5'
+import {MdClose} from 'react-icons/md'
+import EventIcon from '@material-ui/icons/Event'
 
 const InCalendar = (props) => {
 
         const [date, setDate] = useState(new Date())
-        const [open, setOpen] = useState(false);
-        const closeModal = () => setOpen(false);
+        const [show, setShow] = useState(false);
+
+        const handleClose = () => setShow(false);
+        const handleShow = () => setShow(true);
 
 
         const changeFormatDate = (string) => {
@@ -46,21 +53,37 @@ const InCalendar = (props) => {
                 { props.todolist.getData(newDate) }
                 { props.dailylist.getData(newDate) }
                 { props.timedlist.getData(newDate) }
-                setOpen(o => !o)
+                handleClose()
 
         }
 
 
         return (
-                <div>
-                        <Button onClick={() => setOpen(o => !o)}>Calendar</Button>
-                        <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                <>
+                <Button variant="contained" onClick={handleShow}   className="btn-calendar-style">
+                        <IoCalendarOutline className="calendar-icon-style"/>
+                </Button>
+
+                <Modal
+                        show={show}
+                        onHide={handleClose}
+                        backdrop="static"
+                        centered
+                        keyboard={true}
+                >
+                        <Modal.Header className="modal-header-calendar-style">
+                                <Modal.Title> Choose Date to display your tasks</Modal.Title>
+                                <Button variant="outline-secondary" size="sm" className="rounded-circle" onClick={handleClose}><MdClose/></Button>
+                        </Modal.Header>
+                        <Modal.Body className="mx-auto myModal-calendar-body-style">
                                 <Calendar showNeighboringMonth={false} onClickDay={onChange} value={date} />
-
-                        </Popup>
-
-
-                </div>
+                        </Modal.Body>
+                </Modal>
+                
+                {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                        <Calendar showNeighboringMonth={false} onClickDay={onChange} value={date} />
+                </Popup> */}
+                </>
         )
 
 }

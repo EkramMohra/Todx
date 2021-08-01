@@ -1,12 +1,36 @@
-.container{
+.list-container{
     display: grid;
     grid-template-columns: 33.33% 33.33% 33.33%;
 }
 .list{
     position: relative;
-    margin:15px;
+    margin:8px;
     border-radius: 3px;
-    box-shadow: #040404 2px 2px 4px;
-    font-family: "Comic Sans MS";
-    text-align: center;
+    box-shadow: #dfe0e1 2px 2px 4px;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    height: auto;
+    max-height: calc(100vh - 200px);
+    overflow: scroll;
+}
+
+
+.btn-add-task{
+    border-radius: 50%;
+    float: right;
+    font-size: 25px !important;
+    background-color: #f7cd34 !important;
+    color: white !important;
+}
+
+.btn-add-task:hover{
+    background-color: #f4c61d !important;
+}
+
+.apointement-style{
+    font-size: 19px;
+}
+
+.body-list-style{
+    overflow: scroll;
 }
