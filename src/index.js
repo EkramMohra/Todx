@@ -7,33 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import { ToDoList } from './Stores/Todo/ToDoList'
 import { DailyList } from './Stores/Daily/DailyList'
 import { TimedList } from './Stores/TimedList/TimedList'
-const moment = require("moment");
-let list = []
+import { User } from './Stores/Users/User'
+
 let stores = {
-  todolist: { list },
-  dailylist: { list },
-  timedlist: { list }
+  todolist: new ToDoList(),
+  dailylist: new DailyList(),
+  timedlist: new TimedList(),
+  users : new User()
 }
-const init =  () => {
-  if (sessionStorage.getItem("user")) {
-    
-    let todolist = new ToDoList()
-    todolist.getList(moment().format("YYYY-MM-DD", true))
-
-    let dailylist = new DailyList()
-    dailylist.getList(moment().format("YYYY-MM-DD", true))
-
-    let timedlist = new TimedList()
-    timedlist.getList(moment().format("YYYY-MM-DD", true))
-
-    stores = {
-      todolist: todolist,
-      dailylist: dailylist,
-      timedlist: timedlist
-    }
-  }
-}
-init()
 
 ReactDOM.render(
   <Provider {...stores}>

@@ -10,9 +10,10 @@ export class ToDoList {
         this.length = 0
         this.index = 0
         this.DateOfTheDay = moment().format("YYYY-MM-DD", true)
-        this.userId =JSON.parse(sessionStorage.getItem('user'))[0].id
+        this.userId = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].id : '-1'
 
         makeObservable(this, {
+            userId:observable,
             DateOfTheDay: observable,
             index: observable,
             list: observable,
@@ -22,7 +23,8 @@ export class ToDoList {
             emptyTheList: action,
             deleteTask: action,
             getData: action,
-            doneTask: action
+            doneTask: action,
+            updateId: action
         })
     }
 
@@ -47,6 +49,7 @@ export class ToDoList {
     emptyTheList = () => {
         this.list = []
     }
+
     addTask = async (data) => {
 
 
@@ -58,6 +61,7 @@ export class ToDoList {
             status: 'pending',
             userId: this.userId
         }
+        console.log(this.userId)
         let res = await axios.post(`http://localhost:3005/todotasks`, obj)
             .then((response) => {
                 console.log(response);
@@ -67,8 +71,6 @@ export class ToDoList {
             })
 
     }
-
-
 
     deleteTask = async (id) => {
         let data = { taskId: id, userId: this.userId }
@@ -80,6 +82,7 @@ export class ToDoList {
             })
         this.getList()
     }
+
     updateTask = async (data) => {
         let obj = {
             id: data.id,
@@ -111,4 +114,8 @@ export class ToDoList {
         this.getList()
 
     }
+    updateId(id){
+        this.userId = id
+    }
+
 }

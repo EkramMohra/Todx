@@ -25,35 +25,44 @@
 //     console.log(result);
 //   });
 
-let date = 'Thu Aug 10 2021 00:00:00 GMT+0300 (Israel Daylight Time)'
+// let date = 'Thu Aug 10 2021 00:00:00 GMT+0300 (Israel Daylight Time)'
 
-const changeFormatDate = (string) => {
+// const changeFormatDate = (string) => {
 
-  string = string.split(" ");
-  var stringArray = new Array();
-  for (var i = 0; i < string.length; i++) {
-    stringArray.push(string[i]);
-    if (i != string.length - 1) {
-      stringArray.push(" ");
-    }
-  }
+//   string = string.split(" ");
+//   var stringArray = new Array();
+//   for (var i = 0; i < string.length; i++) {
+//     stringArray.push(string[i]);
+//     if (i != string.length - 1) {
+//       stringArray.push(" ");
+//     }
+//   }
 
-  let month = {
-     'Jan': '01',
-     'Feb': '02',
-     'Mar': '03',
-     'Apr': '04',
-     'May': '05',
-     'Jun': '06',
-     'Jul': '07',
-     'Aug': '08',
-     'Sep': '09',
-     'Oct': '10',
-     'Nov': '11',
-     'Dec': '12',
-  }
-  return `${stringArray[6]}-${month[stringArray[2]]}-${stringArray[4]}`
-}
+//   let month = {
+//      'Jan': '01',
+//      'Feb': '02',
+//      'Mar': '03',
+//      'Apr': '04',
+//      'May': '05',
+//      'Jun': '06',
+//      'Jul': '07',
+//      'Aug': '08',
+//      'Sep': '09',
+//      'Oct': '10',
+//      'Nov': '11',
+//      'Dec': '12',
+//   }
+//   return `${stringArray[6]}-${month[stringArray[2]]}-${stringArray[4]}`
+// }
 
-console.log(changeFormatDate(date)
-)
+// console.log(changeFormatDate(date)
+// )
+// console.log(moment().format("DD", true)-1)
+
+
+// let fullName = 'ALaa Damouny'
+
+// let firstName = fullName.split(' ').slice(0, -1).join(' ');
+// let lastName = fullName.split(' ').slice(-1).join(' ');
+
+// console.log(firstName)

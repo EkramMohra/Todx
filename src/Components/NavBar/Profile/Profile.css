@@ -1,0 +1,18 @@
+.container{
+    margin: auto;
+    font-size: 20px;
+    color: black;
+}
+
+.card-profile{
+    background-color: white;
+}
+
+.profile-image{
+    width:100px;
+    height: 100px;
+    border-radius: 50%;
+    border-color: #f1e3d3;
+    background-color: #f1e3d3;
+    box-shadow: 3px -1px 3px -1px rgb(109 109 109 / 83%);;
+}
