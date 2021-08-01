@@ -9,50 +9,44 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
-
 const Container = (props) => {
+
+  Pusher.logToConsole = true;
 
   const [firstAsign, setfirstAsign] = useState('in')
 
-  
   let userId = JSON.parse(sessionStorage.getItem('user'))[0].id
-  
-  if (firstAsign == 'in') {
-    console.log("first asign")
-    props.todolist.updateId(userId)
-    props.dailylist.updateId(userId)
-    props.timedlist.updateId(userId)
-    
-    props.todolist.getList()
-    props.dailylist.getList()
-    props.timedlist.getList()
-    props.users.getUserInfo(userId)
-    setfirstAsign('out')
-  }
-
-  Pusher.logToConsole = true;
-  
   let channel = `share_task_recevier_id_${userId}`
+
   var pusher = new Pusher('5b82386d16e4fe295409', {
     cluster: 'eu'
   })
-  
+
   var channelPusher = pusher.subscribe(channel);
-  channelPusher.bind('my-event', function (data) {
-    // setFlag(true)
-    // console.log(flag)
-    MySwal.fire({
-      icon: "warning",
-      title: JSON.stringify(data.message),
-      showConfirmButton: false,
-      timer: 2000
-    })
-    if(props.flag){  
-        props.setFlag(false)
-        console.log(props.flag)
+
+  if (firstAsign == 'in') {
+    props.todolist.updateId(userId)
+    props.dailylist.updateId(userId)
+    props.timedlist.updateId(userId)
+    props.todolist.getList()
+    props.dailylist.getList()
+    props.timedlist.getList()
+    channelPusher.bind('my-event', function (data) {
+      MySwal.fire({
+        icon: "warning",
+        title: JSON.stringify(data.message),
+        showConfirmButton: false,
+        timer: 3000
+      })
+      if (data.task_type === "timedtask") {
+        props.timedlist.addTask(data.task)
+      }
+      else {
         props.todolist.addTask(data.task)
-    }
-  })
+      }
+    })
+    setfirstAsign('out')
+  }
   return (
     <>
       <NavBar />
@@ -61,8 +55,6 @@ const Container = (props) => {
       </div>
       <List />
     </>
-
   )
 }
-
-export default inject("todolist", "dailylist", "timedlist" , "users")(observer(Container))
+export default inject("todolist", "dailylist", "timedlist")(observer(Container))

@@ -4,8 +4,8 @@ const env = process.env.NODE_ENV || "production";
 const config = {
   
   development: {
-    APIKey: "Gk7wew4CTlebvSal0tt8vA",
-    APISecret: "xlOBK8bLaBKq7TCWBH6HMQ1QFH7hNFhPUUFK",
+    APIKey: "lQxV34GfT_OpCW1EbqkylA",
+    APISecret: "ZYTx2FuHYwUz2l9KsUg7bdEyQJjjdWVtH1GR",
     PUSHER: {
       APP_ID : "1241840",
       KEY: "5b82386d16e4fe295409",
@@ -14,8 +14,8 @@ const config = {
     }
   },
   production: {
-    APIKey: "Gk7wew4CTlebvSal0tt8vA",
-    APISecret: "xlOBK8bLaBKq7TCWBH6HMQ1QFH7hNFhPUUFK",
+    APIKey: "lQxV34GfT_OpCW1EbqkylA",
+    APISecret: "ZYTx2FuHYwUz2l9KsUg7bdEyQJjjdWVtH1GR",
     PUSHER: {
       APP_ID : "1241840",
       KEY: "5b82386d16e4fe295409",

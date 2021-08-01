@@ -17,13 +17,14 @@ export class DailyList {
             index: observable,
             list: observable,
             length: observable,
+            userId:observable,
             addTask: action,
             updateTask: action,
             emptyTheList: action,
             deleteTask: action,
             getData: action,
             doneTask: action,
-            updateId: action
+            updateId:action
         })
     }
     getList = async () => {
@@ -101,8 +102,10 @@ export class DailyList {
         this.getList()
 
     }
-    updateId(id){
-        this.userId = id
-    }
 
+    updateId = (id) =>{
+        this.userId=id
+    }
 }
+
+

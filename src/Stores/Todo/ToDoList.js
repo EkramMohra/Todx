@@ -18,6 +18,7 @@ export class ToDoList {
             index: observable,
             list: observable,
             length: observable,
+            userId:observable,
             addTask: action,
             updateTask: action,
             emptyTheList: action,
@@ -114,8 +115,8 @@ export class ToDoList {
         this.getList()
 
     }
-    updateId(id){
-        this.userId = id
-    }
 
+    updateId = (id) =>{
+        this.userId=id
+     }
 }

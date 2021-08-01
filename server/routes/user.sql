@@ -1,6 +1,5 @@
 -- CREATE DATABASE sql_todx;
 USE sql_todx;
-
 -- CREATE TABLE photo(
 --     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 --     photo VARCHAR(40)
@@ -12,7 +11,7 @@ USE sql_todx;
 -- );
 
 -- CREATE TABLE user(
---     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--     id INT  NOT NULL PRIMARY KEY,
 --     last VARCHAR(40),
 --     first VARCHAR(40),
 --     email VARCHAR(40),
