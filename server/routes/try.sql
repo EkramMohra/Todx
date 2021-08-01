@@ -201,3 +201,9 @@ USE sql_todx;
 --         AND timedtask.time LIKE '10%'
 --         AND timedtask.date LIKE '%-07-%'
 --         GROUP BY user_id;
+
+
+-- UPDATE user 
+--                         SET first = Ekram,
+--                         SET last = m
+--                       WHERE id =2

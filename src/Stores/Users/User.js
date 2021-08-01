@@ -84,7 +84,9 @@ export class User {
     }
 
     updateUserInfo = async (newInfo) =>{
-        let res = await axios.put(`http://localhost:3005/updatename`,newInfo)
+        console.log(newInfo);
+        let res = await axios.put(`http://localhost:3005/updateInfousers`,{newInfo,id:this.userId})
+   
     }
     
     updateName = async (FullName) => {

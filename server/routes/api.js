@@ -203,20 +203,17 @@ router.put("/updatename`", async (request, response) => {
 });
 
 router.put("/updateInfousers", async (request, response) => {
-
-  let photoID = request.body.photoID
-  let fullName = request.body.FullName
+  console.log(request.body);
+  
+  let photoID = 1
   let id = request.body.id
-  let newPassword = request.body.newPassword
-
-  let firstName = fullName.split(' ').slice(0, -1).join(' ');
-  let lastName = fullName.split(' ').slice(-1).join(' ');
-
+  let newPassword = request.body.newInfo.password
+  let first=request.body.newInfo.first
+  let last=request.body.newInfo.last
   let queryString = `UPDATE user 
-                        SET first = '${firstName}',
-                        SET last = '${lastName}',
-                        SET passwor = '${newPassword}',
-                        SER photo_id = '${photoID}'
+                        SET first = '${first}',
+                         last = '${last}',
+                         password = '${newPassword}'
                       WHERE id = ${id};`
 
   await sequelize.query(queryString);

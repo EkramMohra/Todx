@@ -60,7 +60,7 @@ const Profile = (props) => {
                 <label>Surname</label><input name="last" onChange={handleChange} value={updatedClient.last} />
                 <br></br>
                 <label>Password</label>
-                <input name="password" type="password" onChange={handleChange} value={updatedClient.password} />
+                <input name="password" onChange={handleChange} value={updatedClient.password} />
 
                 <button onClick={updateClient}>update</button>
             </Popup>
