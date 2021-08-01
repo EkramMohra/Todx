@@ -7,7 +7,6 @@ import Row from 'react-bootstrap/Row'
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Task from './Task';
 import MyModal from './MyModal';
-import Button from 'react-bootstrap/Button'
 
 import Zoom from './Zoom';
 import Fab from '@material-ui/core/Fab';
@@ -63,7 +62,7 @@ const List = (props) => {
                             </Col>
                         </Row>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body className="body-list-style">
                         {props.todolist.list.map((task, index) =>
                         <Task key={`todolist-${index}` }
                               task={task} 
@@ -91,7 +90,7 @@ const List = (props) => {
                             </Col>
                         </Row>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body  className="body-list-style">
                         {props.dailylist.list.map((task, index) =>
                             <Task key={index} 
                                     task={task} 
@@ -119,7 +118,7 @@ const List = (props) => {
                             </Col>
                         </Row>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body  className="body-list-style">
                        
                         {props.timedlist.list.map((task, index) =>
                             <Task key={index} 

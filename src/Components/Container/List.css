@@ -30,3 +30,7 @@
 .apointement-style{
     font-size: 19px;
 }
+
+.body-list-style{
+    overflow: scroll;
+}

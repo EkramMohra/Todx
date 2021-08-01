@@ -58,7 +58,7 @@ const Login = (props) => {
       return
     }else{
       sessionStorage.setItem('user', JSON.stringify(user.data))
-      props.history.push(`/container/${user.data[0].id}`)
+      props.history.push(`/homePage/dashboard`)
     }
 
   }

@@ -4,7 +4,7 @@ import axios from "axios"
 export class User {
 
     constructor(user = {}) {
-        this.userId = user.userId 
+        this.userId = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].id : '-1'
         this.last = user.last
         this.first = user.first
         this.email = user.email
@@ -44,7 +44,7 @@ export class User {
 
         let date = '07'
         let res = await axios.get(`http://localhost:3005/monthlytodotasks?userId=${this.userId}&date=${date}`)
-        return ({all : res.data.alltasks[0][0].res , done : res.data.donetasks[0][0].res})   
+        return ({all : res.data.alltasks[0][0].res || 0 , done : res.data.donetasks[0][0].res || 0})   
 
     } 
 
@@ -53,7 +53,10 @@ export class User {
         let date = '30'
         let res = await axios.get(`http://localhost:3005/dailytodotasks?userId=${this.userId}&date=${date}`)
         console.log(res)
-        return ({all : res.data.alltasks[0][0].res, done : res.data.donetasks[0][0].res})
+        console.log(res.data.donetasks[0])
+        let done = res.data.donetasks[0].length === 0 ? 0 : res.data.donetasks[0][0].res
+        let all = res.data.alltasks[0].length === 0 ? 0 : res.data.alltasks[0][0].res
+        return ({all  : all , done : done})
     } 
 
     getMonthlyTimedTasks = async () => {
@@ -76,7 +79,7 @@ export class User {
         let timedres =[['x', 'Tasks']]
         for(let i = 0 ; i <  24;i++){
             let res = await axios.get(`http://localhost:3005/monthlytimedtasks?userId=${this.userId}&date=${date}&time=${i}`)
-            console.info(res.data.res)
+            // console.log(res.data.res)
             timedres.push([i ,res.data.res || 0])
         }
         console.log(timedres)

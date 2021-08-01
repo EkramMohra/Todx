@@ -5,7 +5,7 @@ const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
 const rp = require("request-promise");
-const moment = require("moment");
+
 const router = express.Router();
 
 const payload = {

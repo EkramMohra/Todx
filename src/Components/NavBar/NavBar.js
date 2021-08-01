@@ -18,6 +18,7 @@ import NavBarSide from "./NavBarSide";
 import NavBarHeader from "./NavBarHeader";
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
+import {  Link } from "react-router-dom"
 
 import './styles/navbar.css';
 import logo from "../../images/logo.png";
@@ -210,7 +211,7 @@ const NavBar = (props) => {
             </IconButton>
 
             <Typography variant="h6" noWrap>
-              <img src={logo} alt="logo" className="logo-style" />
+             <Link to="/homePage/dashboard"> <img src={logo} alt="logo" className="logo-style" /> </Link>
             </Typography>
 
             <IconButton
@@ -256,10 +257,11 @@ const NavBar = (props) => {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+                
                 color="inherit"
               >
-                <AccountCircle />
+                <Link to='/homePage/profile'> <AccountCircle /></Link>
+               
               </IconButton>
             </div>
             

@@ -13,7 +13,8 @@ const Todocharts = (props) => {
     useEffect(  () => {
 
         (async () => { 
-            {dateToPresent === 'daily' ? setDataTochar(await props.users.getdailyToDoTasks()) 
+            const res = await props.users.getdailyToDoTasks()
+            {dateToPresent === 'daily' ? setDataTochar(res) 
             : setDataTochar(await props.users.getMonthlyToDoTasks())}
         })()
     }, [dateToPresent]);

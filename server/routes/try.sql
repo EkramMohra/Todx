@@ -164,15 +164,15 @@ USE sql_todx;
 
 -- DELETE FROM dailylog;
 
--- Alter Table dailylog Add Constraint sqlUniqueConstraint UNIQUE (task_id, date)
+-- Alter Table dailylog Add Constraint sqlUniqueConstraint UNIQUE (task_id, date);
 
--- Alter Table dailytask Add Constraint sqlUniqueConstraint UNIQUE (id, date)
+-- Alter Table dailytask Add Constraint sqlUniqueConstraint UNIQUE (id, date);
 
 --  DELETE FROM dailytask;
  
 --   DELETE FROM dailylist;
   
--- ALTER TABLE timedtask MODIFY COLUMN content VARCHAR(500);
+-- ALTER TABLE timedtask MODIFY COLUMN content VARCHAR(1000);
 
 -- UPDATE user 
 --     SET last = 'Musa',
