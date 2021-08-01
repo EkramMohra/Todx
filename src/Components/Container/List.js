@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import Task from './Task';
 import MyModal from './MyModal';
+import Button from 'react-bootstrap/Button'
+
 import Zoom from './Zoom';
 import './List.css'
-
+const moment = require("moment");
+let today=moment().format("YYYY-MM-DD", true)
 const List = (props) => {
-
+    let date=props.todolist.DateOfTheDay 
 
     const [modalShowToDo, setModalShowToDo] = useState(false)
     const [modalShowDaylies, setModalShowDaylies] = useState(false)
@@ -36,12 +39,12 @@ const List = (props) => {
 
             <div className="container">
                 <div className="list">
-                    <h4>To Do List</h4>
+                    <h4>To Do List {props.todolist.DateOfTheDay}</h4>
                     {props.todolist.list.map((task, index) =>
                         <Task key={index} task={task} deleteTask={props.todolist.deleteTask}
                             task_type="todolist" updateTask={props.todolist.updateTask}
-                            doneTask={props.todolist.doneTask} />)}
-                    <button onClick={() => setModalShowToDo(true)}>Add</button>
+                            date={date} doneTask={props.todolist.doneTask} />)}
+                    <Button disabled = {date<today? true : false} onClick={() => setModalShowToDo(true)}>Add</Button>
                 </div>
 
                 <div className="list">
@@ -49,19 +52,19 @@ const List = (props) => {
                     {props.dailylist.list.map((task, index) =>
                         <Task key={index} task={task} deleteTask={props.dailylist.deleteTask}
                             task_type="dailylist" updateTask={props.dailylist.updateTask}
-                            doneTask={props.dailylist.doneTask} />)}
+                            date={date} doneTask={props.dailylist.doneTask} />)}
 
-                    <button onClick={() => setModalShowDaylies(true)}>Add</button>
+                    <Button disabled = {date<today ? true : false} onClick={() => setModalShowDaylies(true)}>Add</Button>
                 </div >
                 <div className="list">
                     <h4>Appointemnts For Today List</h4>
                     {props.timedlist.list.map((task, index) =>
                         <Task key={index} task={task} deleteTask={props.timedlist.deleteTask}
                             task_type="timedlist" updateTask={props.timedlist.updateTask}
-                            doneTask={props.timedlist.doneTask} />)}
+                            date={date} doneTask={props.timedlist.doneTask} />)}
 
-                    <button onClick={() => setModalShowTimed(true)}>Add</button>
-                    <button onClick={() => setModalZoomMetting(true)}>Crate Zoom meeting</button>
+                    <Button disabled = {date<today? true : false} onClick={() => setModalShowTimed(true)}>Add</Button>
+                    <Button onClick={() => setModalZoomMetting(true)}>Create Zoom meeting</Button>
                 </div>
             </div>
 

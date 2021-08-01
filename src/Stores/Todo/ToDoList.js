@@ -10,9 +10,10 @@ export class ToDoList {
         this.length = 0
         this.index = 0
         this.DateOfTheDay = moment().format("YYYY-MM-DD", true)
-        this.userId =JSON.parse(sessionStorage.getItem('user'))[0].id
+        this.userId = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].id : '-1'
 
         makeObservable(this, {
+            userId:observable,
             DateOfTheDay: observable,
             index: observable,
             list: observable,
@@ -22,7 +23,8 @@ export class ToDoList {
             emptyTheList: action,
             deleteTask: action,
             getData: action,
-            doneTask: action
+            doneTask: action,
+            updateId:action
         })
     }
 
@@ -106,7 +108,7 @@ export class ToDoList {
     }
 
     doneTask = async (id) => {
-        console.log(id);
+
         await axios.put('http://localhost:3005/donetodotasks', { data: { id } })
             .then(response => {
                 console.log(response.data);
@@ -117,4 +119,8 @@ export class ToDoList {
         this.getList()
 
     }
+    updateId(id){
+        this.userId = id
+    }
+
 }

@@ -10,14 +10,16 @@ export class TimedList {
         this.length = 0
         this.index = 0
         this.DateOfTheDay = moment().format("YYYY-MM-DD", true)
-        this.userId =JSON.parse(sessionStorage.getItem('user'))[0].id
+        this.userId = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].id : '-1'
 
         makeObservable(this, {
+            userId:observable,
             DateOfTheDay: observable,
             index: observable,
             list: observable,
             length: observable,
             addTask: action,
+            updateId:action,
             updateTask: action,
             emptyTheList: action,
             deleteTask: action,
@@ -110,5 +112,10 @@ export class TimedList {
         this.getList()
 
     }
+
+    updateId(id){
+        this.userId = id
+    }
+
 }
 

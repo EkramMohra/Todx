@@ -1,5 +1,6 @@
 -- CREATE DATABASE sql_todx;
 USE sql_todx;
+-- ALTER TABLE timedtask modify COLUMN content VARCHAR (500);
 
 -- CREATE TABLE photo(
 --     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -28,13 +29,27 @@ USE sql_todx;
 -- ADD FOREIGN KEY(role_id) REFERENCES role(id) ON DELETE CASCADE;
 -- ADD FOREIGN KEY(role_id) REFERENCES role(id) ON DELETE CASCADE;
 
-CREATE TABLE sharedtasks(
-    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    sender_id INT,
-    recevier_id INT,
-    task_id INT,
-    task_type VARCHAR(40),
+-- CREATE TABLE sharedtasks(
+--     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--     sender_id INT,
+--     recevier_id INT,
+--     task_id INT,
+--     task_type VARCHAR(40),
 
-    FOREIGN KEY(sender_id) REFERENCES user(id),
-    FOREIGN KEY(recevier_id) REFERENCES user(id)
-);
+--     FOREIGN KEY(sender_id) REFERENCES user(id),
+--     FOREIGN KEY(recevier_id) REFERENCES user(id)
+-- );
+
+-- UPDATE dailytask
+-- SET status = "pending"
+
+-- SELECT * FROM dailytask WHERE date <= CURDATE();
+
+
+-- CREATE TABLE dailylog(
+--     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--     task_id INT,
+--     date VARCHAR(40),
+
+--     FOREIGN KEY(task_id) REFERENCES dailytask(id)
+-- );

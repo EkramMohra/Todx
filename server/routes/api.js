@@ -1,11 +1,10 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
-const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
 const rp = require("request-promise");
-
+const moment = require("moment");
 const router = express.Router();
 
 const payload = {
@@ -127,6 +126,7 @@ router.delete("/todotasks", function (req, res) {
         WHERE todolist.todotask_id = ${data.taskId}
         AND todolist.user_id = ${data.userId} ; `
     )
+
     .then(function ([result]) { });
   sequelize.query(
     ` DELETE FROM todotask 
@@ -160,35 +160,62 @@ router.put("/donetodotasks", function (req, res) {
 
 router.get("/dailytasks", function (req, res) {
   let { today, userId } = req.query
-
+  console.log(today);
   sequelize
     .query(
-      `SELECT dailytask.* 
-      FROM dailytask JOIN dailylist 
-      WHERE dailylist.user_id = '${userId}'
-      AND dailylist.dailytask_id = dailytask.id;`
+      `UPDATE dailytask JOIN dailylog JOIN dailylist 
+          SET dailytask.status="pending"
+        WHERE dailylist.user_id = '${userId}'
+        AND dailylog.task_id = dailytask.id
+        AND dailylog.date < '${today}'
+        AND dailylist.dailytask_id = dailytask.id;`
     )
     .then(function ([result]) {
-      console.log("done from daily")
-      res.send(result);
+      sequelize
+        .query(
+          `UPDATE dailytask JOIN dailylog JOIN dailylist 
+            SET dailytask.status="done"
+          WHERE dailylist.user_id = '${userId}'
+          AND dailylog.task_id = dailytask.id
+          AND dailylog.date >= '${today}'
+          AND dailylist.dailytask_id = dailytask.id;`
+        )
+        .then(function ([result]) {
+          // console.log("update to done");
+          // res.send(result);//insert
+        });
+      // console.log("done from daily")
+      sequelize
+        .query(
+          `SELECT dailytask.* 
+          FROM dailytask JOIN dailylist 
+          WHERE dailylist.user_id = '${userId}'
+          AND dailytask.date <= '${today}'
+          AND dailylist.dailytask_id = dailytask.id;`
+        )
+        .then(function ([result]) {
+          // console.log("reset")
+          // console.log(result);
+          res.send(result);
+        });
+      // res.send(result);
     });
 });
 
 router.post("/dailytasks", function (req, res) {
   let newTask = req.body;
-
   sequelize
     .query(
       `INSERT INTO 
-        dailytask(title,content,status)
-        VALUES('${newTask.title}','${newTask.content}','${newTask.status}')`
+    dailytask(title,content,status,date)
+    VALUES('${newTask.title}','${newTask.content}','${newTask.status}','${newTask.date}')`
     )
     .then(function ([result]) {
       sequelize
         .query(
           `INSERT INTO 
-          dailylist(user_id,dailytask_id)
-            VALUES(${newTask.userId},'${result}')`
+        dailylist(user_id,dailytask_id)
+        VALUES(${newTask.userId},'${result}')`
         )
         .then(function ([result]) { });
     });
@@ -196,21 +223,52 @@ router.post("/dailytasks", function (req, res) {
   res.send();
 });
 
+
 router.put("/dailytasks", function (req, res) {
-
   let updateTask = req.body;
-
-  sequelize
-    .query(
-      `UPDATE dailytask 
+  today = moment().format("YYYY-MM-DD", true)
+  console.log(today);
+  if (updateTask.date > today) {
+    // sequelize
+    //   .query(
+    //     `UPDATE dailytask 
+    //   SET title = '${updateTask.title}',
+    //       content = '${updateTask.content}',
+    //       status = '${updateTask.status}'
+    //       date = '${updateTask.date}'
+    //   WHERE id = ${updateTask.id};`
+    //   )
+    //   .then(function ([result]) {
+    //   });
+    // sequelize
+    //   .query(
+    //     `INSERT INTO 
+    // dailytask(title,content,status,date)
+    // VALUES('${updateTask.title}','${updateTask.content}','${updateTask.status}','${updateTask.date}')`
+    //   )
+    //   .then(function ([result]) {
+    //     sequelize
+    //       .query(
+    //         `INSERT INTO 
+    //     dailylist(user_id,dailytask_id)
+    //     VALUES(${updateTask.userId},'${result}')`
+    //       )
+    //       .then(function ([result]) { });
+    //       console.log("2-8");
+    //   });
+  }
+  else {
+    sequelize
+      .query(
+        `UPDATE dailytask 
         SET title = '${updateTask.title}',
             content = '${updateTask.content}',
             status = '${updateTask.status}'
         WHERE id = ${updateTask.id};`
-    )
-    .then(function ([result]) {
-    });
-
+      )
+      .then(function ([result]) {
+      });
+  }
   res.send();
 });
 
@@ -234,26 +292,43 @@ router.delete("/dailytasks", function (req, res) {
 });
 
 router.put("/donedailytasks", function (req, res) {
-
-
-  let taskId = req.body.data.id
-
-
+  let data = req.body
   sequelize
     .query(
       `UPDATE dailytask 
         SET status = 'done'
-        WHERE id = ${taskId};`
+        WHERE id = ${data.taskId};`
     )
     .then(function ([result]) {
       console.log("updated");
+      sequelize
+        .query(
+          `INSERT INTO 
+           dailylog(task_id,date)
+           VALUES( ${data.taskId},'${data.DateOfTheDay}')`
+        )
+        .then(function ([result]) { });
     });
 
   res.send();
 });
 
+// router.put("/resetdonedailytasks", function (req, res) {
+
+//   sequelize
+//     .query(
+//       `UPDATE dailytask 
+//         SET status = 'pending';`
+//     )
+//     .then(function ([result]) {
+//       console.log("reset done");
+//     });
+
+//   res.send();
+// });
+
 //===========================================
-//--------------daily routes-----------------
+//--------------timed routes-----------------
 //===========================================
 
 router.get("/timedtasks", function (req, res) {

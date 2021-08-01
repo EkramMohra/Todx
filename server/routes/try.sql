@@ -153,3 +153,27 @@ USE sql_todx;
 --               WHERE timedlist.user_id = 1
 --               AND timedlist.timedtask_id = timedtask.id
 --               AND timedtask.date = "2021-07-29"
+
+-- delete FROM user where id=6;
+
+-- SELECT DATEADD(day, 1, GETDATE())
+
+-- ALTER TABLE dailyTask add date VARCHAR(40);
+
+-- UPDATE dailytask JOIN dailylog JOIN dailylist 
+--           SET dailytask.status="pending"
+--         WHERE dailylist.user_id = 2
+--         AND dailylog.task_id = dailytask.id
+--         AND dailylog.date < '2021-08-01'
+--         AND dailylist.dailytask_id = dailytask.id;
+
+-- DELETE FROM dailylog;
+
+-- Alter Table dailylog Add Constraint sqlUniqueConstraint UNIQUE (task_id, date)
+
+-- Alter Table dailytask Add Constraint sqlUniqueConstraint UNIQUE (id, date)
+
+--  DELETE FROM dailytask;
+ 
+--   DELETE FROM dailylist;
+  

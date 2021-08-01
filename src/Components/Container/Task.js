@@ -3,16 +3,17 @@ import Popup from './popup';
 import { useState } from 'react';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
-import Share  from './Share'
+import Share from './Share'
 import './task.css'
-
+const moment = require("moment");
+let today = moment().format("YYYY-MM-DD", true)
 const Task = (props) => {
     const [modalShow, setModalShow] = useState(false);
     const [shareModalShow, setShareModalShow] = useState(false);
 
     const deleteTask = () => props.deleteTask(props.task.id)
     const doneTask = () => props.doneTask(props.task.id)
-    
+
     return (
         <>
 
@@ -20,23 +21,23 @@ const Task = (props) => {
                 task={props.task} updateTask={props.updateTask}
                 onHide={() => setModalShow(false)} time={props.task.time}
                 priority={props.task.priority} notification={props.task.notification}
-                date={props.task.date}  />
+                date={props.task.date} />
 
-   
+
             <Share show={shareModalShow}
                 task={props.task} task_type={props.task_type}
-                onHide={() => setShareModalShow(false)}/>
+                onHide={() => setShareModalShow(false)} />
 
-            <Card style={{ width: '90%' }} className={`mb-2 ${props.task.status=="pending"?"pending":"done"}`} >
+            <Card style={{ width: '90%' }} className={`mb-2 ${props.task.status == "pending" ? "pending" : "done"}`} >
                 <Card.Header> {props.task.title} </Card.Header>
                 <Card.Body>
                     <Card.Title> {props.task.content} </Card.Title>
                     {props.task.time ? <Card.Title> {props.task.time}</Card.Title> : null}
-                    <button onClick={() => setModalShow(true)}>edit</button>
-                    <button onClick={deleteTask}>remove</button>
-                    <Button onClick={doneTask} disabled = {props.task.status === "done"? 'disabled' : null}>Done</Button>
-
-                    {props.task_type === "dailylist" ? null : <button onClick={() => setShareModalShow(true)}>share</button> }
+                    <Button disabled={props.date < today} onClick={() => setModalShow(true)}>edit</Button>
+                    <Button disabled={props.date < today} onClick={deleteTask}>remove</Button>
+                    <Button onClick={doneTask} disabled={props.task.status === "done" ? 'disabled' : null  || props.date === today?false:true}>Done</Button>
+                    {/* || props.date < today */}
+                    {props.task_type === "dailylist" ? null : <button onClick={() => setShareModalShow(true)}>share</button>}
                 </Card.Body>
             </Card>
         </>
