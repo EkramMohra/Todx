@@ -10,10 +10,9 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 const Container = (props) => {
 
-  // const [flag, setFlag] = useState(false)
-
   Pusher.logToConsole = true;
   // let flag = false
+  const [firstAsign, setfirstAsign] = useState('in')
   let userId = JSON.parse(sessionStorage.getItem('user'))[0].id
 
   let channel = `share_task_recevier_id_${userId}`
@@ -22,17 +21,36 @@ const Container = (props) => {
   })
 
   var channelPusher = pusher.subscribe(channel);
-  channelPusher.bind('my-event', function (data) {
-    // setFlag(true)
-    // console.log(flag)
-    MySwal.fire({
-      icon: "warning",
-      title: JSON.stringify(data.message),
-      showConfirmButton: false,
-      timer: 2000
+
+  if (firstAsign == 'in') {
+    props.todolist.updateId(userId)
+    props.dailylist.updateId(userId)
+    props.timedlist.updateId(userId)
+    props.todolist.getList()
+    props.dailylist.getList()
+    props.timedlist.getList()
+    
+    channelPusher.bind('my-event', function (data) {
+      MySwal.fire({
+        icon: "warning",
+        title: JSON.stringify(data.message),
+        showConfirmButton: false,
+        timer: 3000
+      })
+      if(data.task_type==="timedtask"){
+        props.timedlist.addTask(data.task)
+      }
+      else
+       {
+        props.todolist.addTask(data.task)
+       }
     })
-    props.todolist.addTask(data.task)
-  })
+
+    setfirstAsign('out')
+  }
+
+  
+  
   return (
     <>
       <NavBar />

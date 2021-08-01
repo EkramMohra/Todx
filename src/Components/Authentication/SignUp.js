@@ -78,7 +78,13 @@ const SignUp = (props) => {
           password: password,
         },
       })
-      .then(() => {
+      .then((response) => {
+        console.log(response)
+        if(response.data===false){
+          seterrorMsg("User already defined")
+          setShow(true)
+          return
+        }
         setFirst("")
         setLast("")
         setEmail("")

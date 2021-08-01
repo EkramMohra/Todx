@@ -19,12 +19,13 @@ const Zoom = props => {
     useEffect(() => {
 
         (async () => {
-            // setSenderId(JSON.parse(sessionStorage.getItem('user'))[0].id)
             let users = await axios.get(`http://localhost:3005/users`, { senderId })
-            let response = await axios.get(`http://localhost:3005/newmeeting`)
-            setZoomData(response.data)
-            setUsers(users.data)
-
+            await setUsers(users.data)
+             let response = await axios.get(`http://localhost:3005/newmeeting?title=${title}`)
+             
+            await setZoomData(response.data)
+            setSenderId(JSON.parse(sessionStorage.getItem('user'))[0].id)
+         
         })()
 
 
@@ -35,7 +36,6 @@ const Zoom = props => {
         let target = event.target
         let value = target.value
         let name = target.name
-
         if (name === "date") setDate(value)
         if (name === "users") setUserId(value)
         if (name === "title") setTitle(value)
@@ -54,14 +54,15 @@ const Zoom = props => {
             zoom: zoomData
         }
 
-        // await axios.post(`http://localhost:3005/shares`, data)
-        props.onHide()
+        await axios.post(`http://localhost:3005/shares`, data)
+       await props.onHide()
+       document.location.reload(true);
 
     }
     return (
         <Modal  {...props} centered aria-labelledby="contained-modal-title-vcenter">
             <Modal.Header >
-                <Modal.Title>Share Task</Modal.Title>
+                <Modal.Title>create a zoom meeting</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
