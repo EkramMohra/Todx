@@ -52,7 +52,6 @@ USE sql_todx;
 
 -- CREATE TABLE ltask(
 -- CREATE DATABASE sql_todx;
-USE sql_todx;
 -- CREATE TABLE photo(
 --     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 --     photo VARCHAR(40)
@@ -119,10 +118,6 @@ USE sql_todx;
 --     status VARCHAR(40),
 --     notification VARCHAR(40)
 -- );
-
-
-
-
 --  INSERT INTO 
 --         todotask(title,content,date,priority,status)
 --         VALUES('Clean the house','Clean bedroom and garden','2021/07/27',0,'pending');
@@ -177,3 +172,32 @@ USE sql_todx;
  
 --   DELETE FROM dailylist;
   
+-- ALTER TABLE timedtask MODIFY COLUMN content VARCHAR(500);
+
+-- UPDATE user 
+--     SET last = 'Musa',
+--         first = 'Kusa',
+--         password = '1234',
+--         photo_id = '3',
+--         email ='unleashed@gmail.com'
+--     WHERE id = 3;
+
+        --   INSERT INTO 
+        --   dailylist(user_id,dailytask_id,date)
+        --     VALUES(1,12,'2021-07-30');
+-- ALTER TABLE dailylist DROP COLUMN date;
+
+-- select count(timedtask_id) from timedlist
+--     LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
+--     WhERE user_id	 = '1'
+--     AND timedtask.time LIKE '10:%'
+--     AND timedtask.date LIKE '%-07-%'
+--     GROUP BY user_id;
+
+
+-- select count(timedtask_id) from timedlist
+--         LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
+--         WhERE user_id	 = '1'
+--         AND timedtask.time LIKE '10%'
+--         AND timedtask.date LIKE '%-07-%'
+--         GROUP BY user_id;

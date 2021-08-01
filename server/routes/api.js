@@ -14,6 +14,7 @@ const payload = {
 const token = jwt.sign(payload, config.APISecret);
 
 const Pusher = require("pusher");
+const { response } = require("express");
 
 const pusher = new Pusher({
   appId: config.PUSHER.APP_ID,
@@ -42,16 +43,188 @@ router.get("/users", async (request, response) => {
 
 router.post("/users", async (request, response) => {
   const user = { ...request.body.user };
-  sequelize.query(
-    `INSERT INTO 
+  let user_id = Math.floor(Math.random() * 1000000)
+  let user_check = await sequelize.query(`SELECT * FROM user WHERE ( first='${user.first}' AND last='${user.last}' ) OR email='${user.email}'`)
+  console.log(user_check)
+  if (user_check[0][0] != undefined) {
+    response.send(false)
+  }
+  else {
+    sequelize.query(
+      `INSERT INTO 
       user
-      VALUES( null,'${user.last}','${user.first}',
+      VALUES( ${user_id},'${user.last}','${user.first}',
             '${user.email}','${user.password}',null,null)`
-  );
-  console.log(user);
-  response.send(user);
+
+    );
+    response.send(true);
+  }
+
+})
+
+//===========================================
+//--------------profile routes---------------
+//===========================================
+
+router.get("/userInfo", async (request, response) => {
+
+  let { userId } = request.query
+
+  let queryString = `SELECT * FROM user WHERE id ='${userId}'`
+
+  let userInfo = await sequelize.query(queryString);
+
+  response.send(userInfo[0]);
 });
 
+router.get("/monthlytodotasks", async (request, response) => {
+
+  let { userId, date } = request.query
+
+  let donetasks = await sequelize.query(
+    `select count(todotask_id) AS res from todolist
+    LEFT JOIN todotask ON todolist.todotask_id = todotask.id
+    where todotask.status = 'done'
+    AND user_id	 = '${userId}'
+    AND todotask.date LIKE '%-${date}-%'
+    GROUP BY user_id;`
+  )
+  let alltasks = await sequelize.query(
+    `select count(todotask_id) AS res from todolist
+        LEFT JOIN todotask ON todolist.todotask_id = todotask.id
+        WHERE user_id	 = '${userId}'
+        AND todotask.date LIKE '%-${date}-%'
+        GROUP BY user_id;`
+  )
+  response.send({ donetasks, alltasks })
+
+})
+
+router.get("/dailytodotasks", async (request, response) => {
+
+  let { userId, date } = request.query
+  let donetasks = await sequelize.query(
+    `select count(todotask_id) AS res from todolist
+    LEFT JOIN todotask ON todolist.todotask_id = todotask.id
+    where todotask.status = 'done'
+    AND user_id	 = '${userId}'
+    AND todotask.date LIKE '%-${date}%'
+        GROUP BY user_id;`
+  )
+  let alltasks = await sequelize.query(
+    `select count(todotask_id) AS res from todolist
+    LEFT JOIN todotask ON todolist.todotask_id = todotask.id
+        WHERE user_id	 = '${userId}'
+        AND todotask.date LIKE '%-${date}%'
+        GROUP BY user_id;`
+  )
+  response.send({ donetasks, alltasks })
+
+})
+
+router.get("/dailytimedtasks", async (request, response) => {
+
+  let { userId, date, time } = request.query
+
+  let donetasks = await sequelize.query(
+    `select count(timedtask_id) AS res from timedlist
+    LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
+    WhERE user_id	 = ${userId}
+    AND timedtask.time LIKE '${time}:%'
+    AND timedtask.date LIKE '%-${date}%'
+    GROUP BY user_id;`
+  )
+
+  response.send(donetasks[0][0])
+
+})
+
+router.get("/monthlytimedtasks", async (request, response) => {
+
+  let { userId, date, time } = request.query
+
+  let donetasks = await sequelize.query(
+    `select count(timedtask_id) AS res from timedlist
+      LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
+        WhERE user_id	 = ${userId}
+        AND timedtask.time LIKE '${time}%'
+        AND timedtask.date LIKE '%-${date}-%'
+        GROUP BY user_id;`
+  )
+
+  response.send(donetasks[0][0])
+
+})
+
+router.put("/updatepassword`", async (request, response) => {
+
+  let newPassword = request.body.newPassword
+  let id = request.body.id
+
+  let queryString = `UPDATE user 
+                      SET password = '${newPassword}'
+                      WHERE id = ${id};`
+
+  await sequelize.query(queryString);
+
+  response.send();
+});
+
+router.put("/updatephoto`", async (request, response) => {
+
+  let photoID = request.body.photoID
+  let id = request.body.id
+
+  let queryString = `UPDATE user 
+                      SET password = '${photoID}'
+                      WHERE id = ${id};`
+
+  await sequelize.query(queryString);
+
+  response.send();
+});
+
+router.put("/updatename`", async (request, response) => {
+
+  let fullName = request.body.FullName
+  let id = request.body.id
+
+  let firstName = fullName.split(' ').slice(0, -1).join(' ');
+  let lastName = fullName.split(' ').slice(-1).join(' ');
+
+  let queryString = `UPDATE user 
+                      SET first = '${firstName}'
+                      SET last = '${lastName}'
+                      WHERE id = ${id};`
+
+  await sequelize.query(queryString);
+
+  response.send();
+});
+
+router.put("/updateInfousers", async (request, response) => {
+
+  let photoID = request.body.photoID
+  let fullName = request.body.FullName
+  let id = request.body.id
+  let newPassword = request.body.newPassword
+
+  let firstName = fullName.split(' ').slice(0, -1).join(' ');
+  let lastName = fullName.split(' ').slice(-1).join(' ');
+
+  let queryString = `UPDATE user 
+                        SET first = '${firstName}',
+                        SET last = '${lastName}',
+                        SET passwor = '${newPassword}',
+                        SER photo_id = '${photoID}'
+                      WHERE id = ${id};`
+
+  await sequelize.query(queryString);
+
+  response.send();
+
+
+})
 //============================================
 //--------------todo routes-------------------
 //============================================
@@ -67,13 +240,12 @@ router.get("/todotasks", function (req, res) {
                 AND todotask.date = '${today}';`
     )
     .then(function ([result]) {
-      console.log("done from todo")
+      // console.log("done from todo")
       res.send(result);
     });
 });
 
 router.post("/todotasks", function (req, res) {
-
   let newTask = req.body;
 
   sequelize
@@ -97,7 +269,6 @@ router.post("/todotasks", function (req, res) {
 });
 
 router.put("/todotasks", function (req, res) {
-
   let updateTask = req.body;
 
   sequelize
@@ -111,7 +282,7 @@ router.put("/todotasks", function (req, res) {
         WHERE id = ${updateTask.id};`
     )
     .then(function ([result]) {
-      console.log("updated");
+      // console.log("updated");
     });
 
   res.send();
@@ -147,7 +318,7 @@ router.put("/donetodotasks", function (req, res) {
         WHERE id = ${taskId};`
     )
     .then(function ([result]) {
-      console.log("updated");
+      // console.log("updated");
     });
 
   res.send();
@@ -222,7 +393,6 @@ router.post("/dailytasks", function (req, res) {
 
   res.send();
 });
-
 
 router.put("/dailytasks", function (req, res) {
   let updateTask = req.body;
@@ -332,8 +502,9 @@ router.put("/donedailytasks", function (req, res) {
 //===========================================
 
 router.get("/timedtasks", function (req, res) {
+
   let { today, userId } = req.query
-  console.log(req.query);
+
   sequelize
     .query(
       `SELECT timedtask.* 
@@ -344,13 +515,12 @@ router.get("/timedtasks", function (req, res) {
     )
 
     .then(function ([result]) {
-      console.log("done from timed")
+      // console.log("done from timed")
       res.send(result)
     })
 })
 
 router.post("/timedtasks", function (req, res) {
-
   let newTask = req.body;
 
   sequelize
@@ -374,7 +544,6 @@ router.post("/timedtasks", function (req, res) {
 });
 
 router.put("/timedtasks", function (req, res) {
-
   let updateTask = req.body;
 
   sequelize
@@ -389,7 +558,7 @@ router.put("/timedtasks", function (req, res) {
         WHERE id = ${updateTask.id};`
     )
     .then(function ([result]) {
-      console.log("updated");
+      // console.log("updated");
     });
 
   res.send();
@@ -424,7 +593,6 @@ router.put("/donetimedtasks", function (req, res) {
         WHERE id = ${taskId};`
     )
     .then(function ([result]) {
-      console.log("updated");
     });
 
   res.send();
@@ -465,7 +633,7 @@ router.get("/newmeeting", (req, res) => {
     })
     .catch(function (err) {
       // API call failed...
-      console.log("API call failed, reason ", err);
+      // console.log("API call failed, reason ", err);
     });
 });
 
@@ -473,22 +641,31 @@ router.get("/newmeeting", (req, res) => {
 //--------------share routes------------------
 //===========================================
 router.post("/shares", async (request, response) => {
+
   let data = request.body
-
+  let task_id = data.task_id
+  let new_task = {}
   let task_type = (data.task_type === "timedlist") ? "timedtask" : "todotask"
+  let flag = false
 
-  console.log("zoom: ", data.task_type)
-  // if(data.task_type === "timedlist"){
-  //   data.task_id = await sequelize.query(`INSERT INTO 
-  //       timedtask(title,content,date,time,status)
-  //       VALUES('${data.title}','${data.zoom.start_url}','${data.date}'
-  //             ,'${data.time}','pending')`)
-  //   console.log(data.task_id)
-  // }
+  if (data.task_type === "timedlist" && data.task_id === undefined) {
+    flag = true
+    task_id = await sequelize.query(`INSERT INTO
+        timedtask(title,content,date,time,status)
+        VALUES('${data.title}','${data.zoom.start_url}','${data.date}'
+              ,'${data.time}','pending')`)
+    sequelize
+      .query(
+        `INSERT INTO
+                timedlist(date,user_id,timedtask_id)
+                  VALUES('${data.date}',${data.sender_id},'${task_id[0]}')`
+      )
+  }
+
   let shared = await sequelize.query(
     `INSERT INTO 
      sharedtasks (sender_id,recevier_id,task_id,task_type)
-     VALUES('${data.sender_id}','${data.recevier_id}','${data.task_id}'
+     VALUES('${data.sender_id}','${data.recevier_id}','${task_id != data.task_id ? task_id[0] : data.task_id}'
           ,'${data.task_type}')`
   );
 
@@ -500,45 +677,33 @@ router.post("/shares", async (request, response) => {
   let task = await sequelize.query(
     `SELECT ${task_type}.* from ${task_type} JOIN ${data.task_type}
      WHERE ${data.task_type}.user_id  = ${data.sender_id}
-     AND  ${task_type}.id = ${data.task_id}
+     AND  ${task_type}.id = ${task_id != data.task_id ? task_id[0] : data.task_id}
     `
   );
 
-  console.log(task[0][0])
-
+  if (flag === true) {
+    new_task =
+    {
+      id: task[0][0].id,
+      title: task[0][0].title,
+      content: data.zoom.join_url,
+      date: task[0][0].date,
+      time: task[0][0].time,
+      status: task[0][0].status,
+      notification: task[0][0].notification
+    }
+  }
+  
   let channel = `share_task_recevier_id_${data.recevier_id}`
-
-
 
   pusher.trigger(channel, "my-event", {
     message: `You have a new shared task from ${userName[0][0].first} ${userName[0][0].last}`,
-    task: task[0][0]
+    task: flag === true ? new_task : task[0][0],
+    task_type: task_type
+
   });
   response.send("shared");
 });
 
-
-async function zoom() {
-  sequelize
-    .query(
-      `INSERT INTO 
-        timedtask(title,content,date,time,notification,status)
-        VALUES('${newTask.title}','${newTask.content}','${newTask.date}'
-              ,'${newTask.time}',${newTask.notification},'${newTask.status}')`
-    )
-    .then(function ([result]) {
-      sequelize
-        .query(
-          `INSERT INTO 
-          timedlist(date,user_id,timedtask_id)
-            VALUES('${newTask.date}',${newTask.userId},'${result}')`
-        )
-        .then(function ([result]) { });
-    });
-}
-
-function todo() {
-
-}
 
 module.exports = router;

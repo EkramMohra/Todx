@@ -13,7 +13,8 @@ const Task = (props) => {
 
     const deleteTask = () => props.deleteTask(props.task.id)
     const doneTask = () => props.doneTask(props.task.id)
-
+    const pattern = new RegExp('^(https?|ftp)://');
+    
     return (
         <>
 
@@ -31,13 +32,18 @@ const Task = (props) => {
             <Card style={{ width: '90%' }} className={`mb-2 ${props.task.status == "pending" ? "pending" : "done"}`} >
                 <Card.Header> {props.task.title} </Card.Header>
                 <Card.Body>
-                    <Card.Title> {props.task.content} </Card.Title>
+                    <Card.Title>
+                        {props.task.content.length>50&&pattern.test(props.task.content)?
+                        <a href={props.task.content}>
+                         {props.task.content.length>100?"Start Zoom Meeting":"Join Zoom Meeting"}
+                        </a>
+                         :props.task.content} 
+                    </Card.Title>
                     {props.task.time ? <Card.Title> {props.task.time}</Card.Title> : null}
                     <Button disabled={props.date < today} onClick={() => setModalShow(true)}>edit</Button>
                     <Button disabled={props.date < today} onClick={deleteTask}>remove</Button>
                     <Button onClick={doneTask} disabled={props.task.status === "done" ? 'disabled' : null  || props.date === today?false:true}>Done</Button>
-                    {/* || props.date < today */}
-                    {props.task_type === "dailylist" ? null : <button onClick={() => setShareModalShow(true)}>share</button>}
+                    {props.task_type === "dailylist"||props.task.content.length>100 ? null : <button onClick={() => setShareModalShow(true)}>share</button> }
                 </Card.Body>
             </Card>
         </>

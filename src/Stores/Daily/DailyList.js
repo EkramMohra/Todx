@@ -21,6 +21,7 @@ export class DailyList {
             index: observable,
             list: observable,
             length: observable,
+            userId: observable,
             addTask: action,
             updateTask: action,
             // resetDone: action,
@@ -43,20 +44,17 @@ export class DailyList {
             })
         })
     }
-
     emptyTheList = () => {
         this.list = []
     }
-
     addTask = async (data) => {
         let obj = {
             title: data.title,
             content: data.content,
             status: 'pending',
             userId: this.userId,
-            date:this.DateOfTheDay
+            date: this.DateOfTheDay
         }
-
         let res = await axios.post(`http://localhost:3005/dailytasks`, obj)
             .then((response) => {
                 console.log(response);
@@ -93,9 +91,8 @@ export class DailyList {
             content: data.content,
             userId: this.userId,
             status: 'pending',
-            date:this.DateOfTheDay
+            date: this.DateOfTheDay
         }
-
         await axios.put('http://localhost:3005/dailytasks', obj)
             .then(response => {
                 console.log(response.data);
@@ -121,23 +118,9 @@ export class DailyList {
 
     }
 
-    // resetDone = async () => {
-
-    //     await axios.put('http://localhost:3005/resetdonedailytasks')
-    //         .then(response => {
-    //             console.log(response.data);
-    //             // this.emptyTheList()
-    //             console.log(this.list);
-    //             // this.getList()
-    //         }, (error) => {
-    //             console.log(error);
-    //         })
-
-    // }
-
-    updateId(id) {
+    updateId = (id) => {
         this.userId = id
     }
-
 }
+
 

@@ -1,8 +1,8 @@
 import React from "react";
-import { observer, inject } from 'mobx-react'
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
-import { useState } from 'react';
+import { observer, inject } from "mobx-react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { useState } from "react";
 import Switch from "react-switch";
 import './popup.css'
 const PopUp = props => {

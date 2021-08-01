@@ -46,7 +46,6 @@ const List = (props) => {
                             date={date} doneTask={props.todolist.doneTask} />)}
                     <Button disabled = {date<today? true : false} onClick={() => setModalShowToDo(true)}>Add</Button>
                 </div>
-
                 <div className="list">
                     <h4>Dailies List</h4>
                     {props.dailylist.list.map((task, index) =>
