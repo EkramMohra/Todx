@@ -7,13 +7,18 @@ import Row from 'react-bootstrap/Row'
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Task from './Task';
 import MyModal from './MyModal';
+import Button from 'react-bootstrap/Button'
+
 import Zoom from './Zoom';
 import Fab from '@material-ui/core/Fab';
 import './List.css'
 
 const moment = require("moment");
+let today=moment().format("YYYY-MM-DD", true)
 
 const List = (props) => {
+    let date=props.todolist.DateOfTheDay 
+
     const [modalShowToDo, setModalShowToDo] = useState(false)
     const [modalShowDaylies, setModalShowDaylies] = useState(false)
     const [modalShowTimed, setModalShowTimed] = useState(false)
@@ -128,6 +133,35 @@ const List = (props) => {
                     </Card.Body>
                 </Card>
             </div>
+            {/* <div className="container">
+                <div className="list">
+                    <h4>To Do List {props.todolist.DateOfTheDay}</h4>
+                    {props.todolist.list.map((task, index) =>
+                        <Task key={index} task={task} deleteTask={props.todolist.deleteTask}
+                            task_type="todolist" updateTask={props.todolist.updateTask}
+                            date={date} doneTask={props.todolist.doneTask} />)}
+                    <Button disabled = {date<today? true : false} onClick={() => setModalShowToDo(true)}>Add</Button>
+                </div>
+                <div className="list">
+                    <h4>Dailies List</h4>
+                    {props.dailylist.list.map((task, index) =>
+                        <Task key={index} task={task} deleteTask={props.dailylist.deleteTask}
+                            task_type="dailylist" updateTask={props.dailylist.updateTask}
+                            date={date} doneTask={props.dailylist.doneTask} />)}
+
+                    <Button disabled = {date<today ? true : false} onClick={() => setModalShowDaylies(true)}>Add</Button>
+                </div >
+                <div className="list">
+                    <h4>Appointemnts For Today List</h4>
+                    {props.timedlist.list.map((task, index) =>
+                        <Task key={index} task={task} deleteTask={props.timedlist.deleteTask}
+                            task_type="timedlist" updateTask={props.timedlist.updateTask}
+                            date={date} doneTask={props.timedlist.doneTask} />)}
+
+                    <Button disabled = {date<today? true : false} onClick={() => setModalShowTimed(true)}>Add</Button>
+                    <Button onClick={() => setModalZoomMetting(true)}>Create Zoom meeting</Button>
+                </div>
+            </div> */}
 
         </>
     );

@@ -1,7 +1,7 @@
 import React ,{useState} from "react";
 import './styles/navbar.css';
 import { withRouter } from "react-router";
-
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //import sidebar css from react-pro-sidebar module and our custom css
 import "react-pro-sidebar/dist/css/styles.css";
 
@@ -9,6 +9,7 @@ import logo from "../../images/logo.png";
 
 //import icons from react icons
 import { BiCog } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
 import {
   FiHome,
   FiLogOut,
@@ -49,6 +50,9 @@ const NavBarSide = (props) => {
                             {props.menuCollapse ? null : "Archived"}
                         </MenuItem>
                         <MenuItem icon={<BiCog />}>
+                            {props.menuCollapse ? null : "Settings"}
+                        </MenuItem>
+                        <MenuItem icon={<Link to='/profile'><CgProfile/></Link>} >
                             {props.menuCollapse ? null : "Settings"}
                         </MenuItem>
                     </Menu>
