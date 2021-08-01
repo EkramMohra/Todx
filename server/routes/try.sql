@@ -172,9 +172,9 @@ USE sql_todx;
 --     GROUP BY user_id;
 
 
-select count(timedtask_id) from timedlist
-        LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
-        WhERE user_id	 = '1'
-        AND timedtask.time LIKE '10%'
-        AND timedtask.date LIKE '%-07-%'
-        GROUP BY user_id;
+-- select count(timedtask_id) from timedlist
+--         LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
+--         WhERE user_id	 = '1'
+--         AND timedtask.time LIKE '10%'
+--         AND timedtask.date LIKE '%-07-%'
+--         GROUP BY user_id;

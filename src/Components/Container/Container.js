@@ -31,6 +31,7 @@ const Container = (props) => {
     props.todolist.getList()
     props.dailylist.getList()
     props.timedlist.getList()
+    props.users.getUserInfo(userId)
     channelPusher.bind('my-event', function (data) {
       MySwal.fire({
         icon: "warning",
@@ -57,4 +58,4 @@ const Container = (props) => {
     </>
   )
 }
-export default inject("todolist", "dailylist", "timedlist")(observer(Container))
+export default inject("todolist","users" ,"dailylist", "timedlist")(observer(Container))

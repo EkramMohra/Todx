@@ -104,7 +104,6 @@ router.get("/monthlytodotasks", async (request, response) => {
 router.get("/dailytodotasks", async (request, response) => {
 
   let { userId, date } = request.query
-
   let donetasks = await sequelize.query(
     `select count(todotask_id) AS res from todolist
     LEFT JOIN todotask ON todolist.todotask_id = todotask.id

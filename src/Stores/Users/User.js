@@ -52,6 +52,7 @@ export class User {
         
         let date = '30'
         let res = await axios.get(`http://localhost:3005/dailytodotasks?userId=${this.userId}&date=${date}`)
+        console.log(res)
         return ({all : res.data.alltasks[0][0].res, done : res.data.donetasks[0][0].res})
     } 
 
