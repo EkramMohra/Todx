@@ -34,7 +34,7 @@ USE sql_todx;
 --     status VARCHAR(40),
 --     priority BOOLEAN
 -- );
--- CREATE TABLE dailyTask(
+-- CREATE TABLE dailytask(
 --     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 --     title VARCHAR(40),
 --     content VARCHAR(40),

@@ -8,8 +8,8 @@ import {FiMenu} from "react-icons/fi";
 const NavBarHeader = (props) => {
   return (
     <div className="logotext header">
-        <img src={logo} alt="logo" className="logo-style" />
         <FiMenu onClick={props.menuIconClick} className="burger-menu-icon" />
+        <img src={logo} alt="logo" className="logo-style" />
     </div>
   );
 };

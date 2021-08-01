@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
@@ -56,10 +56,10 @@ router.post("/users", async (request, response) => {
 //============================================
 //--------------todo routes-------------------
 //============================================
-router.get("/todotasks", function (req, res) {
+router.get("/todotasks", async function (req, res) {
   let { today, userId } = req.query
 
-  sequelize
+  await sequelize
     .query(
       `SELECT todotask.* 
                 FROM todotask JOIN todolist 
@@ -73,19 +73,19 @@ router.get("/todotasks", function (req, res) {
     });
 });
 
-router.post("/todotasks", function (req, res) {
+router.post("/todotasks", async function (req, res) {
 
   let newTask = req.body;
 
-  sequelize
+  await sequelize
     .query(
       `INSERT INTO 
         todotask(title,content,date,priority,status)
         VALUES('${newTask.title}','${newTask.content}','${newTask.date}',
                '${newTask.priority}','${newTask.status}')`
     )
-    .then(function ([result]) {
-      sequelize
+    .then(async function ([result]) {
+      await sequelize
         .query(
           `INSERT INTO 
           todolist(date,user_id,todotask_id)
@@ -97,11 +97,11 @@ router.post("/todotasks", function (req, res) {
   res.send();
 });
 
-router.put("/todotasks", function (req, res) {
+router.put("/todotasks", async function (req, res) {
 
   let updateTask = req.body;
 
-  sequelize
+  await sequelize
     .query(
       `UPDATE todotask 
         SET title = '${updateTask.title}',
@@ -136,11 +136,11 @@ router.delete("/todotasks", function (req, res) {
   res.send("oki");
 });
 
-router.put("/donetodotasks", function (req, res) {
+router.put("/donetodotasks",async function (req, res) {
 
   let taskId = req.body.data.id
 
-  sequelize
+  await sequelize
     .query(
       `UPDATE todotask 
         SET status = 'done'
@@ -158,10 +158,10 @@ router.put("/donetodotasks", function (req, res) {
 //--------------daily routes-----------------
 //===========================================
 
-router.get("/dailytasks", function (req, res) {
+router.get("/dailytasks", async function (req, res) {
   let { today, userId } = req.query
 
-  sequelize
+  await sequelize
     .query(
       `SELECT dailytask.* 
       FROM dailytask JOIN dailylist 
@@ -169,22 +169,22 @@ router.get("/dailytasks", function (req, res) {
       AND dailylist.dailytask_id = dailytask.id;`
     )
     .then(function ([result]) {
-      console.log("done from daily")
+      console.log(result)
       res.send(result);
     });
 });
 
-router.post("/dailytasks", function (req, res) {
+router.post("/dailytasks", async function (req, res) {
   let newTask = req.body;
 
-  sequelize
+  await sequelize
     .query(
       `INSERT INTO 
-        dailytask(title,content,status)
+      dailyTask(title,content,status)
         VALUES('${newTask.title}','${newTask.content}','${newTask.status}')`
     )
-    .then(function ([result]) {
-      sequelize
+    .then(async function ([result]) {
+      await sequelize
         .query(
           `INSERT INTO 
           dailylist(user_id,dailytask_id)
@@ -196,11 +196,11 @@ router.post("/dailytasks", function (req, res) {
   res.send();
 });
 
-router.put("/dailytasks", function (req, res) {
+router.put("/dailytasks", async  function (req, res) {
 
   let updateTask = req.body;
 
-  sequelize
+  await sequelize
     .query(
       `UPDATE dailytask 
         SET title = '${updateTask.title}',
@@ -225,10 +225,10 @@ router.delete("/dailytasks", function (req, res) {
         AND dailylist.user_id ='${data.userId}' ; `
     )
     .then(function ([result]) { });
-  sequelize.query(
-    ` DELETE FROM dailytask
-          WHERE id = ${data.taskId}; `
-  );
+     sequelize.query(
+      ` DELETE FROM dailytask
+            WHERE id = ${data.taskId}; `
+    );
 
   res.send("oki");
 });
@@ -256,10 +256,10 @@ router.put("/donedailytasks", function (req, res) {
 //--------------daily routes-----------------
 //===========================================
 
-router.get("/timedtasks", function (req, res) {
+router.get("/timedtasks", async function (req, res) {
   let { today, userId } = req.query
   console.log(req.query);
-  sequelize
+  await sequelize
     .query(
       `SELECT timedtask.* 
               FROM timedtask JOIN timedlist 
@@ -274,11 +274,11 @@ router.get("/timedtasks", function (req, res) {
     })
 })
 
-router.post("/timedtasks", function (req, res) {
+router.post("/timedtasks",async function (req, res) {
 
   let newTask = req.body;
 
-  sequelize
+  await sequelize
     .query(
       `INSERT INTO 
         timedtask(title,content,date,time,notification,status)
@@ -298,11 +298,11 @@ router.post("/timedtasks", function (req, res) {
   res.send();
 });
 
-router.put("/timedtasks", function (req, res) {
+router.put("/timedtasks", async function (req, res) {
 
   let updateTask = req.body;
 
-  sequelize
+  await sequelize
     .query(
       `UPDATE timedtask 
         SET title = '${updateTask.title}',

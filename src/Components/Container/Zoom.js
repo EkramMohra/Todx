@@ -20,10 +20,10 @@ const Zoom = props => {
 
         (async () => {
             // setSenderId(JSON.parse(sessionStorage.getItem('user'))[0].id)
-            let users = await axios.get(`http://localhost:3005/users`, { senderId })
-            let response = await axios.get(`http://localhost:3005/newmeeting`)
-            setZoomData(response.data)
-            setUsers(users.data)
+            // let users = await axios.get(`http://localhost:3005/users`, { senderId })
+            // let response = await axios.get(`http://localhost:3005/newmeeting`)
+            // setZoomData(response.data)
+            // setUsers(users.data)
 
         })()
 

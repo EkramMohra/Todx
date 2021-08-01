@@ -1,11 +1,24 @@
-import React from "react"
-import { observer, inject } from "mobx-react"
+import React, { useState, useRef } from "react"
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
-import { useState } from "react"
 import Switch from "react-switch"
 import "./popup.css"
+import { Editor } from '@tinymce/tinymce-react';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 const MyModal = (props) => {
+
+    const editorRef = useRef(null);
+    const log = () => {
+        if (editorRef.current) {
+        console.log(editorRef.current.getContent());
+        }
+    };
 
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
@@ -23,11 +36,12 @@ const MyModal = (props) => {
             notification: notification.checked,
             time: time
         }
-        console.log("before add task")
+
         props.addTask(data)
         props.onHide()
         emptyInputs()
     }
+
     const emptyInputs = () => {
         setTitle("")
         setContent("")
@@ -36,37 +50,62 @@ const MyModal = (props) => {
         setNotification("")
         setTime("")
     }
+
     function handleChangePriority(checked) {
         setPriority({ checked })
     }
+
     function handleChangeNotification(checked) {
         setNotification({ checked })
     }
+
     function handleChange(e) {
         let name = e.target.name
         name === "title" ? setTitle(e.target.value)
-            : name === "content" ? setContent(e.target.value)
                 : name === "time" ? setTime(e.target.value)
                     : setDate(e.target.value)
     }
+
+    const handleEditorChange = e =>{
+        setContent(e.target.getContent())
+        console.log(content)
+    }
+
     return (
-        <Modal {...props} centered aria-labelledby="contained-modal-title-vcenter">
+        <Modal {...props} size="lg" centered aria-labelledby="contained-modal-title-vcenter">
             <Modal.Header>
-                <Modal.Title>Add Task</Modal.Title>
+                <Modal.Title>New Task</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
                     title:
                     <input
-                        className="input-class" required name="title"
-                        defaultValue={title} onChange={handleChange}
+                        className="input-class" name= "title" required defaultValue={title} onChange={handleChange}
                     />
                 </div>
                 <div>
                     content:
-                    <textarea
-                        className="input-class" name="content"
-                        defaultValue={content} onChange={handleChange}
+                    <Editor
+                        apiKey='fbw7pxuu068kh25s5vxlv8scegnbfb5dy6e8ffjktuhgqo60'
+                        onInit={(evt, editor) => editorRef.current = editor}
+                        init={{
+                            skin: "outside",
+                            icons: "thin",
+                            height: 300,
+                            menubar: false,
+                            plugins: [
+                                'lists checklist advlist autolink lists link image charmap print preview anchor',
+                                'searchreplace visualblocks code fullscreen',
+                                'insertdatetime media table paste code help wordcount'
+                            ],
+                            toolbar: ' fontsizeselect | fontselect | forecolor | ' +
+                            'bold italic backcolor |  bullist numlist checklist|' +
+                            ' alignleft aligncenter alignright alignjustify | outdent indent | ' +
+                            'removeformat |  formatselect | undo redo | help',
+                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        }}
+                        name="content"
+                        onChange={handleEditorChange}
                     />
                 </div>
                 {
@@ -74,7 +113,9 @@ const MyModal = (props) => {
                         defaultValue={time} onChange={handleChange} /> </div> : null
                 }
                 {
-                    props.date ? <div> date:
+                    props.date ?
+                    
+                    <div> date:
                         <input type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" className="input-class"
                             name="date" defaultValue={date} onChange={handleChange} /> </div> : null
                 }

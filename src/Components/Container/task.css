@@ -1,6 +1,21 @@
 .pending{
-    background-color: #e5b7b787;
+    border-left: 25px solid #d4b4df;
 }
+
 .done{
-    background-color:rgb(153, 193, 185) ;
+    border-left: 25px solid #99c1b9;
+}
+
+.btn-action-style{
+    min-width: 0px !important;
+    border-radius: 50% !important;
+}
+
+.row-task-style{
+    width: 100%;
+    margin: 0px;
+}
+
+.icon-style{
+    color: #737478;
 }
