@@ -39,7 +39,14 @@ USE sql_todx;
 --     FOREIGN KEY(sender_id) REFERENCES user(id),
 --     FOREIGN KEY(recevier_id) REFERENCES user(id)
 -- );
+-- CREATE TABLE dailylog(
+--     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--     task_id INT,
+--     date VARCHAR(40),
+--     FOREIGN KEY(task_id) REFERENCES dailytask(id)
+-- );
+-- Alter Table dailylog Add Constraint sqlUniqueConstraint UNIQUE (task_id, date)
 
---  SET FOREIGN_KEY_CHECKS=1;
--- DROP TABLE user;
+--  SET FOREIGN_KEY_CHECKS=0;
+-- DROP TABLE sharedtasks;
 

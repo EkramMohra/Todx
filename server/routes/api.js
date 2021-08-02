@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
@@ -228,8 +228,8 @@ router.put("/updateInfousers", async (request, response) => {
 //============================================
 router.get("/todotasks", async function (req, res) {
   let { today, userId } = req.query
-
-  await sequelize
+  let sender_name={}
+ let user_tasks= await sequelize
     .query(
       `SELECT todotask.* 
                 FROM todotask JOIN todolist 
@@ -237,10 +237,37 @@ router.get("/todotasks", async function (req, res) {
                 AND todolist.todotask_id = todotask.id
                 AND todotask.date = '${today}';`
     )
-    .then(function ([result]) {
-      // console.log("done from todo")
-      res.send(result);
-    });
+  
+  let sharedTasks= await sequelize
+      .query(
+        `SELECT todotask.* 
+                  FROM todotask JOIN sharedtasks 
+                  WHERE sharedtasks.recevier_id = '${userId}'
+                  AND sharedtasks.task_id = todotask.id
+                  AND todotask.date = '${today}';`
+      )
+
+      let sender_id= await sequelize
+      .query(
+        `SELECT sender_id 
+        FROM sharedtasks JOIN todotask 
+        WHERE sharedtasks.recevier_id = '${userId}'
+        AND sharedtasks.task_id = todotask.id
+        AND todotask.date = '${today}';`
+      )
+   
+      if(sender_id[0].length!=0){
+        sender_name= await sequelize
+       .query(
+         `SELECT last,first 
+         FROM user
+         WHERE id = '${sender_id[0][0].sender_id}';`
+       )
+       res.send({user_tasks:user_tasks[0],shared_tasks:sharedTasks[0],sender_name:sender_name[0][0]})
+       }
+       else{
+         res.send({user_tasks:user_tasks[0],shared_tasks:sharedTasks[0],sender_name:{}})
+       }
 });
 
 router.post("/todotasks", async function (req, res) {
@@ -286,20 +313,24 @@ router.put("/todotasks", async function (req, res) {
   res.send();
 });
 
-router.delete("/todotasks", function (req, res) {
+router.delete("/todotasks", async function (req, res) {
   let data = req.body
 
-  sequelize
+ await sequelize
     .query(
       ` DELETE FROM todolist 
         WHERE todolist.todotask_id = ${data.taskId}
         AND todolist.user_id = ${data.userId} ; `
     )
 
-    .then(function ([result]) { });
-  sequelize.query(
+ await sequelize.query(
     ` DELETE FROM todotask 
         WHERE id = ${data.taskId}; `
+  );
+ await sequelize.query(
+    ` DELETE FROM sharedtasks 
+        WHERE task_id = ${data.taskId}
+        AND sender_id=${data.userId} ; `
   );
 
   res.send("oki");
@@ -502,8 +533,8 @@ router.put("/donedailytasks", function (req, res) {
 
 router.get("/timedtasks", async function (req, res) {
   let { today, userId } = req.query
-  console.log(req.query);
-  await sequelize
+  let sender_name={}
+    let user_tasks= await sequelize
     .query(
       `SELECT timedtask.* 
               FROM timedtask JOIN timedlist 
@@ -511,11 +542,38 @@ router.get("/timedtasks", async function (req, res) {
               AND timedlist.timedtask_id = timedtask.id
               AND timedtask.date = '${today}';`
     )
+  
+  let sharedTasks= await sequelize
+      .query(
+        `SELECT timedtask.* 
+                  FROM timedtask JOIN sharedtasks 
+                  WHERE sharedtasks.recevier_id = '${userId}'
+                  AND sharedtasks.task_id = timedtask.id
+                  AND timedtask.date = '${today}';`
+      )
+  
+      let sender_id= await sequelize
+      .query(
+        `SELECT sender_id 
+        FROM sharedtasks JOIN timedtask 
+        WHERE sharedtasks.recevier_id = '${userId}'
+        AND sharedtasks.task_id = timedtask.id
+        AND timedtask.date = '${today}';`
+      )
+      if(sender_id[0].length!=0){
+       sender_name= await sequelize
+      .query(
+        `SELECT last,first 
+        FROM user
+        WHERE id = '${sender_id[0][0].sender_id}';`
+      )
+      res.send({user_tasks:user_tasks[0],shared_tasks:sharedTasks[0],sender_name:sender_name[0][0]})
+      }
+      else{
+        res.send({user_tasks:user_tasks[0],shared_tasks:sharedTasks[0],sender_name:{}})
+      }
 
-    .then(function ([result]) {
-      // console.log("done from timed")
-      res.send(result)
-    })
+     
 })
 
 router.post("/timedtasks",async function (req, res) {
@@ -564,19 +622,24 @@ router.put("/timedtasks", async function (req, res) {
   res.send();
 });
 
-router.delete("/timedtasks", function (req, res) {
+router.delete("/timedtasks", async function (req, res) {
   let data = req.body;
 
-  sequelize
+ await sequelize
     .query(
       ` DELETE FROM timedlist 
         WHERE timedlist.timedtask_id = ${data.taskId}
         AND timedlist.user_id = ${data.userId} ; `
     )
-    .then(function ([result]) { });
-  sequelize.query(
+
+ await sequelize.query(
     ` DELETE FROM timedtask 
         WHERE id = ${data.taskId}; `
+  );
+  await sequelize.query(
+    ` DELETE FROM sharedtasks 
+        WHERE task_id = ${data.taskId}
+        AND sender_id=${data.userId} ; `
   );
 
   res.send("oki");
@@ -698,7 +761,7 @@ router.post("/shares", async (request, response) => {
 
   pusher.trigger(channel, "my-event", {
     message: `You have a new shared task from ${userName[0][0].first} ${userName[0][0].last}`,
-    task: flag === true ? new_task : task[0][0],
+    task: flag === true ? new_task : null,
     task_type: task_type
 
   });

@@ -94,6 +94,7 @@ const Task = (props) => {
                     id="additional-actions3-header"
                 >
                     <Row className="row-task-style">
+                    { props.task.type==="shared_task"?<span className="sender">Shared By:{props.task.sender.first}-{props.task.sender.last}</span>:null}
                         <Col sm={8}>
                             <FormControlLabel
                                 aria-label="Acknowledge"
@@ -108,6 +109,7 @@ const Task = (props) => {
                             />
                         </Col>
                         <Col sm={4}>
+                            { props.task.type==="user_task"?
                             <AccordionActions>
                                 <IconButton className="btn-action-style" size="small" size="small" color="primary" onClick={() => setModalShow(true)}>
                                     <EditIcon className="icon-style" />
@@ -124,6 +126,8 @@ const Task = (props) => {
                                     </IconButton>
                                 }
                             </AccordionActions>
+
+                            :null}
                         </Col>
                     </Row>
                 </AccordionSummary>

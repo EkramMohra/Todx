@@ -153,7 +153,6 @@ USE sql_todx;
 
 -- SELECT DATEADD(day, 1, GETDATE())
 
--- ALTER TABLE dailyTask add date VARCHAR(40);
 
 -- UPDATE dailytask JOIN dailylog JOIN dailylist 
 --           SET dailytask.status="pending"
