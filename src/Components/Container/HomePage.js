@@ -39,14 +39,11 @@ const HomePage = (props) => {
         showConfirmButton: false,
         timer: 3000
       })
-
-      if (data.task_type === "timedtask") {
+      props.todolist.getList()
+      props.timedlist.getList()
+      if (data.task_type === "timedtask"&&data.task!=null) {
         props.timedlist.addTask(data.task)
       }
-      else {
-        props.todolist.addTask(data.task)
-      }
-
     })
     setfirstAsign('out')
   }

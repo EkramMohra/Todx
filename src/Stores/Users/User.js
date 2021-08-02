@@ -74,8 +74,7 @@ export class User {
         
         let date = '30'
         let res = await axios.get(`http://localhost:3005/dailytodotasks?userId=${this.userId}&date=${date}`)
-        console.log(res)
-        console.log(res.data.donetasks[0])
+
         let done = res.data.donetasks[0].length === 0 ? 0 : res.data.donetasks[0][0].res
         let all = res.data.alltasks[0].length === 0 ? 0 : res.data.alltasks[0][0].res
         return ({all  : all , done : done})
@@ -145,15 +144,10 @@ export class User {
         console.log( this.image)
     } 
 
-    // getImage = async () => {
-
-    //     let res = await axios.get(`http://localhost:3005/photo?id=${this.userId}`)
-    //     this.image = res
-    //     console.log( this.image)
-    // } 
-    // updatePhotoId = async (photoID) => {
-
-    //     let res = await axios.put(`http://localhost:3005/updatephoto`,{photoID , id : this.userId})
-
-    // }
+    getAllTitles = async () => {
+        
+        let res = await axios.get(`http://localhost:3005/allTitles?userId=${this.userId}`)
+        console.log(res.data)
+        return (res.data)
+    }
 }

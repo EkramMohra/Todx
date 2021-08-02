@@ -2,7 +2,7 @@ import { observable, makeObservable } from 'mobx'
 
 export default class TimedTask {
 
-    constructor(task) {
+    constructor(task,task_type,sender_name) {
         this.id = task.id
         this.title = task.title
         this.content = task.content
@@ -10,6 +10,8 @@ export default class TimedTask {
         this.time = task.time
         this.notification = task.notification
         this.status = task.status
+        this.type=task_type
+        this.sender=sender_name
 
         makeObservable(this, {
             id: observable,

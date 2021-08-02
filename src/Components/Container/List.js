@@ -63,7 +63,17 @@ const List = (props) => {
                         </Row>
                     </Card.Header>
                     <Card.Body className="body-list-style">
-                        {props.todolist.list.map((task, index) =>
+                        {props.todolist.list.filter(task => task.status==="pending").map((task, index) =>
+                        <Task key={`todolist-${index}` }
+                              task={task} 
+                              deleteTask={props.todolist.deleteTask}
+                              task_type="todolist" 
+                              updateTask={props.todolist.updateTask}
+                            doneTask={props.todolist.doneTask} 
+                        />)}
+                    </Card.Body>
+                    <Card.Body className="body-list-style">
+                        {props.todolist.list.filter(task => task.status==="done").map((task, index) =>
                         <Task key={`todolist-${index}` }
                               task={task} 
                               deleteTask={props.todolist.deleteTask}
@@ -91,7 +101,19 @@ const List = (props) => {
                         </Row>
                     </Card.Header>
                     <Card.Body  className="body-list-style">
-                        {props.dailylist.list.map((task, index) =>
+                        {props.dailylist.list.filter(task => task.status==="pending").map((task, index) =>
+                            <Task key={index} 
+                                    task={task} 
+                                    deleteTask={props.dailylist.deleteTask}
+                                    task_type="dailylist" 
+                                    updateTask={props.dailylist.updateTask}
+                                    doneTask={props.dailylist.doneTask} 
+                            />
+                        )}   
+                    </Card.Body>
+
+                    <Card.Body  className="body-list-style">
+                        {props.dailylist.list.filter(task => task.status==="done").map((task, index) =>
                             <Task key={index} 
                                     task={task} 
                                     deleteTask={props.dailylist.deleteTask}
@@ -120,7 +142,20 @@ const List = (props) => {
                     </Card.Header>
                     <Card.Body  className="body-list-style">
                        
-                        {props.timedlist.list.map((task, index) =>
+                       {props.timedlist.list.filter(task => task.status==="pending").map((task, index) =>
+                           <Task key={index} 
+                               task={task} 
+                               deleteTask={props.timedlist.deleteTask}
+                               task_type="timedlist" 
+                               updateTask={props.timedlist.updateTask}
+                               doneTask={props.timedlist.doneTask} 
+                           />
+                       )}
+                   </Card.Body>
+
+                    <Card.Body  className="body-list-style">
+                       
+                        {props.timedlist.list.filter(task => task.status==="done").map((task, index) =>
                             <Task key={index} 
                                 task={task} 
                                 deleteTask={props.timedlist.deleteTask}

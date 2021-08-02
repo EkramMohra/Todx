@@ -1,68 +1,110 @@
-// const Sequelize = require('sequelize')
-// const moment = require('moment');
-// const sequelize = new Sequelize('mysql://root:@localhost/sql_todx')
+// const express = require("express");
+// const router = express.Router();
+// const elasticsearch = require("elasticsearch");
 
-// let newTask = {
-//   title: "abc",
-//   content: "efg",
-//   date: "25/07/20201",
-//   time: "13:00",
-//   status: "pending",
-//   notification: "on",
-//   favourite: 0
-// }
+// const client = new elasticsearch.Client({
+//   hosts: "localhost:9200",
+// });
 
-// console.log(newTask.title)
-
-// sequelize
-//   .query(
-//     `INSERT INTO 
-//       task(title,content,date,time,status,favourite,notification)
-//       VALUES('${newTask.title}','${newTask.content}','${newTask.date}','${newTask.time}',
-//       '${newTask.status}',${newTask.favourite},'${newTask.notification}')`
-//       )
-//   .then(function ([result]) {
-//     console.log(result);
+// client.ping({requestTimeout: 30000},function (error) {
+//     if (error) {
+//       console.error("elasticsearch cluster is down!");
+//     } else {
+//       console.log("Everything is ok");
+//     }
 //   });
 
-// let date = 'Thu Aug 10 2021 00:00:00 GMT+0300 (Israel Daylight Time)'
+// router.get("/products", function (req, res) {
+//   const searchText = req.query.text;
+//   client.search({
+//     index: "products",
+//     body: {
+//       query: {
+//         // match: {
+//         //   // name: searchText.trim(),
+//         //   id:400
+//         // },
+//       //   term : {
+//       //     id : 200
+//       // },
+//       //   wildcard : {
+//       //     description : "the*"
+//       // }
+//         // bool:{
+//         //   must:
+//         // }
+//       // }
+//         bool: {
+//           must:[
+//             {
+//               match:{
+//               name: searchText.trim()}},
+//             {
+//               range : {
+//               price: {
+//                   gte: 1000,
+//                   lte: 3000
+//               }
 
-// const changeFormatDate = (string) => {
+//             }
+//           }
+//           ]
+//         },
+//         // range: {
+//         //   "price": {
+//         //     "gte": "1000",
+//         //     "lt": "5000"
+//         //   }
+//         // }
+//       },
+//     },
+//   }).then((response) => {
+//       return res.json(response);
+//     }).catch((err) => {
+//       return res.status(500).json({ message: "Error" });
+//     });
+// });
 
-//   string = string.split(" ");
-//   var stringArray = new Array();
-//   for (var i = 0; i < string.length; i++) {
-//     stringArray.push(string[i]);
-//     if (i != string.length - 1) {
-//       stringArray.push(" ");
-//     }
-//   }
+// router.post("/products", function (req, res) {
+//   client
+//     .index({
+//       index: "products",
+//       body: {
+//         id: req.body.id,
+//         name: req.body.name,
+//         price: req.body.price,
+//         description: req.body.description,
+//       },
+//     })
+//     .then((response) => {
+//       return res.json({ message: "Indexing successful" });
+//     })
+//     .catch((err) => {
+//       return res.status(500).json({ message: "Error" });
+//     });
+// });
 
-//   let month = {
-//      'Jan': '01',
-//      'Feb': '02',
-//      'Mar': '03',
-//      'Apr': '04',
-//      'May': '05',
-//      'Jun': '06',
-//      'Jul': '07',
-//      'Aug': '08',
-//      'Sep': '09',
-//      'Oct': '10',
-//      'Nov': '11',
-//      'Dec': '12',
-//   }
-//   return `${stringArray[6]}-${month[stringArray[2]]}-${stringArray[4]}`
-// }
+// router.post("/shop", function (req, res) {
+//   client
+//     .index({
+//       index: "shop",
+//       body: {
+//         name: req.body.name,
+//         price: req.body.price,
+//         color:req.body.color
+//       },
+//     })
+//     .then((response) => {
+//       return res.json({ message: "Indexing successful" });
+//     })
+//     .catch((err) => {
+//       return res.status(500).json({ message: "Error" });
+//     });
+// });
 
-// console.log(changeFormatDate(date)
-// )
-// console.log(moment().format("DD", true)-1)
+// module.exports = router;
 
+let arr = ['aa','bb','cc']
+arr[0] = arr[0]+arr[1]
 
-// let fullName = 'ALaa Damouny'
-
-// let firstName = fullName.split(' ').slice(0, -1).join(' ');
-// let lastName = fullName.split(' ').slice(-1).join(' ');
-
-// console.log(firstName)
+console.log(arr)

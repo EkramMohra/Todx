@@ -38,9 +38,14 @@ export class ToDoList {
         this.emptyTheList()
         let res = await axios.get(`http://localhost:3005/todotasks?today=${this.DateOfTheDay}&userId=${this.userId}`)
 
-        res.data.forEach(task => {
+        res.data.user_tasks.forEach(task => {
             runInAction(() => {
-                this.list.push(new Task(task))
+                this.list.push(new Task(task,"user_task"))
+            })
+        })
+        res.data.shared_tasks.forEach(task => {
+            runInAction(() => {
+                this.list.push(new Task(task,"shared_task",res.data.sender_name))
             })
         })
     }
