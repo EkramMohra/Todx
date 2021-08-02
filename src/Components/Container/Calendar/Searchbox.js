@@ -10,12 +10,18 @@ const Searchbox = (props) => {
     const [date, setDate] = useState('')
 
     const handleChange = (event) => {
-        console.log(event.target.value)
         const myArr = event.target.value.split(" ");
-        console.log(event.currentTarget)
+        let i = 1
         setitle(myArr[0])
-        setDate(myArr[1])
+        let result = myArr[1].match("[0-9]{4}([\-/ \.])[0-9]{2}[\-/ \.][0-9]{2}");
+        while(result == null ){
+            result = myArr[i].match("[0-9]{4}([\-/ \.])[0-9]{2}[\-/ \.][0-9]{2}");
+            myArr[0] = myArr[0] + myArr[1]
+            i++
+        }
+        setDate(myArr[i])
     }
+   
 
     useEffect(() => {
         (async () => {

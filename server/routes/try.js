@@ -103,3 +103,8 @@
 // });
 
 // module.exports = router;
+
+let arr = ['aa','bb','cc']
+arr[0] = arr[0]+arr[1]
+
+console.log(arr)
