@@ -32,10 +32,14 @@ const pusher = new Pusher({
 router.get("/users", async (request, response) => {
   let { email, password } = request.query
 
-  let queryString = `SELECT * FROM user WHERE email='${email}' AND password='${password}'`
+  let queryString = `SELECT user.* , photo.photo FROM user JOIN photo 
+                    WHERE email='${email}' 
+                    AND password='${password}'
+                    AND photo.id = user.photo_id`
 
   if (!email && !password)
-    queryString = `SELECT * FROM user`
+    queryString = `SELECT user.* , photo.photo FROM user JOIN photo
+                    WHERE photo.id = user.photo_id `
 
   let users = await sequelize.query(queryString);
 
@@ -51,11 +55,14 @@ router.post("/users", async (request, response) => {
     response.send(false)
   }
   else {
+    let image_id = await sequelize.query(`INSERT INTO photo 
+                  VALUES( null ,'${user.image}')`)
+console.log(image_id[0])
     sequelize.query(
       `INSERT INTO 
       user
       VALUES( ${user_id},'${user.last}','${user.first}',
-            '${user.email}','${user.password}',null,null)`
+            '${user.email}','${user.password}', null , '${image_id[0]}')`
 
     );
     response.send(true);
@@ -171,19 +178,38 @@ router.put("/updatepassword`", async (request, response) => {
   response.send();
 });
 
-router.put("/updatephoto`", async (request, response) => {
+router.post("/updatephoto", async (request, response) => {
 
-  let photoID = request.body.photoID
-  let id = request.body.id
+  let data = request.body
+  console.log("data------------",data)
 
-  let queryString = `UPDATE user 
-                      SET password = '${photoID}'
-                      WHERE id = ${id};`
+  let queryString = `INSERT INTO photo
+                     VALUES (null, '${data.body.image}' );`
 
-  await sequelize.query(queryString);
+  let res = await sequelize.query(queryString);
+  console.log(res)
 
-  response.send();
-});
+  let queryStringUser = `UPDATE user 
+                      SET photo_id = '${res[0]}'
+                      WHERE id = '${data.body.userId}';`
+
+  await sequelize.query(queryStringUser);
+  response.send()
+})
+
+router.get("/photo", async (request, response) => {
+  let {id} = request.query
+
+  let queryStringUser = `SELECT photo.photo FROM photo JOIN user
+                      WHERE photo.id = user.photo_id
+                      AND user.id = '${id}';`
+
+  let res = await sequelize.query(queryStringUser)
+  console.log(res[0][0].photo)
+  response.send(res[0][0].photo)
+})
+
+
 
 router.put("/updatename`", async (request, response) => {
 
@@ -218,6 +244,8 @@ router.put("/updateInfousers", async (request, response) => {
                       WHERE id = ${id};`
 
   await sequelize.query(queryString);
+
+
 
   response.send();
 

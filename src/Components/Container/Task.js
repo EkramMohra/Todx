@@ -117,7 +117,7 @@ const Task = (props) => {
                                     <DeleteRoundedIcon className="icon-style" />
                                 </IconButton>
 
-                                {props.task_type === "dailylist"
+                                {props.task_type === "dailylist" ||props.task.content.length>100
                                     ? null :
                                     <IconButton className="btn-action-style" size="small" size="small" color="primary" onClick={() => setShareModalShow(true)} >
                                         <ShareIcon className="icon-style" />
@@ -128,8 +128,13 @@ const Task = (props) => {
                     </Row>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography color="textSecondary" dangerouslySetInnerHTML={{ __html: props.task.content }}>
-
+                {/* */}
+                    <Typography color="textSecondary"  dangerouslySetInnerHTML={{ __html: props.task.content }}>
+                        {/* {props.task.content.length>50&&pattern.test(props.task.content)?
+                            <a href={props.task.content}>
+                            {props.task.content.length>100?"Start Zoom Meeting":"Join Zoom Meeting"}
+                            </a>
+                            :props.task.content}  */}
                     </Typography>
                 </AccordionDetails>
             </Accordion>

@@ -9,10 +9,39 @@
 }
 
 .profile-image{
-    width:100px;
-    height: 100px;
+    width:150px !important;
+    height: 150px !important;
     border-radius: 50%;
-    border-color: #f1e3d3;
-    background-color: #f1e3d3;
-    box-shadow: 3px -1px 3px -1px rgb(109 109 109 / 83%);;
+    border-color: #99c1b9;
+    background-color: #99c1b9;
+    /* box-shadow: 3px -1px 3px -1px rgb(109 109 109 / 83%); */
+}
+
+.profile-card-style{
+    margin: 15px;
+}
+
+.profile-main-section{
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.name-user{
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.profile-header-card{
+    background-color: transparent ;
+    border: 0px;
+}
+
+.user-edit-btn{
+    border-radius: 50%;
+    float: right;
+    color: #4b4e53;
+}
+
+.icon-edit-user-profile{
+    font-size: 23px;
 }

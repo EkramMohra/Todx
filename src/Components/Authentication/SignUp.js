@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form'
 import Alert from 'react-bootstrap/Alert'
 import './styles/login.css'
 import background from './images/login-todx.jpeg'
+import imageProfile from '../NavBar/Profile/images/avatar.png'
 import logo from '../../images/logo.png'
 import { withRouter } from "react-router";
 
@@ -76,6 +77,7 @@ const SignUp = (props) => {
           last: last,
           email: email,
           password: password,
+          image: imageProfile
         },
       })
       .then((response) => {

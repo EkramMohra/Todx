@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { withRouter } from "react-router";
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,9 +20,18 @@ import NavBarHeader from "./NavBarHeader";
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
 import {  Link } from "react-router-dom"
-
+import {TiHome} from 'react-icons/ti'
+import {FaUserCircle} from 'react-icons/fa'
+import {MdKeyboardArrowDown} from 'react-icons/md'
 import './styles/navbar.css';
 import logo from "../../images/logo.png";
+import Avatar from '@material-ui/core/Avatar';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonSharpIcon from '@material-ui/icons/PersonSharp';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Grid from '@material-ui/core/Grid';
+
 
 import { alpha, makeStyles } from '@material-ui/core/styles';
 
@@ -88,7 +98,34 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-}));
+  controls: {
+    borderRadius: '50px',
+    marginLeft:  theme.spacing(2),
+    padding: '0px !important'
+  },
+  avatar: {
+    marginRight:  theme.spacing(1)
+  },
+  email: {
+    fontSize: '15px',
+    fontWeight: '400',
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen','Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif "
+  },
+  name: {
+    fontSize: '15px',
+    fontWeight: '600',
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen','Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif "
+  },
+  menuStyle: {
+    top: '20px !important',
+    right: '0px !important',
+    width: 'auto'
+  },
+  userInfo: {
+    // borderBottom: '1px gray slid'
+    borderBottom: '0.8px #c5c6c7 solid'
+  }
+}))
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -115,11 +152,11 @@ const NavBar = (props) => {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-  const [menuCollapse, setMenuCollapse] = useState(true)
+  // const [menuCollapse, setMenuCollapse] = useState(true)
 
-  const menuIconClick = () => {
-      menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true)
-  }
+  // const menuIconClick = () => {
+  //     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true)
+  // }
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -128,6 +165,11 @@ const NavBar = (props) => {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
+  }
+
+  const handleLogOut = () => {
+      sessionStorage.clear();
+      props.history.push(`/`)
   }
 
   const handleMobileMenuClose = () => {
@@ -142,15 +184,43 @@ const NavBar = (props) => {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      className = {classes.menuStyle}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem className = {classes.userInfo}>
+        <Avatar src="/broken-image.jpg"  className={classes.avatar}/>
+        <Grid container direction="column" wrap="nowrap">
+          <Grid item>
+            <Typography variant="h6" className={classes.name} noWrap>
+              {props.first}  {props.last}
+            </Typography>
+          </Grid>
+          <Grid item xs>
+            <Typography variant="h6" className={classes.email} noWrap>
+              {props.email} 
+            </Typography>
+          </Grid>
+        </Grid>
+      </MenuItem>
+      <Link className="link-style" to='/homePage/profile'> 
+        <MenuItem onClick={handleMenuClose}>
+          <ListItemIcon>
+            <PersonSharpIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </MenuItem>
+      </Link>
+      <MenuItem onClick={handleLogOut}>
+        <ListItemIcon>
+            <ExitToAppIcon fontSize="small" />
+          </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </MenuItem>
     </Menu>
   )
 
@@ -198,33 +268,23 @@ const NavBar = (props) => {
   return (
     <>
       <div className={classes.grow}>
-      <HideOnScroll {...props}>
         <AppBar className="navbar-style" position="fixed">
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-            >
-              <MenuIcon />
-            </IconButton>
 
             <Typography variant="h6" noWrap>
              <Link to="/homePage/dashboard"> <img src={logo} alt="logo" className="logo-style" /> </Link>
             </Typography>
 
-            <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+            <Link to="/homePage/Dashboard">
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
                 color="inherit"
+                aria-label="open drawer"
               >
-                <AccountCircle />
-               
-            </IconButton>
-
+                <TiHome />
+              </IconButton>
+            </Link>
             {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -242,27 +302,39 @@ const NavBar = (props) => {
             <div className={classes.grow} />
 
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
+              {/* <IconButton aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <MailIcon />
                 </Badge>
-              </IconButton>
+              </IconButton> */}
               <IconButton aria-label="show 17 new notifications" color="inherit">
                 <Badge badgeContent={17} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
+             
+              {/* <div className={classes.controls}> */}
                 
-                color="inherit"
-              >
-                <Link to='/homePage/profile'> <AccountCircle /></Link>
-               
-              </IconButton>
+
+                  <IconButton
+                    edge="end"
+                    aria-label="account of current user"
+                    // className={classes.menuButton}
+                    color="inherit"
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    className={classes.controls}
+                  >
+                    <Avatar src="/broken-image.jpg"  className={classes.avatar}/>
+
+                    {/* <Typography variant="h6" className={classes.name} noWrap>
+                      Welcome, {props.first}  {props.last}
+                    </Typography> */}
+
+                    <MdKeyboardArrowDown />  
+
+                  </IconButton>
+                {/* </dxiv> */}
             </div>
             
             <div className={classes.sectionMobile}>
@@ -278,7 +350,6 @@ const NavBar = (props) => {
             </div>
           </Toolbar>
         </AppBar>
-        </HideOnScroll>
         {renderMobileMenu}
         {renderMenu}
       </div>
@@ -288,33 +359,4 @@ const NavBar = (props) => {
   )
 }
 
-export default NavBar
-
-
-
-
-// export default function PrimarySearchAppBar() {
-
-
-//  
-
-
-  
-
-
-//   return (
-//     <div className={classes.grow}>
-//       <AppBar position="static">
-//         <Toolbar>
-//         
-         
-//           
-          
-          
-//         </Toolbar>
-//       </AppBar>
-//       {renderMobileMenu}
-//       
-//     </div>
-//   );
-// }
+export default withRouter(NavBar)

@@ -9,7 +9,29 @@
 
 .makeStyles-menuButton-2 {
     margin-right: 0px !important;
+    margin-left: 5px !important;
+    color: #4b4e53 !important;
+    font-size: 28px !important;
 }
+
+.link-style{
+    text-decoration: none;
+    color: #212121;
+}
+
+.link-style:hover{
+    color: #212121;
+}
+
+.makeStyles-userInfo-15:hover{
+    background-color: transparent !important;
+}
+
+.makeStyles-userInfo-15:active{
+    background-color: transparent !important;
+}
+
+
 .navbar-background {
     background-color: #ECF8F8;
 }

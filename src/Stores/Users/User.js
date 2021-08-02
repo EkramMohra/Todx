@@ -1,5 +1,6 @@
-import { observable, action, makeObservable } from 'mobx'
+import { observable, action, makeObservable, computed } from 'mobx'
 import axios from "axios"
+import imageProfile from '../../Components/NavBar/Profile/images/avatar.png'
 
 export class User {
 
@@ -11,9 +12,12 @@ export class User {
         this.password = user.password
         this.photo_id = user.photo_id
         this.role_id = user.role_id
+        this.image = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))[0].photo : imageProfile
+        console.log(this.image)
 
         makeObservable(this, {
             userId: observable,
+            image: observable,
             last: observable,
             first: observable,
             email: observable,
@@ -24,20 +28,38 @@ export class User {
             updateUserInfo: action,
             getdailyToDoTasks:action,
             getMonthlyTimedTasks: action,
-            getDailyTimedTasks: action
+            getDailyTimedTasks: action,
+            userData: computed
+            // getImage: action
         })
     }
 
     getUserInfo = async(userId) =>{
 
         let res = await axios.get(`http://localhost:3005/userInfo?userId=${userId}`)
-            this.userId = userId
-            this.first = (res.data[0].first)
-            this.last = (res.data[0].last)
-            this.email = (res.data[0].email)
-            this.password = (res.data[0].password)
-            this.photo_id = (res.data[0].photo_id)
-            this.role_id = (res.data[0].role_id)
+        console.log(res.data[0])
+        this.userId = userId
+        this.first = (res.data[0].first || "")
+        this.last = (res.data[0].last)
+        this.email = (res.data[0].email)
+        this.password = (res.data[0].password)
+        this.photo_id = (res.data[0].photo_id)
+        this.role_id = (res.data[0].role_id)
+    }
+
+    get userData(){
+        this.getUserInfo()
+        let user ={
+            id:  this.userId,
+            first: this.first,
+            last: this.last,
+            email: this.email,
+            password: this.password,
+            photo_id:  this.photo_id,
+            role_id: this.role_id
+        }
+
+        return user
     }
 
     getMonthlyToDoTasks = async () =>{
@@ -104,9 +126,34 @@ export class User {
 
     }
 
-    updatePhotoId = async (photoID) => {
+    uploadImage = async (image) => {
+        console.log("formData  ", image )
 
-        let res = await axios.put(`http://localhost:3005/updatephoto`,{photoID , id : this.userId})
+        let body = {
+            image: image.preview,
+            photoId: this.photo_id,
+            userId: this.userId
+        }
 
-    }
+        let res = await axios.post(`http://localhost:3005/updatephoto`, {
+            body: body,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+
+        let getImage = await axios.get(`http://localhost:3005/photo?id=${this.userId}`)
+        this.image = getImage.data
+        console.log( this.image)
+    } 
+
+    // getImage = async () => {
+
+    //     let res = await axios.get(`http://localhost:3005/photo?id=${this.userId}`)
+    //     this.image = res
+    //     console.log( this.image)
+    // } 
+    // updatePhotoId = async (photoID) => {
+
+    //     let res = await axios.put(`http://localhost:3005/updatephoto`,{photoID , id : this.userId})
+
+    // }
 }

@@ -172,7 +172,7 @@ USE sql_todx;
  
 --   DELETE FROM dailylist;
   
--- ALTER TABLE timedtask MODIFY COLUMN content VARCHAR(1000);
+-- ALTER TABLE dailytask MODIFY COLUMN content VARCHAR(1000);
 
 -- UPDATE user 
 --     SET last = 'Musa',
@@ -207,3 +207,18 @@ USE sql_todx;
 --                         SET first = Ekram,
 --                         SET last = m
 --                       WHERE id =2
+
+--  SET FOREIGN_KEY_CHECKS=0;
+-- DROP TABLE user;
+
+CREATE TABLE user(
+    id INT  NOT NULL PRIMARY KEY,
+    last VARCHAR(40),
+    first VARCHAR(40),
+    email VARCHAR(40),
+    password VARCHAR(40),
+    role_id INT,
+    photo_id INT,
+    FOREIGN KEY(photo_id) REFERENCES photo(id),
+    FOREIGN KEY(role_id) REFERENCES role(id)
+);

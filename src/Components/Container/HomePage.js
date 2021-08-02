@@ -53,7 +53,7 @@ const HomePage = (props) => {
 
   return (
     <div className="wrapper">
-      <NavBar />
+      <NavBar first={props.users.first} last={props.users.last} email={props.users.email}/>
       <Route key="profile" exact path="/homePage/profile" render={() =>  <Profile />} />
       <Route key="dashboard" exact path="/homePage/dashboard" render={() =>  <Dashboard/>} />
   </div>
