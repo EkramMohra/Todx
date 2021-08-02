@@ -1,10 +1,23 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
 const rp = require("request-promise");
+const elasticsearch = require('elasticsearch');
+
+// const client = new elasticsearch.Client({
+//   hosts: "localhost:9200",
+// });
+
+// client.ping({requestTimeout: 30000},function (error) {
+//     if (error) {
+//       console.error("elasticsearch cluster is down!");
+//     } else {
+//       console.log("Everything is ok");
+//     }
+//   });
 
 const router = express.Router();
 
@@ -63,6 +76,20 @@ router.post("/users", async (request, response) => {
 
 })
 
+router.get("/allTitles", async (request, response) =>{
+
+  let { userId } = request.query
+
+ let queryString = `select title, todolist.date from todolist
+      LEFT JOIN todotask ON todolist.todotask_id = todotask.id
+      WHERE user_id	 = '${userId}';`
+
+  let titles = await sequelize.query(queryString);
+
+  console.log(titles[0])
+
+  response.send(titles[0])
+})
 //===========================================
 //--------------profile routes---------------
 //===========================================
@@ -205,12 +232,12 @@ router.put("/updatename`", async (request, response) => {
 
 router.put("/updateInfousers", async (request, response) => {
   console.log(request.body);
-  
+
   let photoID = 1
   let id = request.body.id
   let newPassword = request.body.newInfo.password
-  let first=request.body.newInfo.first
-  let last=request.body.newInfo.last
+  let first = request.body.newInfo.first
+  let last = request.body.newInfo.last
   let queryString = `UPDATE user 
                         SET first = '${first}',
                          last = '${last}',
@@ -244,8 +271,9 @@ router.get("/todotasks", async function (req, res) {
 });
 
 router.post("/todotasks", async function (req, res) {
-  let newTask = req.body;
 
+  let newTask = req.body;
+  let idResult = 0
   await sequelize
     .query(
       `INSERT INTO 
@@ -254,6 +282,7 @@ router.post("/todotasks", async function (req, res) {
                '${newTask.priority}','${newTask.status}')`
     )
     .then(async function ([result]) {
+      idResult = result
       await sequelize
         .query(
           `INSERT INTO 
@@ -261,7 +290,24 @@ router.post("/todotasks", async function (req, res) {
             VALUES('${newTask.date}',${newTask.userId},'${result}')`
         )
         .then(function ([result]) { });
-    });
+      });
+      
+      // client
+      //   .index({
+      //     index: "Tasks",
+      //     body: {
+      //       id: idResult,
+      //       title: newTask.title,
+      //       content: newTask.content,
+      //       date: newTask.date,
+      //     },
+      //   })
+      //   .then((response) => {
+      //     return res.json({ message: "Indexing successful" });
+      //   })
+      //   .catch((err) => {
+      //     return res.status(500).json({ message: "Error" });
+      //   });
 
   res.send();
 });
@@ -305,7 +351,7 @@ router.delete("/todotasks", function (req, res) {
   res.send("oki");
 });
 
-router.put("/donetodotasks",async function (req, res) {
+router.put("/donetodotasks", async function (req, res) {
 
   let taskId = req.body.data.id
 
@@ -452,10 +498,10 @@ router.delete("/dailytasks", function (req, res) {
         AND dailylist.user_id ='${data.userId}' ; `
     )
     .then(function ([result]) { });
-     sequelize.query(
-      ` DELETE FROM dailytask
+  sequelize.query(
+    ` DELETE FROM dailytask
             WHERE id = ${data.taskId}; `
-    );
+  );
 
   res.send("oki");
 });
@@ -518,7 +564,7 @@ router.get("/timedtasks", async function (req, res) {
     })
 })
 
-router.post("/timedtasks",async function (req, res) {
+router.post("/timedtasks", async function (req, res) {
 
   let newTask = req.body;
 
@@ -693,7 +739,7 @@ router.post("/shares", async (request, response) => {
       notification: task[0][0].notification
     }
   }
-  
+
   let channel = `share_task_recevier_id_${data.recevier_id}`
 
   pusher.trigger(channel, "my-event", {

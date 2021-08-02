@@ -185,7 +185,8 @@ USE sql_todx;
         --   INSERT INTO 
         --   dailylist(user_id,dailytask_id,date)
         --     VALUES(1,12,'2021-07-30');
--- ALTER TABLE dailylist DROP COLUMN date;
+
+-- ALTER TABLE dailytask ADD COLUMN date VARCHAR(40);
 
 -- select count(timedtask_id) from timedlist
 --     LEFT JOIN timedtask ON timedlist.timedtask_id = timedtask.id
@@ -207,3 +208,32 @@ USE sql_todx;
 --                         SET first = Ekram,
 --                         SET last = m
 --                       WHERE id =2
+
+-- SET FOREIGN_KEY_CHECKS=0;
+-- DROP TABLE user;
+
+-- CREATE TABLE user(
+--     id INT  NOT NULL PRIMARY KEY,
+--     last VARCHAR(40),
+--     first VARCHAR(40),
+--     email VARCHAR(40),
+--     password VARCHAR(40),
+--     role_id INT,
+--     photo_id INT,
+--     FOREIGN KEY(photo_id) REFERENCES photo(id),
+--     FOREIGN KEY(role_id) REFERENCES role(id)
+-- );
+
+-- CREATE TABLE dailylog(
+--     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--     task_id INT,
+--     date VARCHAR(40),
+
+--     FOREIGN KEY(task_id) REFERENCES dailytask(id)
+-- );
+-- Alter Table dailylog Add Constraint sqlUniqueConstraint UNIQUE (task_id, date)
+
+ select title , todotask.date from todolist
+        JOIN todotask ON todolist.todotask_id = todotask.id
+        WHERE user_id	 = '474017';
+

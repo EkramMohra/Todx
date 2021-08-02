@@ -29,6 +29,7 @@
     "axios": "^0.21.1",
     "caniuse-lite": "^1.0.30001247",
     "date-fns": "^2.23.0",
+    "elasticsearch": "^16.7.2",
     "express": "^4.17.1",
     "is-hotkey": "^0.2.0",
     "jquery": "^3.6.0",
