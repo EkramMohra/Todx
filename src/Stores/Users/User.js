@@ -108,4 +108,11 @@ export class User {
         let res = await axios.put(`http://localhost:3005/updatephoto`,{photoID , id : this.userId})
 
     }
+
+    getAllTitles = async () => {
+        
+        let res = await axios.get(`http://localhost:3005/allTitles?userId=${this.userId}`)
+        console.log(res.data)
+        return (res.data)
+    }
 }
