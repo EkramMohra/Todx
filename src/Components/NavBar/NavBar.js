@@ -10,7 +10,6 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -31,10 +30,8 @@ import PersonSharpIcon from '@material-ui/icons/PersonSharp';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-
-
 import { alpha, makeStyles } from '@material-ui/core/styles';
-
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -122,7 +119,6 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto'
   },
   userInfo: {
-    // borderBottom: '1px gray slid'
     borderBottom: '0.8px #c5c6c7 solid'
   }
 }))
@@ -152,12 +148,6 @@ const NavBar = (props) => {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-  // const [menuCollapse, setMenuCollapse] = useState(true)
-
-  // const menuIconClick = () => {
-  //     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true)
-  // }
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -180,7 +170,8 @@ const NavBar = (props) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = 'primary-search-account-menu'
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -236,14 +227,6 @@ const NavBar = (props) => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
@@ -284,20 +267,18 @@ const NavBar = (props) => {
               >
                 <TiHome />
               </IconButton>
+            </Link> 
+
+            <Link to="/homePage/workspace">
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="open drawer"
+              >
+                <DashboardIcon />
+              </IconButton>
             </Link>
-            {/* <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div> */}
 
             <div className={classes.grow} />
 
@@ -308,7 +289,7 @@ const NavBar = (props) => {
                 </Badge>
               </IconButton> */}
               <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={props.notiication} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>

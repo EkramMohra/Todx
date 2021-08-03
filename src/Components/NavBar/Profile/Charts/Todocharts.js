@@ -1,6 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
+import { Card, Spinner } from 'react-bootstrap'
 
 const Todocharts = (props) => {
 
@@ -19,19 +20,22 @@ const Todocharts = (props) => {
         })()
     }, [dateToPresent]);
 
-    return (    
-        <div>
-
-            <label>Todo list </label>
-            <select value={dateToPresent} onChange={handleChange}>
-                <option value="daily"> Last Day</option>
-                <option value="monthly">Last Month</option>
-            </select>
+    return (  
+        <Card className="workspace-card-style shadow">
+        <Card.Body>
+            <Card.Title>
+                Todo list
+                <select value={dateToPresent} style={{margin: '5px'}} onChange={handleChange}>
+                    <option value="daily"> Last Day</option>
+                    <option value="monthly">Last Month</option>
+                </select> 
+            </Card.Title>
+        </Card.Body>
             <Chart
-                width={'500px'}
+                width={'100%'}
                 height={'300px'}
                 chartType="PieChart"
-                loader={<div>Loading Chart</div>}
+                loader={<Spinner animation="border" variant="warning" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
                 data={[
                     ['Task', 'Hours per Day'],
                     ['Done Tasks',dataTochart.done],
@@ -42,8 +46,8 @@ const Todocharts = (props) => {
                 }}
                 rootProps={{ 'data-testid': '1' }}
             />
-        </div>
-    );
-};
+        </Card>  
+    )
+}
 
 export default inject("users")(observer(Todocharts));

@@ -1,6 +1,7 @@
-import { inject, observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
+import { inject, observer } from 'mobx-react';
 import { Chart } from "react-google-charts";
+import { Card, Spinner } from 'react-bootstrap'
 
 const Timedcharts = (props) => {
 
@@ -22,18 +23,23 @@ const Timedcharts = (props) => {
 
     return (
 
-        <div>
-            <label>Todo list </label>
-            <select value={dateToPresent} onChange={handleChange}>
+        <Card className="workspace-card-style shadow">
+        <Card.Header className="profile-header-card"> 
+            Busiest hours 
+            <select value={dateToPresent} style={{margin: '5px'}} onChange={handleChange}>
                 <option value="daily"> Last Day</option>
                 <option value="monthly">Last Month</option>
             </select>
-
+        </Card.Header>
+        <Card.Body>
+            <Card.Title> 
+            </Card.Title>
+        </Card.Body>
             <Chart
-                width={'600px'}
+                width={'100%'}
                 height={'400px'}
                 chartType="LineChart"
-                loader={<div>Loading Chart</div>}
+                loader={<Spinner animation="border" variant="warning" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
                 data={
                     dataTochart
                 }
@@ -47,7 +53,7 @@ const Timedcharts = (props) => {
                 }}
                 rootProps={{ 'data-testid': '1' }}
             />
-        </div>
+        </Card>
     );
 };
 

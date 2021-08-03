@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:@localhost/sql_todx");
+const sequelize = new Sequelize("mysql://root:1234@localhost/sql_todx");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
@@ -738,7 +738,7 @@ router.put("/donetimedtasks", function (req, res) {
 
 //===========================================
 
-router.get("/newmeeting", (req, res) => {
+router.post("/newmeeting", (req, res) => {
   let options = {
     method: "POST",
     uri: "https://api.zoom.us/v2/users/me/meetings",
@@ -770,7 +770,7 @@ router.get("/newmeeting", (req, res) => {
     })
     .catch(function (err) {
       // API call failed...
-      // console.log("API call failed, reason ", err);
+       console.log("API call failed, reason ", err);
     });
 });
 
@@ -791,6 +791,7 @@ router.post("/shares", async (request, response) => {
         timedtask(title,content,date,time,status)
         VALUES('${data.title}','${data.zoom.start_url}','${data.date}'
               ,'${data.time}','pending')`)
+    console.log(data.sender_id)
     sequelize
       .query(
         `INSERT INTO
@@ -799,13 +800,15 @@ router.post("/shares", async (request, response) => {
       )
   }
 
+  let taskId = task_id !== data.task_id ? task_id[0] : data.task_id
+  if(flag===false){
   let shared = await sequelize.query(
     `INSERT INTO 
      sharedtasks (sender_id,recevier_id,task_id,task_type)
-     VALUES('${data.sender_id}','${data.recevier_id}','${task_id != data.task_id ? task_id[0] : data.task_id}'
+     VALUES('${data.sender_id}','${data.recevier_id}','${taskId}'
           ,'${data.task_type}')`
   );
-
+  }
   let userName = await sequelize.query(
     `SELECT first,last from user
           WHERE id = ${data.sender_id}`

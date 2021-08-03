@@ -8,17 +8,20 @@ import {FaUserEdit} from 'react-icons/fa'
 import {RiUploadCloud2Fill} from 'react-icons/ri'
 import {TextField, Button, OutlinedInput} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Popup from 'reactjs-popup'
 import './Profile.css'
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
+      margin: theme.spacing(2),
+      width: '80%',
     },
   },
+  btn:{
+    margin: theme.spacing(3),
+    width: '20%',
+  }
 }))
 
 
@@ -39,13 +42,6 @@ const Profile = (props) => {
         password: props.users.password,
         photo: props.users.photo_id
     })
-
-    // useEffect(() => {
-    //     setPasswordClient( props.users.password)
-    //     setFirstClient( props.users.first)
-    //     setLastClient( props.users.last)
-
-    // }, [first, last, password])
 
     function handleChange(event) {
         const target = event.target
@@ -110,7 +106,7 @@ const Profile = (props) => {
     return (
         <div >
             <div className="profile-main-section">
-                <Card className="profile-card-style">
+                <Card className="profile-card-style shadow">
                     <Card.Header className="profile-header-card"> 
                         <Button variant="outline-warning" onClick={() => setOpen(o => !o)} className="rounded shadow-sm user-edit-btn"> 
                             <FaUserEdit className="icon-edit-user-profile"/>
@@ -204,7 +200,7 @@ const Profile = (props) => {
                                         defaultValue={props.users.password} 
                                     />
                                     <div>
-                                    <Button variant="outlined" size="small" color="primary" onClick={updateClient} className={classes.margin}>
+                                    <Button variant="outlined" size="small" color="primary" onClick={updateClient} className={classes.btn}>
                                         Update
                                     </Button>
                                     </div>
@@ -221,7 +217,7 @@ const Profile = (props) => {
                 </Card>
             </div>
 
-            <Charts />
+            {/* <Charts /> */}
             {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
                 <label>First Name</label><input name="first" onChange={handleChange} value={updatedClient.first} />
                 <br></br>

@@ -9,8 +9,9 @@
     box-shadow: #dfe0e1 2px 2px 4px;
     font-family: 'Lato', sans-serif;
     text-align: left;
-    height: auto;
-    max-height: calc(100vh - 200px);
+    height: 350px;
+
+    max-height: 350px;
 }
 
 
@@ -20,6 +21,15 @@
     font-size: 25px !important;
     background-color: #f7cd34 !important;
     color: white !important;
+}
+
+.btn-zoom-task{
+     border-radius: 50%;
+    float: right;
+    font-size: 35px !important;
+    background-color: rgb(0, 167, 209) !important;
+    color: white !important;
+    margin-right: 5px !important;
 }
 
 .btn-add-task:hover{

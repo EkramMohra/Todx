@@ -29,8 +29,8 @@ export class User {
             getdailyToDoTasks:action,
             getMonthlyTimedTasks: action,
             getDailyTimedTasks: action,
-            userData: computed
-            // getImage: action
+            userData: computed,
+            getAllTitles: action
         })
     }
 
@@ -66,8 +66,9 @@ export class User {
 
         let date = '07'
         let res = await axios.get(`http://localhost:3005/monthlytodotasks?userId=${this.userId}&date=${date}`)
-        return ({all : res.data.alltasks[0][0].res || 0 , done : res.data.donetasks[0][0].res || 0})   
-
+        let done = res.data.donetasks[0].length === 0 ? 0 : res.data.donetasks[0][0].res
+        let all = res.data.alltasks[0].length === 0 ? 0 : res.data.alltasks[0][0].res
+        return ({all  : all , done : done})
     } 
 
     getdailyToDoTasks = async () => {

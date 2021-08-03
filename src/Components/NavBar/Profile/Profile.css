@@ -11,19 +11,22 @@
 .profile-image{
     width:150px !important;
     height: 150px !important;
-    border-radius: 50%;
+    border-radius: 0%;
     border-color: #99c1b9;
     background-color: #99c1b9;
     /* box-shadow: 3px -1px 3px -1px rgb(109 109 109 / 83%); */
 }
 
 .profile-card-style{
-    margin: 15px;
+    margin: auto;
+    width: 40%;
+    border-radius: 7px;
+    border-color: #d88c9a;
 }
 
 .profile-main-section{
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: auto;
 }
 
 .name-user{

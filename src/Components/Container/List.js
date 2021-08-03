@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Task from './Task';
 import MyModal from './MyModal';
-
+import {SiZoom} from 'react-icons/si'
 import Zoom from './Zoom';
 import Fab from '@material-ui/core/Fab';
 import './List.css'
@@ -27,6 +27,7 @@ const List = (props) => {
         <>
             <MyModal show={modalShowToDo} 
                 addTask={props.todolist.addTask}
+                DateOfTheDay = {props.todolist.DateOfTheDay}
                 time={false} priority={true} notification={false} date={true}
                 onHide={() => setModalShowToDo(false)} />
 
@@ -38,6 +39,7 @@ const List = (props) => {
             <MyModal show={modalShowTimed}
                 addTask={props.timedlist.addTask}
                 time={true} priority={false} notification={true} date={true}
+                DateOfTheDay = {props.timedlist.DateOfTheDay}
                 onHide={() => setModalShowTimed(false)} />
 
             <Zoom show={modalZoomMetting} task_type="timedlist"
@@ -45,127 +47,174 @@ const List = (props) => {
 
 
             <div className="list-container">
-                <Card className="list" as="h5">
-                    <Card.Header>
-                        <Row>
-                        {/* moment().format("YYYY-MM-DD", true) */}
-                            <Col sm={8} className="mt-2"> ToDo List - {props.todolist.DateOfTheDay}</Col>
-                            <Col sm={4}>  
-                                <Fab 
-                                    size="small" 
-                                    // color="secondary" 
-                                    className="btn-add-task"  
-                                    onClick={() => setModalShowToDo(true)}
-                                    aria-label="add">
-                                    <HiOutlineViewGridAdd/>
-                                </Fab>
-                            </Col>
-                        </Row>
-                    </Card.Header>
-                    <Card.Body className="body-list-style">
-                        {props.todolist.list.filter(task => task.status==="pending").map((task, index) =>
-                        <Task key={`todolist-${index}` }
-                              task={task} 
-                              deleteTask={props.todolist.deleteTask}
-                              task_type="todolist" 
-                              updateTask={props.todolist.updateTask}
-                            doneTask={props.todolist.doneTask} 
-                        />)}
-                    </Card.Body>
-                    <Card.Body className="body-list-style">
-                        {props.todolist.list.filter(task => task.status==="done").map((task, index) =>
-                        <Task key={`todolist-${index}` }
-                              task={task} 
-                              deleteTask={props.todolist.deleteTask}
-                              task_type="todolist" 
-                              updateTask={props.todolist.updateTask}
-                            doneTask={props.todolist.doneTask} 
-                        />)}
-                    </Card.Body>
-                </Card>
-                
-                <Card className="list">
-                    <Card.Header as="h5">
-                        <Row>
-                            <Col sm={8} className="mt-2">  Dailies List </Col>
-                            <Col sm={4}> 
-                                <Fab 
-                                    size="small" 
-                                    // color="secondary" 
-                                    className="btn-add-task"  
-                                    onClick={() => setModalShowDaylies(true)}
-                                    aria-label="add">
-                                    <HiOutlineViewGridAdd/>
-                                </Fab> 
-                            </Col>
-                        </Row>
-                    </Card.Header>
-                    <Card.Body  className="body-list-style">
-                        {props.dailylist.list.filter(task => task.status==="pending").map((task, index) =>
-                            <Task key={index} 
-                                    task={task} 
-                                    deleteTask={props.dailylist.deleteTask}
-                                    task_type="dailylist" 
-                                    updateTask={props.dailylist.updateTask}
-                                    doneTask={props.dailylist.doneTask} 
-                            />
-                        )}   
-                    </Card.Body>
-
-                    <Card.Body  className="body-list-style">
-                        {props.dailylist.list.filter(task => task.status==="done").map((task, index) =>
-                            <Task key={index} 
-                                    task={task} 
-                                    deleteTask={props.dailylist.deleteTask}
-                                    task_type="dailylist" 
-                                    updateTask={props.dailylist.updateTask}
-                                    doneTask={props.dailylist.doneTask} 
-                            />
-                        )}   
-                    </Card.Body>
-                </Card>
-            
-                <Card className="list">
-                    <Card.Header as="h5">
-                        <Row>
-                            <Col sm={8} className="mt-2 apointement-style">   Appointemnts List For  - {props.todolist.DateOfTheDay}  </Col>
-                            <Col sm={4}>  
-                                <Fab 
-                                    size="small" 
-                                    className="btn-add-task"  
-                                    onClick={() => setModalShowTimed(true)}
-                                    aria-label="add">
-                                    <HiOutlineViewGridAdd/>
-                                </Fab>
-                            </Col>
-                        </Row>
-                    </Card.Header>
-                    <Card.Body  className="body-list-style">
-                       
-                       {props.timedlist.list.filter(task => task.status==="pending").map((task, index) =>
-                           <Task key={index} 
-                               task={task} 
-                               deleteTask={props.timedlist.deleteTask}
-                               task_type="timedlist" 
-                               updateTask={props.timedlist.updateTask}
-                               doneTask={props.timedlist.doneTask} 
-                           />
-                       )}
-                   </Card.Body>
-
-                    <Card.Body  className="body-list-style">
-                       
-                        {props.timedlist.list.filter(task => task.status==="done").map((task, index) =>
-                            <Task key={index} 
+                <Col>
+                    <Card className="list" as="h5">
+                        <Card.Header>
+                            <Row>
+                                <Col sm={8} className="mt-2"> ToDo List - {props.todolist.DateOfTheDay}</Col>
+                                <Col sm={4}>  
+                                    <Fab 
+                                        size="small" 
+                                        className="btn-add-task"  
+                                        onClick={() => setModalShowToDo(true)}
+                                        aria-label="add">
+                                        <HiOutlineViewGridAdd/>
+                                    </Fab>
+                                </Col>
+                            </Row>
+                        </Card.Header>
+                        <Card.Body className="body-list-style">
+                            {props.todolist.list.filter(task => task.status==="pending").map((task, index) =>
+                            <Task key={`todolist-${index}` }
                                 task={task} 
-                                deleteTask={props.timedlist.deleteTask}
-                                task_type="timedlist" 
-                                updateTask={props.timedlist.updateTask}
-                                doneTask={props.timedlist.doneTask} 
-                            />
-                        )}
-                    </Card.Body>
-                </Card>
+                                deleteTask={props.todolist.deleteTask}
+                                task_type="todolist" 
+                                updateTask={props.todolist.updateTask}
+                                doneTask={props.todolist.doneTask} 
+                            />)}
+                        </Card.Body>
+                    </Card>
+
+                    <Card className="list">
+                            <Card.Header as="h5">
+                                <Row>
+                                <Col sm={8} className="mt-3">  Finshed Todes </Col>
+                                <Col sm={4}> 
+                                    
+                                </Col>
+                            </Row>
+                        </Card.Header>
+        
+                        <Card.Body  className="body-list-style">
+                            {props.todolist.list.filter(task => task.status==="done").map((task, index) =>
+                                <Task key={index} 
+                                        task={task} 
+                                        deleteTask={props.dailylist.deleteTask}
+                                        task_type="dailylist" 
+                                        updateTask={props.dailylist.updateTask}
+                                        doneTask={props.dailylist.doneTask} 
+                                />
+                            )}   
+                        </Card.Body>
+                    </Card>
+
+                </Col>
+
+                <Col>
+                    <Card className="list">
+                        <Card.Header as="h5">
+                            <Row>
+                                <Col sm={8} className="mt-3">  Dailies List </Col>
+                                <Col sm={4}> 
+                                    <Fab 
+                                        size="small" 
+                                        className="btn-add-task"  
+                                        onClick={() => setModalShowDaylies(true)}
+                                        aria-label="add">
+                                        <HiOutlineViewGridAdd/>
+                                    </Fab>
+                                </Col>
+                            </Row>
+                        </Card.Header>
+                        <Card.Body  className="body-list-style">
+                            {props.dailylist.list.filter(task => task.status==="pending").map((task, index) =>
+                                <Task key={index} 
+                                        task={task} 
+                                        deleteTask={props.dailylist.deleteTask}
+                                        task_type="dailylist" 
+                                        updateTask={props.dailylist.updateTask}
+                                        doneTask={props.dailylist.doneTask} 
+                                />
+                            )}   
+                        </Card.Body>
+                    </Card>
+                    <Card className="list">
+                        <Card.Header as="h5">
+                            <Row>
+                                <Col sm={8} className="mt-3"> Finshed Dailies </Col>
+                                <Col sm={4}> 
+                                    
+                                </Col>
+                            </Row>
+                        </Card.Header>
+                        <Card.Body  className="body-list-style">
+                            {props.dailylist.list.filter(task => task.status==="done").map((task, index) =>
+                                <Task key={index} 
+                                        task={task} 
+                                        deleteTask={props.dailylist.deleteTask}
+                                        task_type="dailylist" 
+                                        updateTask={props.dailylist.updateTask}
+                                        doneTask={props.dailylist.doneTask} 
+                                />
+                            )}   
+                        </Card.Body>
+                    </Card>
+                 
+                </Col>
+
+                <Col>
+   
+                    <Card className="list">
+                        <Card.Header as="h5">
+                            <Row>
+                                <Col sm={8} className="mt-2 apointement-style">   Appointemnts List For  - {props.todolist.DateOfTheDay}  </Col>
+                                <Col sm={4}>  
+                                    <Fab 
+                                        size="small" 
+                                        className="btn-add-task"  
+                                        onClick={() => setModalShowTimed(true)}
+                                        aria-label="add">
+                                        <HiOutlineViewGridAdd/>
+                                    </Fab>
+                                    <Fab 
+                                        size="small" 
+                                        className="btn-zoom-task"  
+                                        onClick={() => setModalZoomMetting(true)}
+                                        aria-label="add">
+                                        <SiZoom/>
+                                    </Fab>
+                                </Col>
+                            </Row>
+                        </Card.Header>
+                        <Card.Body  className="body-list-style">
+                        
+                            {props.timedlist.list.filter(task => task.status==="pending").map((task, index) =>
+                                <Task key={index} 
+                                    task={task} 
+                                    deleteTask={props.timedlist.deleteTask}
+                                    task_type="timedlist" 
+                                    updateTask={props.timedlist.updateTask}
+                                    doneTask={props.timedlist.doneTask} 
+                                />
+                            )}
+                        </Card.Body>
+                    </Card>
+
+                    <Card className="list">
+                        <Card.Header as="h5">
+                            <Row>
+                                <Col sm={8} className="mt-3 apointement-style">  Finshed Appointemnts  </Col>
+                                <Col sm={4}>  
+                                    
+                                </Col>
+                            </Row>
+                        </Card.Header>
+                        <Card.Body  className="body-list-style">
+                        
+                            {props.timedlist.list.filter(task => task.status==="done").map((task, index) =>
+                                <Task key={index} 
+                                    task={task} 
+                                    deleteTask={props.timedlist.deleteTask}
+                                    task_type="timedlist" 
+                                    updateTask={props.timedlist.updateTask}
+                                    doneTask={props.timedlist.doneTask} 
+                                />
+                            )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+                 
+                
             </div>
             {/* <div className="container">
                 <div className="list">

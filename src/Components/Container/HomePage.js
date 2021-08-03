@@ -11,12 +11,14 @@ import withReactContent from 'sweetalert2-react-content'
 import {Route} from 'react-router-dom';
 import './container.css'
 import Profile from '../NavBar/Profile/Profile'
+import Workspace from './Workspace/Workspace'
 import Dashboard from './Dashboard'
 const MySwal = withReactContent(Swal)
 
 const HomePage = (props) => {
-
+  const [notiication, setNotiication] = useState(0)
   const [firstAsign, setfirstAsign] = useState('in')
+
   let userId = JSON.parse(sessionStorage.getItem('user'))[0].id
   let channel = `share_task_recevier_id_${userId}`
   let pusher = new Pusher('5b82386d16e4fe295409', {
@@ -44,15 +46,19 @@ const HomePage = (props) => {
       if (data.task_type === "timedtask"&&data.task!=null) {
         props.timedlist.addTask(data.task)
       }
+      let n = notiication + 1
+      console.log( notiication)
+      setNotiication(n)
     })
     setfirstAsign('out')
   }
 
   return (
     <div className="wrapper">
-      <NavBar first={props.users.first} last={props.users.last} email={props.users.email}/>
+      <NavBar notiication={notiication} first={props.users.first} last={props.users.last} email={props.users.email}/>
       <Route key="profile" exact path="/homePage/profile" render={() =>  <Profile />} />
       <Route key="dashboard" exact path="/homePage/dashboard" render={() =>  <Dashboard/>} />
+      <Route key="workspace" exact path="/homePage/workspace" render={() =>  <Workspace/>} />
   </div>
   )
 }

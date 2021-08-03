@@ -8,7 +8,7 @@ const Zoom = props => {
 
     const [users, setUsers] = useState([])
     const [userId, setUserId] = useState("")
-    const [senderId, setSenderId] = useState("1")
+    const [senderId, setSenderId] = useState(JSON.parse(sessionStorage.getItem('user'))[0].id)
     const [zoomData, setZoomData] = useState({})
     const [title, setTitle] = useState("")
     const [date, setDate] = useState("")
@@ -21,9 +21,10 @@ const Zoom = props => {
         (async () => {
             let users = await axios.get(`http://localhost:3005/users`, { senderId })
             await setUsers(users.data)
-            let response = await axios.get(`http://localhost:3005/newmeeting?title=${title}`)
+            let response = await axios.post(`http://localhost:3005/newmeeting?title=${title}`)
 
             await setZoomData(response.data)
+            console.log(response)
             setSenderId(JSON.parse(sessionStorage.getItem('user'))[0].id)
 
         })()

@@ -4,3 +4,11 @@
     font-size: 20px;
     color: black;
 }
+
+.workspace-card-style{
+    margin: auto;
+    width: 80%;
+    border-radius: 7px;
+    height: 100%;
+    border-color: #d88c9a;
+}

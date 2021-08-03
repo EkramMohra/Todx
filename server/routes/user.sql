@@ -1,6 +1,5 @@
 -- CREATE DATABASE sql_todx;
 USE sql_todx;
-ALTER TABLE photo modify COLUMN photo VARCHAR (254);
 
 -- CREATE TABLE photo(
 --     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,

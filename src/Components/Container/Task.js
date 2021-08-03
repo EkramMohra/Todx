@@ -21,7 +21,7 @@ import Row from 'react-bootstrap/Row'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import './sweetAlertStyle.css'
-import Animate from 'animate.css-react'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import 'animate.css/animate.css'
 
 const MySwal = withReactContent(Swal)
@@ -86,6 +86,7 @@ const Task = (props) => {
                 task={props.task}
                 task_type={props.task_type}
                 onHide={() => setShareModalShow(false)} />
+                
             <Accordion className={`${props.task.status == "pending" ? "pending" : "done"}`}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -94,7 +95,16 @@ const Task = (props) => {
                     id="additional-actions3-header"
                 >
                     <Row className="row-task-style">
-                    { props.task.type==="shared_task"?<span className="sender">Shared By:{props.task.sender.first}-{props.task.sender.last}</span>:null}
+                    { props.task.type==="shared_task"
+                        ?
+                        <span className="sender">
+                            <AccountCircleIcon className="shared-icon"/> 
+                            Shared By: {props.task.sender.first} {props.task.sender.last}
+                        </span>
+
+                        :
+                        null
+                    }
                         <Col sm={8}>
                             <FormControlLabel
                                 aria-label="Acknowledge"
@@ -119,8 +129,10 @@ const Task = (props) => {
                                     <DeleteRoundedIcon className="icon-style" />
                                 </IconButton>
 
-                                {props.task_type === "dailylist" ||props.task.content.length>100
-                                    ? null :
+                                {props.task_type === "dailylist" || (props.task.content.length>100 && props.task_type === "timedlist")
+                                    ? 
+                                    null 
+                                    :
                                     <IconButton className="btn-action-style" size="small" size="small" color="primary" onClick={() => setShareModalShow(true)} >
                                         <ShareIcon className="icon-style" />
                                     </IconButton>
@@ -133,13 +145,20 @@ const Task = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                 {/* */}
+                {props.task_type === "timedlist" 
+                ? 
+                <Typography color="textSecondary">
+                    {props.task.content.length>50 && pattern.test(props.task.content)
+                        ?
+                        <a href={props.task.content}>
+                        {props.task.content.length>100?"Start Zoom Meeting":"Join Zoom Meeting"}
+                        </a>
+                        :props.task.content} 
+                </Typography>
+                :
                     <Typography color="textSecondary"  dangerouslySetInnerHTML={{ __html: props.task.content }}>
-                        {/* {props.task.content.length>50&&pattern.test(props.task.content)?
-                            <a href={props.task.content}>
-                            {props.task.content.length>100?"Start Zoom Meeting":"Join Zoom Meeting"}
-                            </a>
-                            :props.task.content}  */}
                     </Typography>
+                }
                 </AccordionDetails>
             </Accordion>
 
